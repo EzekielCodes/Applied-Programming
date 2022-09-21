@@ -1,0 +1,12 @@
+C:\Users\Guest\git_repos\Applied_programming\2223-ap-ezekiel.akindele\Opgave_1\Opgave_1\Opgave_1\Globals\bin\Debug\net6.0\Globals.deps.json
+C:\Users\Guest\git_repos\Applied_programming\2223-ap-ezekiel.akindele\Opgave_1\Opgave_1\Opgave_1\Globals\bin\Debug\net6.0\Globals.dll
+C:\Users\Guest\git_repos\Applied_programming\2223-ap-ezekiel.akindele\Opgave_1\Opgave_1\Opgave_1\Globals\bin\Debug\net6.0\Globals.pdb
+C:\Users\Guest\git_repos\Applied_programming\2223-ap-ezekiel.akindele\Opgave_1\Opgave_1\Opgave_1\Globals\obj\Debug\net6.0\Globals.csproj.AssemblyReference.cache
+C:\Users\Guest\git_repos\Applied_programming\2223-ap-ezekiel.akindele\Opgave_1\Opgave_1\Opgave_1\Globals\obj\Debug\net6.0\Globals.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Guest\git_repos\Applied_programming\2223-ap-ezekiel.akindele\Opgave_1\Opgave_1\Opgave_1\Globals\obj\Debug\net6.0\Globals.AssemblyInfoInputs.cache
+C:\Users\Guest\git_repos\Applied_programming\2223-ap-ezekiel.akindele\Opgave_1\Opgave_1\Opgave_1\Globals\obj\Debug\net6.0\Globals.AssemblyInfo.cs
+C:\Users\Guest\git_repos\Applied_programming\2223-ap-ezekiel.akindele\Opgave_1\Opgave_1\Opgave_1\Globals\obj\Debug\net6.0\Globals.csproj.CoreCompileInputs.cache
+C:\Users\Guest\git_repos\Applied_programming\2223-ap-ezekiel.akindele\Opgave_1\Opgave_1\Opgave_1\Globals\obj\Debug\net6.0\Globals.dll
+C:\Users\Guest\git_repos\Applied_programming\2223-ap-ezekiel.akindele\Opgave_1\Opgave_1\Opgave_1\Globals\obj\Debug\net6.0\refint\Globals.dll
+C:\Users\Guest\git_repos\Applied_programming\2223-ap-ezekiel.akindele\Opgave_1\Opgave_1\Opgave_1\Globals\obj\Debug\net6.0\Globals.pdb
+C:\Users\Guest\git_repos\Applied_programming\2223-ap-ezekiel.akindele\Opgave_1\Opgave_1\Opgave_1\Globals\obj\Debug\net6.0\ref\Globals.dll

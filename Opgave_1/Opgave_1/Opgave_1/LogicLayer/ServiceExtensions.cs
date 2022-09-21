@@ -1,4 +1,5 @@
-﻿using Globals.Interfaces;
+﻿
+using Globals.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LogicLayer;
@@ -10,5 +11,6 @@ public static class ServiceExtensions
         // Register the classes that need to be injected as singleton or transient (or scoped).
 
         services.AddSingleton<ILogic, Logic>();
+        services.AddSingleton<IAudioController, AudioController>();
     }
 }

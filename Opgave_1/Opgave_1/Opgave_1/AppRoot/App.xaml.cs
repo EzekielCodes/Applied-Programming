@@ -1,10 +1,13 @@
-﻿using DataAccessLayer;
+﻿
 using Globals;
+using AudioTools;
 using LogicLayer;
 using Microsoft.Extensions.DependencyInjection;
 using PresentationLayer;
 using PresentationLayer.Views;
 using System.Windows;
+using PresentationLayer.ViewModels;
+using Globals.Interfaces;
 
 namespace AppRoot;
 /// <summary>
@@ -23,10 +26,10 @@ public partial class App : Application
 
     private void ConfigureServices(ServiceCollection serviceCollection)
     {
-        serviceCollection.AddGlobalServices();
-        serviceCollection.AddDataAccessServices();
+        serviceCollection.AddAudioServices();
+        serviceCollection.AddTransient<MainViewModel>();
+        serviceCollection.AddSingleton<MainWindow>();
         serviceCollection.AddLogicServices();
-        serviceCollection.AddPresentationServices();
     }
 
     protected override void OnStartup(StartupEventArgs e)

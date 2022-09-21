@@ -10,13 +10,78 @@
         mc:Ignorable="d"
         Title="{Binding Title}" d:Title ="Designtime Title"
         Height="450" Width="800">
+    <Grid Margin="10" >
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock 
+            Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4"
+            Text="{Binding AudioFilePath}"
+            d:Text="- select an audiofile - "
+            VerticalAlignment="Center"
+            Margin="10,5"            
+        />
+        <Button
+            Grid.Row="0" Grid.Column="4"
+            Content="Select"
+            Height="35"
+            Width="110"
+            Command="{Binding OpenFileCommand}"
+         />
+        <Button
+            Grid.Row="1" Grid.Column="4"
+            Content="Play"
+            Height="35"
+            Width="110"
+            Command="{Binding PlayCommand}"
+         />
+        <Button
+            Grid.Row="2" Grid.Column="4"
+            Content="Pause"
+            Height="35"
+            Width="110"
+            Command="{Binding PauseCommand}"
+         />
+        <Button
+            Grid.Row="3" Grid.Column="4"
+            Content="{Binding RecordButtonCaption}"
+            Height="35"
+            Width="110"
+            FontSize="14"
+            Command="{Binding RecordCommand}"
+         />
+        <Label Grid.Row="1" Grid.Column="0" Content="Output:" VerticalAlignment="Center"/>
+        <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" ItemsSource="{Binding Devices}" SelectedItem="{Binding SelectedDevice}" Height="30"/>
 
-    <DockPanel LastChildFill="false">
-        <TextBlock DockPanel.Dock="Top" 
-                   Text="{Binding Time}" d:Text="00:00:00" 
-                   TextAlignment="Center" Background="CadetBlue" Foreground="White"
-                   FontSize="24"  Margin="20" Width="300" Height="45" Padding="5" />
-        <Button DockPanel.Dock="Top" Content="Update Time" Command="{Binding UpdateCommand}"  Width="100" Height="40"/>
-        
-    </DockPanel>
+        <Label Grid.Row="2" Grid.Column="0" Content="Total time:" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding AudioLength}" d:Text="00:00:00" VerticalAlignment="Center"/>
+        <Label Grid.Row="3" Grid.Column="0" Content="Position:" VerticalAlignment="Center"/>
+        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding AudioPosition}" d:Text="00:00:00" VerticalAlignment="Center"/>
+        <Label Grid.Row="2" Grid.Column="2" Content="Echo delay (ms):" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+        <Slider
+          Grid.Row="2" Grid.Column="3" VerticalAlignment="Center" Margin="5,5,0,0"
+          Minimum="0" Maximum="{Binding MaxDelayMilliseconds}"  Value="{Binding DelayMilliseconds}"    
+          TickPlacement="BottomRight" TickFrequency="10" SmallChange="5" LargeChange="100"  AutoToolTipPlacement="TopLeft"
+         />
+        <Label Grid.Row="3" Grid.Column="2" Content="Volume:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+        <Slider
+          Grid.Row="3" Grid.Column="3" VerticalAlignment="Center" Margin="5,5,0,0"
+          Minimum="0" Maximum="100"  Value="{Binding Volume}"    
+          TickPlacement="BottomRight" TickFrequency="5"   AutoToolTipPlacement="TopLeft"
+         />
+
+    </Grid>
+
+
+
 </Window>

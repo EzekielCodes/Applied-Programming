@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppRoot", "Opgave_1\AppRoot
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Globals", "Opgave_1\Globals\Globals.csproj", "{29E1AD2D-9C00-482D-9111-C3C56A0C7BE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLayer", "Opgave_1\DataAccessLayer\DataAccessLayer.csproj", "{80162F13-398C-48FC-952D-13866CC39F2D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogicLayer", "Opgave_1\LogicLayer\LogicLayer.csproj", "{2D332014-72D8-4A87-928F-E278B0035731}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PresentationLayer", "Opgave_1\PresentationLayer\PresentationLayer.csproj", "{DCFDA6D9-C53B-4936-A67F-83256EA45C67}"
@@ -27,10 +25,6 @@ Global
 		{29E1AD2D-9C00-482D-9111-C3C56A0C7BE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29E1AD2D-9C00-482D-9111-C3C56A0C7BE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29E1AD2D-9C00-482D-9111-C3C56A0C7BE9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{80162F13-398C-48FC-952D-13866CC39F2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{80162F13-398C-48FC-952D-13866CC39F2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{80162F13-398C-48FC-952D-13866CC39F2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{80162F13-398C-48FC-952D-13866CC39F2D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2D332014-72D8-4A87-928F-E278B0035731}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2D332014-72D8-4A87-928F-E278B0035731}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D332014-72D8-4A87-928F-E278B0035731}.Release|Any CPU.ActiveCfg = Release|Any CPU
