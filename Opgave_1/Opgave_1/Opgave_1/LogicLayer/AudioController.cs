@@ -38,8 +38,8 @@ public class AudioController : IAudioController
     private Complex[] _complexArrayLeft;
     private Complex[] _complexArrayRight;
 
-    public float[] arrayleft;
-    public float[] arrayright;
+    public float[] arrayleft ;
+    public float[] arrayright ;
 
     public List<string> Devices => (new List<string> { "Default" }).Concat(AudioSystem.OutputDeviceCapabilities.Select(c => c.ProductName)).ToList();
 
@@ -57,7 +57,7 @@ public class AudioController : IAudioController
         }
     }
 
-    public TimeSpan MaxEchoDelay => TimeSpan.FromSeconds(1);
+    public  TimeSpan MaxEchoDelay => TimeSpan.FromSeconds(1);
 
     public TimeSpan EchoDelay
     {
@@ -97,7 +97,7 @@ public class AudioController : IAudioController
         _player.Volume = _volume;
         _delayLine.Clear();
         //_player.SampleFramesNeeded += Readplayerframes;
-
+        
         _player.SampleFramesNeeded += Player_OnSampleFramesNeeded;
         //_reader.ReadSamples(arrayleft, arrayright);
 
@@ -125,7 +125,7 @@ public class AudioController : IAudioController
         for (int i = 0; i < frameCount; i++)
         {
             var sampleFrame = CalculateNextFrame();
-
+            
             if (IsRecording) _recorder!.WriteSampleFrame(sampleFrame);
             _player?.WriteSampleFrame(sampleFrame);
         }
@@ -138,10 +138,10 @@ public class AudioController : IAudioController
         // echo effect
         var frame = _reader!.ReadSampleFrame();
         _delayLine.Enqueue(frame);
-
+        
         return frame + _delayLine.Dequeue().Amplify(0.7F);
 
-
+        
 
         //// alternative: reverb effect:
         //frame += _delayLine.Dequeue().Amplify(0.5F);
@@ -152,9 +152,9 @@ public class AudioController : IAudioController
     public void Start()
     {
         if (_player == null) return;
-
+       
         _player.Start();
-
+       
         _playing = true;
     }
 
@@ -194,8 +194,7 @@ public class AudioController : IAudioController
             _reader = null;
             _player = null;
             _disposedValue = true;
-        }
-    }
+        }}
 
     public void Dispose()
     {
@@ -209,12 +208,31 @@ public class AudioController : IAudioController
         //Debug.WriteLine(num);
         arrayleft = new float[num];
         arrayright = new float[num];
-        _complexArrayLeft = new Complex[num];
+        _complexArrayLeft =  new Complex[num];
         _complexArrayRight = new Complex[num];
     }
-}
 
-    
+    public void Fillcomplex()
+    {
+        for (int i = 0; i < arrayleft.Length; i++)
+        {
+            _complexArrayLeft[i] = new Complex(arrayleft[i] , 0);    
+            _complexArrayRight[i] = new Complex (arrayright[i],0);
+            
+        }
+
+        
+
+        //Debug.WriteLine(arrayleft[2]);
+
+        // Debug.WriteLine(arrayleft[000]);
+        Debug.WriteLine(_complexArrayLeft[200].Real);
+        //Fronftransform();
+
+    }
+
+    //"Forward " fourier time => frequency
+    }
 
 /*
  * MathNet.Numerics.IntegralTransforms.Transform.FourierForward(samples);
