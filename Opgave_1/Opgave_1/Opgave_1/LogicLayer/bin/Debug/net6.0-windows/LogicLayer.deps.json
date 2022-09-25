@@ -9,7 +9,9 @@
       "LogicLayer/1.0.0": {
         "dependencies": {
           "AudioTools": "0.3.3",
+          "FftSharp": "1.1.6",
           "Globals": "1.0.0",
+          "MathNet.Numerics": "5.0.0",
           "Microsoft.Extensions.DependencyInjection": "6.0.0"
         },
         "runtime": {
@@ -25,6 +27,22 @@
           "lib/net6.0-windows7.0/AudioTools.dll": {
             "assemblyVersion": "0.3.3.0",
             "fileVersion": "0.3.3.0"
+          }
+        }
+      },
+      "FftSharp/1.1.6": {
+        "runtime": {
+          "lib/net5.0/FftSharp.dll": {
+            "assemblyVersion": "1.1.6.0",
+            "fileVersion": "1.1.6.0"
+          }
+        }
+      },
+      "MathNet.Numerics/5.0.0": {
+        "runtime": {
+          "lib/net6.0/MathNet.Numerics.dll": {
+            "assemblyVersion": "5.0.0.0",
+            "fileVersion": "5.0.0.0"
           }
         }
       },
@@ -166,6 +184,20 @@
       "sha512": "sha512-PhwWKaTuj5kjgqXwlDrZHpC6uizn5JCj5KDCKZSZjKLM/ZEBogC8fGUqx18LaSbIu+sElS4Qp2haSu7VZC9HtQ==",
       "path": "audiotools/0.3.3",
       "hashPath": "audiotools.0.3.3.nupkg.sha512"
+    },
+    "FftSharp/1.1.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-dGUkHaYB2huawqtMWOsqtqspYHVFIux70LDjI/2I08ZkYZ5nLS3NP9AbWxrI+tdw6oLPs8Q/dv8CJzpmoAvj/w==",
+      "path": "fftsharp/1.1.6",
+      "hashPath": "fftsharp.1.1.6.nupkg.sha512"
+    },
+    "MathNet.Numerics/5.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-pg1W2VwaEQMAiTpGK840hZgzavnqjlCMTVSbtVCXVyT+7AX4mc1o89SPv4TBlAjhgCOo9c1Y+jZ5m3ti2YgGgA==",
+      "path": "mathnet.numerics/5.0.0",
+      "hashPath": "mathnet.numerics.5.0.0.nupkg.sha512"
     },
     "Microsoft.Extensions.DependencyInjection/6.0.0": {
       "type": "package",

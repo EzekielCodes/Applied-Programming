@@ -15,6 +15,32 @@
           "lib/net6.0-windows7.0/AudioTools.dll": {}
         }
       },
+      "FftSharp/1.1.6": {
+        "type": "package",
+        "compile": {
+          "lib/net5.0/FftSharp.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net5.0/FftSharp.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "MathNet.Numerics/5.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/MathNet.Numerics.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/MathNet.Numerics.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Microsoft.Extensions.DependencyInjection/6.0.0": {
         "type": "package",
         "dependencies": {
@@ -275,7 +301,9 @@
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
           "AudioTools": "0.3.3",
+          "FftSharp": "1.1.6",
           "Globals": "1.0.0",
+          "MathNet.Numerics": "5.0.0",
           "Microsoft.Extensions.DependencyInjection": "6.0.0"
         },
         "compile": {
@@ -320,6 +348,45 @@
         "audiotools.0.3.3.nupkg.sha512",
         "audiotools.nuspec",
         "lib/net6.0-windows7.0/AudioTools.dll"
+      ]
+    },
+    "FftSharp/1.1.6": {
+      "sha512": "dGUkHaYB2huawqtMWOsqtqspYHVFIux70LDjI/2I08ZkYZ5nLS3NP9AbWxrI+tdw6oLPs8Q/dv8CJzpmoAvj/w==",
+      "type": "package",
+      "path": "fftsharp/1.1.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "fftsharp.1.1.6.nupkg.sha512",
+        "fftsharp.nuspec",
+        "icon.png",
+        "lib/net5.0/FftSharp.dll",
+        "lib/net5.0/FftSharp.xml",
+        "lib/netstandard2.0/FftSharp.dll",
+        "lib/netstandard2.0/FftSharp.xml"
+      ]
+    },
+    "MathNet.Numerics/5.0.0": {
+      "sha512": "pg1W2VwaEQMAiTpGK840hZgzavnqjlCMTVSbtVCXVyT+7AX4mc1o89SPv4TBlAjhgCOo9c1Y+jZ5m3ti2YgGgA==",
+      "type": "package",
+      "path": "mathnet.numerics/5.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "icon.png",
+        "lib/net461/MathNet.Numerics.dll",
+        "lib/net461/MathNet.Numerics.xml",
+        "lib/net48/MathNet.Numerics.dll",
+        "lib/net48/MathNet.Numerics.xml",
+        "lib/net5.0/MathNet.Numerics.dll",
+        "lib/net5.0/MathNet.Numerics.xml",
+        "lib/net6.0/MathNet.Numerics.dll",
+        "lib/net6.0/MathNet.Numerics.xml",
+        "lib/netstandard2.0/MathNet.Numerics.dll",
+        "lib/netstandard2.0/MathNet.Numerics.xml",
+        "mathnet.numerics.5.0.0.nupkg.sha512",
+        "mathnet.numerics.nuspec"
       ]
     },
     "Microsoft.Extensions.DependencyInjection/6.0.0": {

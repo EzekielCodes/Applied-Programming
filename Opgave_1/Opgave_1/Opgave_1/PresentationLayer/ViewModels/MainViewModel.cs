@@ -4,9 +4,10 @@ using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
+using System.Windows.Controls;
 //
-
 
 namespace PresentationLayer.ViewModels;
 public class MainViewModel : ObservableObject, IDisposable
@@ -19,8 +20,6 @@ public class MainViewModel : ObservableObject, IDisposable
     private bool _disposedValue;
     private PeriodicTimer? _timer;
     private string _selectedDevice = String.Empty;
-
-    private readonly ILogic _logic;
 
     private string _title = "WpfApp (MVVM)";
 
@@ -127,6 +126,7 @@ public class MainViewModel : ObservableObject, IDisposable
         while (_playing && await _timer.WaitForNextTickAsync())
         {
             OnPropertyChanged(nameof(AudioPosition));
+            Debug.WriteLine(_controller.AudioLength);
             if ((_controller != null) && (_controller.AudioPosition >= _controller.AudioLength)) StopSource();
         }
     }
@@ -176,6 +176,4 @@ public class MainViewModel : ObservableObject, IDisposable
     {
         get => _title;
         private set => SetProperty<string>(ref _title, value);
-    }
-
-}
+    }}

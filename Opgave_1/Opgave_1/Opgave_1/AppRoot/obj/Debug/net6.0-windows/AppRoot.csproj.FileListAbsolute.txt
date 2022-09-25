@@ -33,3 +33,5 @@ C:\Users\Guest\git_repos\Applied_programming\2223-ap-ezekiel.akindele\Opgave_1\O
 C:\Users\Guest\git_repos\Applied_programming\2223-ap-ezekiel.akindele\Opgave_1\Opgave_1\Opgave_1\AppRoot\obj\Debug\net6.0-windows\AppRoot.pdb
 C:\Users\Guest\git_repos\Applied_programming\2223-ap-ezekiel.akindele\Opgave_1\Opgave_1\Opgave_1\AppRoot\obj\Debug\net6.0-windows\AppRoot.genruntimeconfig.cache
 C:\Users\Guest\git_repos\Applied_programming\2223-ap-ezekiel.akindele\Opgave_1\Opgave_1\Opgave_1\AppRoot\obj\Debug\net6.0-windows\ref\AppRoot.dll
+C:\Users\Guest\git_repos\Applied_programming\2223-ap-ezekiel.akindele\Opgave_1\Opgave_1\Opgave_1\AppRoot\bin\Debug\net6.0-windows\FftSharp.dll
+C:\Users\Guest\git_repos\Applied_programming\2223-ap-ezekiel.akindele\Opgave_1\Opgave_1\Opgave_1\AppRoot\bin\Debug\net6.0-windows\MathNet.Numerics.dll

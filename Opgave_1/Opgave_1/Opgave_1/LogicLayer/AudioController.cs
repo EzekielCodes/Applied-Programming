@@ -9,6 +9,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Globals.Interfaces;
+using System.Diagnostics;
+using System.Windows.Controls;
+//for complex numbers
+using System.Numerics;
+
+//
+using MathNet.Numerics.IntegralTransforms;
+
+namespace LogicLayer;
 public class AudioController : IAudioController
 {
     private readonly IAudioFileReaderFactory _audioFileReaderFactory;
@@ -26,6 +35,11 @@ public class AudioController : IAudioController
     private TimeSpan _delay = TimeSpan.FromMilliseconds(0);
     private float _volume = 50f;
     private bool _disposedValue;
+    private Complex[] _complexArrayLeft;
+    private Complex[] _complexArrayRight;
+
+    public float[] arrayleft;
+    public float[] arrayright;
 
     public List<string> Devices => (new List<string> { "Default" }).Concat(AudioSystem.OutputDeviceCapabilities.Select(c => c.ProductName)).ToList();
 
@@ -43,7 +57,7 @@ public class AudioController : IAudioController
         }
     }
 
-    public  TimeSpan MaxEchoDelay => TimeSpan.FromSeconds(1);
+    public TimeSpan MaxEchoDelay => TimeSpan.FromSeconds(1);
 
     public TimeSpan EchoDelay
     {
@@ -82,7 +96,11 @@ public class AudioController : IAudioController
         _player = _audioPlayerFactory.Create(_currentDevice, _reader!.SampleRate);
         _player.Volume = _volume;
         _delayLine.Clear();
+        //_player.SampleFramesNeeded += Readplayerframes;
+
         _player.SampleFramesNeeded += Player_OnSampleFramesNeeded;
+        //_reader.ReadSamples(arrayleft, arrayright);
+
     }
 
     public void SetDevice(string device)
@@ -100,12 +118,19 @@ public class AudioController : IAudioController
 
     private void Player_OnSampleFramesNeeded(int frameCount)
     {
+        arrayleft = new float[frameCount];
+        arrayright = new float[frameCount];
+        _complexArrayLeft = new Complex[frameCount];
+        _complexArrayRight = new Complex[frameCount];
         for (int i = 0; i < frameCount; i++)
         {
             var sampleFrame = CalculateNextFrame();
+
             if (IsRecording) _recorder!.WriteSampleFrame(sampleFrame);
             _player?.WriteSampleFrame(sampleFrame);
         }
+        _reader.ReadSamples(arrayleft, arrayright);
+        //Fillcomplex();
     }
 
     private AudioSampleFrame CalculateNextFrame()
@@ -113,7 +138,10 @@ public class AudioController : IAudioController
         // echo effect
         var frame = _reader!.ReadSampleFrame();
         _delayLine.Enqueue(frame);
+
         return frame + _delayLine.Dequeue().Amplify(0.7F);
+
+
 
         //// alternative: reverb effect:
         //frame += _delayLine.Dequeue().Amplify(0.5F);
@@ -124,7 +152,9 @@ public class AudioController : IAudioController
     public void Start()
     {
         if (_player == null) return;
+
         _player.Start();
+
         _playing = true;
     }
 
@@ -174,4 +204,22 @@ public class AudioController : IAudioController
         GC.SuppressFinalize(this);
     }
 
+    public void Readplayerframes(int num)
+    {
+        //Debug.WriteLine(num);
+        arrayleft = new float[num];
+        arrayright = new float[num];
+        _complexArrayLeft = new Complex[num];
+        _complexArrayRight = new Complex[num];
+    }
 }
+
+    
+
+/*
+ * MathNet.Numerics.IntegralTransforms.Transform.FourierForward(samples);
+   MathNet.Numerics.IntegralTransforms.Transform.FourierInverse(samples);
+ * 
+ * 
+ */
+
