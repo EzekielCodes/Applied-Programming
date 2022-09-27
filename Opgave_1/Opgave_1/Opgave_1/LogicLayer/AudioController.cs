@@ -221,7 +221,6 @@ public class AudioController : IAudioController
         Calculateblok();
 
     }
-    //frequency en magnitude
 
     //"Forward " fourier time => frequency
     public void Calculateblok()
@@ -248,12 +247,10 @@ public class AudioController : IAudioController
          */
         int bloksize = (int)Math.Ceiling(opsplitsenOrigineel);
 
-
         Complex[][] complexBloxLeft = Fullcomplexblok(bloksize, n , _complexArrayLeft);
 
         Complex[][] complexBloxRight = Fullcomplexblok(bloksize, n, _complexArrayRight);
-
-    }
+ }
 
       
      
@@ -287,19 +284,13 @@ public class AudioController : IAudioController
      */
     public Complex[][] Fullcomplexblok(int aantalblok, int n, Complex[] complexarray)
     {
+        
         Complex[][] blokcomplex = new Complex[aantalblok][];
         for (int i = 0; i < aantalblok; i++)
         {
+            blokcomplex[i] = new Complex[n];
             for (int x = 0; x < n; x++)
-                blokcomplex[i][x] = complexarray[i].Real;
+                blokcomplex[i][x] = complexarray[x].Real;
             Fourier.Forward(blokcomplex[i]);
         }
-        return blokcomplex;
-
-    }
-
-
-
-}
-
-
+        return blokcomplex;}}
