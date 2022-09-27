@@ -2,6 +2,7 @@
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Win32;
+using ScottPlot;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -119,6 +120,13 @@ public class MainViewModel : ObservableObject, IDisposable
 
     private async void PlaySource()
     {
+
+        double[] dataX = new double[] { 1, 2, 3, 4, 5 };
+        double[] dataY = new double[] { 1, 4, 9, 16, 25 };
+        //.Plot.AddScatter(dataX, dataY);
+        //graph.Refresh();
+
+        
         _controller?.Start();
         _playing = true;
         UpdateUiCommandsState();
@@ -126,9 +134,11 @@ public class MainViewModel : ObservableObject, IDisposable
         while (_playing && await _timer.WaitForNextTickAsync())
         {
             OnPropertyChanged(nameof(AudioPosition));
-            Debug.WriteLine(_controller.AudioLength);
+           // Debug.WriteLine(_controller.AudioLength);
             if ((_controller != null) && (_controller.AudioPosition >= _controller.AudioLength)) StopSource();
         }
+       
+
     }
 
     private void StopSource()

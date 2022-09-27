@@ -16,6 +16,8 @@ using System.Numerics;
 
 //
 using MathNet.Numerics.IntegralTransforms;
+using System.Windows.Markup;
+using ScottPlot;
 
 namespace LogicLayer;
 public class AudioController : IAudioController
@@ -38,8 +40,8 @@ public class AudioController : IAudioController
     private Complex[] _complexArrayLeft;
     private Complex[] _complexArrayRight;
 
-    public float[] arrayleft ;
-    public float[] arrayright ;
+    public float[] arrayleft;
+    public float[] arrayright;
 
     public List<string> Devices => (new List<string> { "Default" }).Concat(AudioSystem.OutputDeviceCapabilities.Select(c => c.ProductName)).ToList();
 
@@ -130,7 +132,8 @@ public class AudioController : IAudioController
             _player?.WriteSampleFrame(sampleFrame);
         }
         _reader.ReadSamples(arrayleft, arrayright);
-        //Fillcomplex();
+        Debug.WriteLine(_reader.SampleRate);
+        Fillcomplex();
     }
 
     private AudioSampleFrame CalculateNextFrame()
@@ -205,7 +208,6 @@ public class AudioController : IAudioController
 
     public void Readplayerframes(int num)
     {
-        //Debug.WriteLine(num);
         arrayleft = new float[num];
         arrayright = new float[num];
         _complexArrayLeft =  new Complex[num];
@@ -214,30 +216,70 @@ public class AudioController : IAudioController
 
     public void Fillcomplex()
     {
-        for (int i = 0; i < arrayleft.Length; i++)
-        {
-            _complexArrayLeft[i] = new Complex(arrayleft[i] , 0);    
-            _complexArrayRight[i] = new Complex (arrayright[i],0);
-            
-        }
-
-        
-
-        //Debug.WriteLine(arrayleft[2]);
-
-        // Debug.WriteLine(arrayleft[000]);
-        Debug.WriteLine(_complexArrayLeft[200].Real);
-        //Fronftransform();
+        _complexArrayLeft = arrayleft.Select(x => new Complex(x, 0)).ToArray();
+        _complexArrayRight = arrayright.Select(x => new Complex(x, 0)).ToArray();
+        Fronftransform();
 
     }
+    //frequency en magnitude
 
     //"Forward " fourier time => frequency
+    public void Fronftransform()
+    {
+        /*
+         * samplerate lezen van _reader
+         * n = frequentieNauwkeurigheid 
+         * vb samplerate = 44100hz /5 => 8820
+         * 8820 (2^14) => 16384()
+         */
+        int samplerate = _reader.SampleRate;
+        int n = BerekenN(samplerate);
+        Debug.WriteLine(n);
+
+        /*
+         * Je splitst het originele signaal op in blokken van 16k monsters
+         * Bepaling van de f-band die 50 Hz omvat: de f-resolutie na FFT is 44100/16384 = 2,69Hz. De eerste
+         * waarde slaat dus op de f-band tussen 0 en 2,69 Hz. de tweede op de band van 2,69 tot 5,38Hz
+         */
+        double opsplitsenOrigineel = (double)samplerate / n;
+        
+        /*
+         * f-band tussen 0 en 2,69 Hz ronden we op naar boven met Math.ceiling dus 3Hz per blok
+         */
+        int roundedbloksize = (int)Math.Ceiling(opsplitsenOrigineel);
+       
+
+
+
+        Fourier.Forward(_complexArrayLeft, FourierOptions.NoScaling);
+        Fourier.Forward(_complexArrayRight, FourierOptions.NoScaling);
+
     }
 
-/*
- * MathNet.Numerics.IntegralTransforms.Transform.FourierForward(samples);
-   MathNet.Numerics.IntegralTransforms.Transform.FourierInverse(samples);
- * 
- * 
- */
+    /*
+     * eerst sample rate berekenen moet in de macht van 2^x zijn.
+     * 5 = 5hz veresite nauwkeurigheid
+     */
+    public int BerekenN(int samplerate)
+    {
+        int mod = samplerate / 5;
+        int n = GetvalueN(mod, 1);
+        return n;
+    }
+
+    /*
+     * eerst sample rate berekenen moet in de macht van 2^x zijn(FFT laat alleen macht to 2 toe..
+     * hier wordt een controle gedaan indien samplerate nog lager is blijven we optellen tot
+     */
+    public int GetvalueN(int n , int pow)
+    {
+        int powN = (int)Math.Pow(2,pow);
+        if(powN > n)
+        {
+            return powN;
+        }
+        pow++;
+        return GetvalueN(n, pow);
+    }}
+
 

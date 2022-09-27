@@ -203,6 +203,10 @@
             "Microsoft.Extensions.DependencyInjection": {
               "target": "Package",
               "version": "[6.0.0, )"
+            },
+            "ScottPlot": {
+              "target": "Package",
+              "version": "[4.1.58, )"
             }
           },
           "imports": [
@@ -279,6 +283,10 @@
             "Microsoft.Toolkit.Mvvm": {
               "target": "Package",
               "version": "[7.1.2, )"
+            },
+            "ScottPlot.WPF": {
+              "target": "Package",
+              "version": "[4.1.58, )"
             }
           },
           "imports": [

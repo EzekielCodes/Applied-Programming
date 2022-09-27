@@ -9,8 +9,8 @@
         
         mc:Ignorable="d"
         Title="{Binding Title}" d:Title ="Designtime Title"
-        Height="450" Width="800">
-    <Grid Margin="10" >
+        Height="535" Width="817">
+    <Grid Margin="10,10,10,278" >
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
@@ -79,8 +79,23 @@
           Minimum="0" Maximum="100"  Value="{Binding Volume}"    
           TickPlacement="BottomRight" TickFrequency="5"   AutoToolTipPlacement="TopLeft"
          />
+        <Grid Grid.Row="3" Grid.ColumnSpan="5" Margin="26,73,19,-252" RenderTransformOrigin="0.5,0.5">
+            <Grid.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-0.061"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Grid.RenderTransform>
+            <WpfPlot HorizontalAlignment="Left" Margin="37,30,0,0" VerticalAlignment="Top" x:Name="graphsource" Height="195" Width="715"  />
+        </Grid>
+
+
 
     </Grid>
+
+
 
 
 
