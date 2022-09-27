@@ -218,13 +218,13 @@ public class AudioController : IAudioController
     {
         _complexArrayLeft = arrayleft.Select(x => new Complex(x, 0)).ToArray();
         _complexArrayRight = arrayright.Select(x => new Complex(x, 0)).ToArray();
-        Fronftransform();
+        Calculateblok();
 
     }
     //frequency en magnitude
 
     //"Forward " fourier time => frequency
-    public void Fronftransform()
+    public void Calculateblok()
     {
         /*
          * samplerate lezen van _reader
@@ -246,16 +246,17 @@ public class AudioController : IAudioController
         /*
          * f-band tussen 0 en 2,69 Hz ronden we op naar boven met Math.ceiling dus 3Hz per blok
          */
-        int roundedbloksize = (int)Math.Ceiling(opsplitsenOrigineel);
-       
+        int bloksize = (int)Math.Ceiling(opsplitsenOrigineel);
 
 
+        Complex[][] complexBloxLeft = Fullcomplexblok(bloksize, n , _complexArrayLeft);
 
-        Fourier.Forward(_complexArrayLeft, FourierOptions.NoScaling);
-        Fourier.Forward(_complexArrayRight, FourierOptions.NoScaling);
+        Complex[][] complexBloxRight = Fullcomplexblok(bloksize, n, _complexArrayRight);
 
     }
 
+      
+     
     /*
      * eerst sample rate berekenen moet in de macht van 2^x zijn.
      * 5 = 5hz veresite nauwkeurigheid
@@ -275,11 +276,30 @@ public class AudioController : IAudioController
     {
         int powN = (int)Math.Pow(2,pow);
         if(powN > n)
-        {
             return powN;
-        }
         pow++;
         return GetvalueN(n, pow);
-    }}
+    }
+
+    /*
+     * aan de hadn van het aantal blok kunnen we een multidimensionel array
+     * aanmaken. kolom = aantal blok ... rij = lengte
+     */
+    public Complex[][] Fullcomplexblok(int aantalblok, int n, Complex[] complexarray)
+    {
+        Complex[][] blokcomplex = new Complex[aantalblok][];
+        for (int i = 0; i < aantalblok; i++)
+        {
+            for (int x = 0; x < n; x++)
+                blokcomplex[i][x] = complexarray[i].Real;
+            Fourier.Forward(blokcomplex[i]);
+        }
+        return blokcomplex;
+
+    }
+
+
+
+}
 
 
