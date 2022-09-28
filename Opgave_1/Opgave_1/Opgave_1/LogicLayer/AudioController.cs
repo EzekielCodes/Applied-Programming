@@ -260,10 +260,10 @@ public class AudioController : IAudioController
         int x = Searchindex(filterHz, opsplitsenOrigineel);
 
         FDomeinFliter(_complexArrayLeft, x);
-        FDomeinFliter(_complexArrayLeft, x);
+        FDomeinFliter(_complexArrayRight, x);
 
         IFFTransform(_complexArrayLeft);
-        IFFTransform(_complexArrayLeft);
+        IFFTransform(_complexArrayRight);
 
     }
     /*
@@ -319,11 +319,9 @@ public class AudioController : IAudioController
     public void FDomeinFliter(Complex[] complex, int index)
     {
         int inverseIndex = complex.Length - index;
-            for (int x = inverseIndex; x < complex.Length; x++)
-            {
-                complex[index] = new Complex(0, 0);
-                complex[x] = new Complex(0, 0);             
-            }      
+        complex[index] = new Complex(0, 0);
+        complex[inverseIndex] = new Complex(0, 0);             
+                 
     }
 
     /*
