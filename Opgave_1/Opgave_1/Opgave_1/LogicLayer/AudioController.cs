@@ -18,6 +18,7 @@ using System.Numerics;
 using MathNet.Numerics.IntegralTransforms;
 using System.Windows.Markup;
 using ScottPlot;
+using System.Windows.Documents;
 
 namespace LogicLayer;
 public class AudioController : IAudioController
@@ -39,13 +40,7 @@ public class AudioController : IAudioController
     private bool _disposedValue;
     private Complex[] _complexArrayLeft;
     private Complex[] _complexArrayRight;
-    private int _aantalFrame = 0;
-    private int _tempFrame = 0;
     private int _range = 0;
-
-    public float[] arrayleft;
-    public float[] arrayright;
-
     public List<string> Devices => (new List<string> { "Default" }).Concat(AudioSystem.OutputDeviceCapabilities.Select(c => c.ProductName)).ToList();
 
     public TimeSpan AudioLength => _reader?.TimeLength ?? new TimeSpan();
@@ -93,26 +88,9 @@ public class AudioController : IAudioController
         StopRecording();
         _playing = false;
         _reader = _audioFileReaderFactory.Create(path);
-        //Debug.WriteLine(_reader.TimeLength.TotalSeconds);
-        double TotalsampleRate = _reader.TimeLength.TotalSeconds * _reader.SampleRate;
-        int sampleRate = (int)TotalsampleRate;
-        int ExpectedSize = GetValuePow(sampleRate,1);
-
-        arrayleft = new float[ExpectedSize];
-        arrayright= new float[ExpectedSize];
-
-        _complexArrayLeft = new Complex[ExpectedSize];
-        _complexArrayRight = new Complex[ExpectedSize];
-
-
+        CalculateSampleRate();
         ReadSamples();
-
-
-       /* for (int i = sampleRate; i < arrayleft.Length; i++)
-        {
-            arrayleft[i] = 0;
-            arrayright[i] = 0;
-        }*/
+        Fillcomplex();
         CreatePlayer();
     }
 
@@ -121,10 +99,7 @@ public class AudioController : IAudioController
         _player = _audioPlayerFactory.Create(_currentDevice, _reader!.SampleRate);
         _player.Volume = _volume;
         _delayLine.Clear();
-        //_player.SampleFramesNeeded += Readplayerframes;
-        
         _player.SampleFramesNeeded += Player_OnSampleFramesNeeded;
-        //_reader.ReadSamples(arrayleft, arrayright);
 
     }
 
@@ -141,24 +116,27 @@ public class AudioController : IAudioController
         if (_playing) _player?.Start();
     }
 
+    /*
+     * 
+     */
     private void Player_OnSampleFramesNeeded(int frameCount)
     {
-
         
         for (int i = 0; i < frameCount; i++)
         {
-            _aantalFrame = i;
             var sampleFrame = CalculateNextFrame();
             _range++;
-            //Debug.WriteLine("range after for sample " + _range);
             if (IsRecording) _recorder!.WriteSampleFrame(sampleFrame);
             _player?.WriteSampleFrame(sampleFrame);
 
         }
-        //Debug.WriteLine("Samples needed " + frameCount);
-        //Debug.WriteLine("range after for loo " + _range);
-       
+       // 
     }
+
+    /*
+     * Hier wordt de 2 complexe array opgevuld met samples
+     * De methode ReadSampleFrame geeft een sampleframe terug
+     */
 
     private  void ReadSamples()
     {
@@ -168,13 +146,15 @@ public class AudioController : IAudioController
             var x = _reader.ReadSampleFrame();
             _complexArrayLeft[i] = x.Left;
             _complexArrayRight[i] = x.Right;
-        }
-       // Debug.WriteLine(_complexArrayLeft[2000].Real);
-    }
+        }}
+
+    /*
+     * Hier wordt de volgende sample frame berekend
+     * Een audioSampleframe wordt terug gegegven aan de player
+     */
 
     private AudioSampleFrame CalculateNextFrame()
-    {
-       
+    { 
         return new AudioSampleFrame((float)_complexArrayLeft[_range].Real, (float)_complexArrayRight[_range].Real);
     }
 
@@ -232,7 +212,15 @@ public class AudioController : IAudioController
         GC.SuppressFinalize(this);
     }
 
+    public void CalculateSampleRate()
+    {
+        double TotalsampleRate = _reader.TimeLength.TotalSeconds * _reader.SampleRate;
+        int sampleRate = (int)TotalsampleRate;
+        int ExpectedSize = GetValuePow(sampleRate, 1);
 
+        _complexArrayLeft = new Complex[ExpectedSize];
+        _complexArrayRight = new Complex[ExpectedSize];
+    }
     public void Fillcomplex()
     {
         Calculateblok();
@@ -263,13 +251,21 @@ public class AudioController : IAudioController
          */
         int bloksize = (int)Math.Ceiling(opsplitsenOrigineel);
 
-        Complex[][] complexBloxLeft = Fullcomplexblok(bloksize, n , _complexArrayLeft);
+        
+        
+        FFTransform(_complexArrayLeft);
+        FFTransform(_complexArrayRight);
 
-        Complex[][] complexBloxRight = Fullcomplexblok(bloksize, n, _complexArrayRight);
- }
+        int filterHz = 50;
+        int x = Searchindex(filterHz, opsplitsenOrigineel);
 
-      
-     
+        FDomeinFliter(_complexArrayLeft, x);
+        FDomeinFliter(_complexArrayLeft, x);
+
+        IFFTransform(_complexArrayLeft);
+        IFFTransform(_complexArrayLeft);
+
+    }
     /*
      * eerst sample rate berekenen moet in de macht van 2^x zijn.
      * 5 = 5hz veresite nauwkeurigheid
@@ -297,22 +293,43 @@ public class AudioController : IAudioController
         }
         x++;
         return GetValuePow(sampleRate, x);
-
     }
 
     /*
      * aan de hand van het aantal blok kunnen we een multidimensionel array
      * aanmaken. kolom = aantal blok ... rij = lengte
+     * hier wordt FFT gedaan
      */
-    public Complex[][] Fullcomplexblok(int aantalblok, int n, Complex[] complexarray)
+    public void FFTransform(Complex[] complexarray)
     {
-        
-        Complex[][] blokcomplex = new Complex[aantalblok][];
-        for (int i = 0; i < aantalblok; i++)
-        {
-            blokcomplex[i] = new Complex[n];
-            for (int x = 0; x < n; x++)
-                blokcomplex[i][x] = complexarray[x].Real;
-            Fourier.Forward(blokcomplex[i]);
-        }
-        return blokcomplex;}}
+        Fourier.Forward(complexarray);
+    }
+
+    public int Searchindex(int filterHz, double opgeslist)
+    {
+        int index = 0;
+        index = (int)Math.Floor(filterHz / opgeslist);
+        return index;
+    }
+
+    /*
+     * De index de de waarde omwat van de f band op 0 zetten
+     * ok de gespiegelde waarde op 0 zetten
+     */
+    public void FDomeinFliter(Complex[] complex, int index)
+    {
+        int inverseIndex = complex.Length - index;
+            for (int x = inverseIndex; x < complex.Length; x++)
+            {
+                complex[index] = new Complex(0, 0);
+                complex[x] = new Complex(0, 0);             
+            }      
+    }
+
+    /*
+     * inverse fft transform toepassing op complexarray
+     */
+    public void IFFTransform(Complex[] complex)
+    {
+        Fourier.Inverse(complex);
+    }}

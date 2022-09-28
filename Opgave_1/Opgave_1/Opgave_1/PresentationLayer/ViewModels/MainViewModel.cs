@@ -120,9 +120,6 @@ public class MainViewModel : ObservableObject, IDisposable
 
     private async void PlaySource()
     {
-
-
-        
         _controller?.Start();
         _playing = true;
         UpdateUiCommandsState();
@@ -130,12 +127,9 @@ public class MainViewModel : ObservableObject, IDisposable
         while (_playing && await _timer.WaitForNextTickAsync())
         {
             OnPropertyChanged(nameof(AudioPosition));
-           // Debug.WriteLine(_controller.AudioLength);
+          
            // if ((_controller != null) && (_controller.AudioPosition >= _controller.AudioLength)) StopSource();
-        }
-       
-
-    }
+        } }
 
     private void StopSource()
     {
