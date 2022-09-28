@@ -39,6 +39,9 @@ public class AudioController : IAudioController
     private bool _disposedValue;
     private Complex[] _complexArrayLeft;
     private Complex[] _complexArrayRight;
+    private int _aantalFrame = 0;
+    private int _tempFrame = 0;
+    private int _range = 0;
 
     public float[] arrayleft;
     public float[] arrayright;
@@ -90,6 +93,26 @@ public class AudioController : IAudioController
         StopRecording();
         _playing = false;
         _reader = _audioFileReaderFactory.Create(path);
+        //Debug.WriteLine(_reader.TimeLength.TotalSeconds);
+        double TotalsampleRate = _reader.TimeLength.TotalSeconds * _reader.SampleRate;
+        int sampleRate = (int)TotalsampleRate;
+        int ExpectedSize = GetValuePow(sampleRate,1);
+
+        arrayleft = new float[ExpectedSize];
+        arrayright= new float[ExpectedSize];
+
+        _complexArrayLeft = new Complex[ExpectedSize];
+        _complexArrayRight = new Complex[ExpectedSize];
+
+
+        ReadSamples();
+
+
+       /* for (int i = sampleRate; i < arrayleft.Length; i++)
+        {
+            arrayleft[i] = 0;
+            arrayright[i] = 0;
+        }*/
         CreatePlayer();
     }
 
@@ -120,36 +143,39 @@ public class AudioController : IAudioController
 
     private void Player_OnSampleFramesNeeded(int frameCount)
     {
-        arrayleft = new float[frameCount];
-        arrayright = new float[frameCount];
-        _complexArrayLeft = new Complex[frameCount];
-        _complexArrayRight = new Complex[frameCount];
+
+        
         for (int i = 0; i < frameCount; i++)
         {
+            _aantalFrame = i;
             var sampleFrame = CalculateNextFrame();
-            
+            _range++;
+            //Debug.WriteLine("range after for sample " + _range);
             if (IsRecording) _recorder!.WriteSampleFrame(sampleFrame);
             _player?.WriteSampleFrame(sampleFrame);
+
         }
-        _reader.ReadSamples(arrayleft, arrayright);
-        Debug.WriteLine(_reader.SampleRate);
-        Fillcomplex();
+        //Debug.WriteLine("Samples needed " + frameCount);
+        //Debug.WriteLine("range after for loo " + _range);
+       
+    }
+
+    private  void ReadSamples()
+    {
+        for (int i = 0; i < _complexArrayLeft.Length; i++)
+        {
+
+            var x = _reader.ReadSampleFrame();
+            _complexArrayLeft[i] = x.Left;
+            _complexArrayRight[i] = x.Right;
+        }
+       // Debug.WriteLine(_complexArrayLeft[2000].Real);
     }
 
     private AudioSampleFrame CalculateNextFrame()
     {
-        // echo effect
-        var frame = _reader!.ReadSampleFrame();
-        _delayLine.Enqueue(frame);
-        
-        return frame + _delayLine.Dequeue().Amplify(0.7F);
-
-        
-
-        //// alternative: reverb effect:
-        //frame += _delayLine.Dequeue().Amplify(0.5F);
-        //_delayLine.Enqueue(frame);
-        //return frame;
+       
+        return new AudioSampleFrame((float)_complexArrayLeft[_range].Real, (float)_complexArrayRight[_range].Real);
     }
 
     public void Start()
@@ -206,20 +232,10 @@ public class AudioController : IAudioController
         GC.SuppressFinalize(this);
     }
 
-    public void Readplayerframes(int num)
-    {
-        arrayleft = new float[num];
-        arrayright = new float[num];
-        _complexArrayLeft =  new Complex[num];
-        _complexArrayRight = new Complex[num];
-    }
 
     public void Fillcomplex()
     {
-        _complexArrayLeft = arrayleft.Select(x => new Complex(x, 0)).ToArray();
-        _complexArrayRight = arrayright.Select(x => new Complex(x, 0)).ToArray();
         Calculateblok();
-
     }
 
     //"Forward " fourier time => frequency
@@ -261,7 +277,7 @@ public class AudioController : IAudioController
     public int BerekenN(int samplerate)
     {
         int mod = samplerate / 5;
-        int n = GetvalueN(mod, 1);
+        int n = GetValuePow(mod, 1);
         return n;
     }
 
@@ -269,17 +285,23 @@ public class AudioController : IAudioController
      * eerst sample rate berekenen moet in de macht van 2^x zijn(FFT laat alleen macht to 2 toe..
      * hier wordt een controle gedaan indien samplerate nog lager is blijven we optellen tot
      */
-    public int GetvalueN(int n , int pow)
+
+    public int GetValuePow(int sampleRate, int x)
     {
-        int powN = (int)Math.Pow(2,pow);
-        if(powN > n)
-            return powN;
-        pow++;
-        return GetvalueN(n, pow);
+       
+        int pow = (int)Math.Pow(2, x);
+
+        if (pow > sampleRate)
+        {
+            return pow;
+        }
+        x++;
+        return GetValuePow(sampleRate, x);
+
     }
 
     /*
-     * aan de hadn van het aantal blok kunnen we een multidimensionel array
+     * aan de hand van het aantal blok kunnen we een multidimensionel array
      * aanmaken. kolom = aantal blok ... rij = lengte
      */
     public Complex[][] Fullcomplexblok(int aantalblok, int n, Complex[] complexarray)

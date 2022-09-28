@@ -121,10 +121,6 @@ public class MainViewModel : ObservableObject, IDisposable
     private async void PlaySource()
     {
 
-        double[] dataX = new double[] { 1, 2, 3, 4, 5 };
-        double[] dataY = new double[] { 1, 4, 9, 16, 25 };
-        //.Plot.AddScatter(dataX, dataY);
-        //graph.Refresh();
 
         
         _controller?.Start();
@@ -135,7 +131,7 @@ public class MainViewModel : ObservableObject, IDisposable
         {
             OnPropertyChanged(nameof(AudioPosition));
            // Debug.WriteLine(_controller.AudioLength);
-            if ((_controller != null) && (_controller.AudioPosition >= _controller.AudioLength)) StopSource();
+           // if ((_controller != null) && (_controller.AudioPosition >= _controller.AudioLength)) StopSource();
         }
        
 
