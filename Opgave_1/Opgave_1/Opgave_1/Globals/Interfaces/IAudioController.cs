@@ -11,6 +11,10 @@ public interface IAudioController
     bool IsRecording { get; }
     float Volume { get; set; }
 
+    int BindLow { get; set; }
+
+    int BindHigh { get; set; }
+
     void Dispose();
     void SetDevice(string device);
     void SetSource(string path);

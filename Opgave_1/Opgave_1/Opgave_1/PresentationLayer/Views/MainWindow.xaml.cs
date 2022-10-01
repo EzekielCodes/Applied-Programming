@@ -12,4 +12,9 @@ public partial class MainWindow : Window
         DataContext = _viewModel;
         InitializeComponent();
     }
+
+    private void ComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+    {
+
+    }
 }

@@ -37,10 +37,15 @@ public class AudioController : IAudioController
     public bool IsRecording { get; private set; } = false;
     private TimeSpan _delay = TimeSpan.FromMilliseconds(0);
     private float _volume = 50f;
+    private int _bindLow = 30;
+    private int _bindHigh = 50;
     private bool _disposedValue;
     private Complex[] _complexArrayLeft;
     private Complex[] _complexArrayRight;
     private int _range = 0;
+    private int filterHzLow = 48;
+
+    private int filterHz = 52;
     public List<string> Devices => (new List<string> { "Default" }).Concat(AudioSystem.OutputDeviceCapabilities.Select(c => c.ProductName)).ToList();
 
     public TimeSpan AudioLength => _reader?.TimeLength ?? new TimeSpan();
@@ -57,6 +62,17 @@ public class AudioController : IAudioController
         }
     }
 
+    public int BindLow 
+    { 
+        get => _bindLow;
+        set => _bindLow = value;
+    }
+    public int BindHigh
+    {
+        get => _bindHigh;
+        set => _bindHigh = value;
+    }
+
     public  TimeSpan MaxEchoDelay => TimeSpan.FromSeconds(1);
 
     public TimeSpan EchoDelay
@@ -68,6 +84,8 @@ public class AudioController : IAudioController
             _delayLine.Delay = TimeSpanToFrames(_delay);
         }
     }
+
+    
 
     public AudioController(IAudioFileReaderFactory audioFileReaderFactory, IAudioPlayerFactory audioPlayerFactory, IMp3FileWriterFactory mdlFileWriterFactory, IDelaylineFactory delayLineFactory)
     {
@@ -235,6 +253,11 @@ public class AudioController : IAudioController
          * vb samplerate = 44100hz /5 => 8820
          * 8820 (2^14) => 16384()
          */
+
+        /* double TotalsampleRate = _reader.TimeLength.TotalSeconds * _reader.SampleRate;
+         int ExpectedSize = (int)TotalsampleRate;
+         int samplerate = GetValuePow(ExpectedSize, 1); */
+
         int samplerate = _reader.SampleRate;
         int n = BerekenN(samplerate);
         Debug.WriteLine(n);
@@ -244,23 +267,28 @@ public class AudioController : IAudioController
          * Bepaling van de f-band die 50 Hz omvat: de f-resolutie na FFT is 44100/16384 = 2,69Hz. De eerste
          * waarde slaat dus op de f-band tussen 0 en 2,69 Hz. de tweede op de band van 2,69 tot 5,38Hz
          */
-        double opsplitsenOrigineel = (double)samplerate / n;
-        
+        double FrequencyResolutie = (double)samplerate / _complexArrayLeft.Length;
+
+
         /*
          * f-band tussen 0 en 2,69 Hz ronden we op naar boven met Math.ceiling dus 3Hz per blok
          */
-        int bloksize = (int)Math.Ceiling(opsplitsenOrigineel);
+        int bloksize = (int)Math.Ceiling(FrequencyResolutie);
 
-        
-        
+        //_sampleblokleft = 
+
+
+        Debug.WriteLine(_bindHigh);
+
         FFTransform(_complexArrayLeft);
         FFTransform(_complexArrayRight);
 
-        int filterHz = 50;
-        int x = Searchindex(filterHz, opsplitsenOrigineel);
+        
+        int Highindex = Searchindex(filterHz, FrequencyResolutie);
+        int LowIndex =GetLowIndex(FrequencyResolutie, filterHzLow);
 
-        FDomeinFliter(_complexArrayLeft, x);
-        FDomeinFliter(_complexArrayRight, x);
+        BandStop(_complexArrayLeft, Highindex, LowIndex);// 4945 - 4565
+        BandStop(_complexArrayRight, Highindex, LowIndex);
 
         IFFTransform(_complexArrayLeft);
         IFFTransform(_complexArrayRight);
@@ -309,6 +337,7 @@ public class AudioController : IAudioController
     {
         int index = 0;
         index = (int)Math.Floor(filterHz / opgeslist);
+        
         return index;
     }
 
@@ -316,12 +345,35 @@ public class AudioController : IAudioController
      * De index de de waarde omwat van de f band op 0 zetten
      * ok de gespiegelde waarde op 0 zetten
      */
-    public void FDomeinFliter(Complex[] complex, int index)
+    public void BandStop(Complex[] complex, int indexHigh, int indexLow)
     {
-        int inverseIndex = complex.Length - index;
-        complex[index] = new Complex(0, 0);
-        complex[inverseIndex] = new Complex(0, 0);             
-                 
+
+
+        for (int i = indexLow ; i < indexHigh + 1; i++)
+        {
+                complex[i] = new Complex(0, 0);
+        }
+
+        int indexHighInverse = complex.Length - indexHigh;
+        int indexLowInverse = complex.Length - indexLow;
+        for (int i = indexHighInverse; i < indexLowInverse; i++)
+        {
+            complex[i] = new Complex(0, 0);
+        }
+    }
+
+    public int GetLowIndex(double waarde, int low)
+    {
+        double value = waarde;
+        int indexLow = 0;
+        while (waarde < low) 
+        {
+            indexLow++;
+            waarde += value;
+        }
+
+        return indexLow;
+
     }
 
     /*

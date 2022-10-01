@@ -5,13 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PresentationLayer"
         xmlns:viewmodels="clr-namespace:PresentationLayer.ViewModels"
+        xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
         d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"        
         
         mc:Ignorable="d"
         Title="{Binding Title}" d:Title ="Designtime Title"
         Height="535" Width="817">
-    <Grid Margin="10,10,10,278" >
+    <Grid Margin="0,0,0,4" HorizontalAlignment="Center" Width="797" >
         <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
@@ -79,21 +82,31 @@
           Minimum="0" Maximum="100"  Value="{Binding Volume}"    
           TickPlacement="BottomRight" TickFrequency="5"   AutoToolTipPlacement="TopLeft"
          />
-        <Grid Grid.Row="3" Grid.ColumnSpan="5" Margin="26,73,19,-252" RenderTransformOrigin="0.5,0.5">
-            <Grid.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-0.061"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Grid.RenderTransform>
-            <WpfPlot HorizontalAlignment="Left" Margin="37,30,0,0" VerticalAlignment="Top" x:Name="graphsource" Height="195" Width="715"  />
-        </Grid>
+
+
+        <Label Grid.Row="4" Content="FrequencyHigh:" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="-2,0,0,0"/>
+        <Slider
+          Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center" Margin="0,0,10,0"
+          Minimum="0" Maximum="500"  Value="{Binding BandHigh}"    
+          TickPlacement="BottomRight" TickFrequency="10" SmallChange="5" LargeChange="100"  AutoToolTipPlacement="TopLeft" Height="34"
+         />
+
+
+        <Label Grid.Row="5" Content="FrequencyLow:" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="-2,0,0,0"/>
+        <Slider
+          Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center" Margin="0,0,10,0"
+          Minimum="0" Maximum="500"  Value="{Binding BandLow}"    
+          TickPlacement="BottomRight" TickFrequency="10" SmallChange="5" LargeChange="100"  AutoToolTipPlacement="TopLeft" Height="34"
+         />
+        <ComboBox Grid.Column="4" HorizontalAlignment="Left" Margin="10,43,0,0" Grid.Row="4" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBox_SelectionChanged" Height="33"/>
+        <Label Content="Label"/>
+        <Label Grid.Column="4" Content="Filter" HorizontalAlignment="Center" Margin="0,8,0,0" Grid.Row="4" VerticalAlignment="Top" Width="110"/>
 
 
 
     </Grid>
+
+
 
 
 

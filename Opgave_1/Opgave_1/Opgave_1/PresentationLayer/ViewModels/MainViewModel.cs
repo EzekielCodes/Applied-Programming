@@ -45,6 +45,16 @@ public class MainViewModel : ObservableObject, IDisposable
             if (_controller != null) _controller.Volume = value;
         }
     }
+
+    public int BindHigh
+    {
+        get => _controller.BindHigh;
+        set
+        {
+            if (_controller != null) _controller.BindHigh = value;
+        }
+    }
+
     public string RecordButtonCaption => _controller!.IsRecording ? "Stop Recording" : "Start Recording";
 
     public double MaxDelayMilliseconds => _controller.MaxEchoDelay.TotalMilliseconds;
@@ -62,6 +72,7 @@ public class MainViewModel : ObservableObject, IDisposable
 
     public MainViewModel(IAudioController? controller)
     {
+
         _controller = controller;
         OpenFileCommand = new RelayCommand(OpenFile);
         PlayCommand = new RelayCommand(PlaySource, () => _sourceSelected && !_playing);
@@ -87,6 +98,7 @@ public class MainViewModel : ObservableObject, IDisposable
                 AudioFilePath = System.IO.Path.GetFileName(path);
                 OnPropertyChanged(nameof(AudioFilePath));
                 OnPropertyChanged(nameof(AudioLength));
+                
                 PlaySource();
             }
         }
@@ -120,6 +132,7 @@ public class MainViewModel : ObservableObject, IDisposable
 
     private async void PlaySource()
     {
+       
         _controller?.Start();
         _playing = true;
         UpdateUiCommandsState();
