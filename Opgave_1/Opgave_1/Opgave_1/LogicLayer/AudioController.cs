@@ -38,15 +38,12 @@ public class AudioController : IAudioController
     public bool IsRecording { get; private set; } = false;
     private TimeSpan _delay = TimeSpan.FromMilliseconds(0);
     private float _volume = 50f;
-    private int _bindLow = 30;
-    private int _bindHigh = 50;
+    private int _minFreq;
+    private int _maxFreq;
     private bool _disposedValue;
     private Complex[] _complexArrayLeft;
     private Complex[] _complexArrayRight;
     private int _range = 0;
-    private readonly int _filterHzLow = 48;
-
-    private readonly int _filterHz = 52;
     public List<string> Devices => (new List<string> { "Default" }).Concat(AudioSystem.OutputDeviceCapabilities.Select(c => c.ProductName)).ToList();
 
     public TimeSpan AudioLength => _reader?.TimeLength ?? new TimeSpan();
@@ -63,15 +60,15 @@ public class AudioController : IAudioController
         }
     }
 
-    public int BindLow 
+    public int minFrequency 
     { 
-        get => _bindLow;
-        set => _bindLow = value;
+        get => _minFreq;
+        set => _minFreq = value;
     }
-    public int BindHigh
+    public int maxFrequency
     {
-        get => _bindHigh;
-        set => _bindHigh = value;
+        get => _maxFreq;
+        set => _maxFreq = value;
     }
 
     public  TimeSpan MaxEchoDelay => TimeSpan.FromSeconds(1);
@@ -264,14 +261,17 @@ public class AudioController : IAudioController
          * f-band tussen 0 en 2,69 Hz ronden we op naar boven met Math.ceiling dus 3Hz per blok
          */
         int bloksize = (int)Math.Ceiling(FrequencyResolutie);
-        Debug.WriteLine(_bindHigh);
+        Debug.WriteLine(_maxFreq);
+
+        Debug.WriteLine(_minFreq);
+
 
         FFTransform(_complexArrayLeft);
         FFTransform(_complexArrayRight);
 
         
-        int IndexHigh = Searchindex(_filterHz, FrequencyResolutie);
-        int indexLow = GetLowIndex(FrequencyResolutie, _filterHzLow);
+        int IndexHigh = Searchindex(_maxFreq, FrequencyResolutie);
+        int indexLow = GetLowIndex(FrequencyResolutie, _minFreq);
         BandPass(_complexArrayLeft, IndexHigh, indexLow);
         BandPass(_complexArrayRight, IndexHigh, indexLow);
         //BandStop(_complexArrayLeft, IndexHigh, indexLow);// 4945 - 4565

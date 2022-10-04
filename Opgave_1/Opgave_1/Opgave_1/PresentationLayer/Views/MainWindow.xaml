@@ -84,21 +84,25 @@
          />
 
 
-        <Label Grid.Row="4" Content="FrequencyHigh:" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="-2,0,0,0"/>
+        <Label Grid.Row="4" Content="Min-Frequency:" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="-2,0,0,0"/>
         <Slider
           Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center" Margin="0,0,10,0"
-          Minimum="0" Maximum="500"  Value="{Binding BandHigh}"    
+          Minimum="10" Maximum="100"  Value="{Binding MinFrequency}"    
           TickPlacement="BottomRight" TickFrequency="10" SmallChange="5" LargeChange="100"  AutoToolTipPlacement="TopLeft" Height="34"
          />
 
 
-        <Label Grid.Row="5" Content="FrequencyLow:" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="-2,0,0,0"/>
+        <Label Grid.Row="5" Content="Max-Frequency:" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="-2,0,0,0"/>
         <Slider
           Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center" Margin="0,0,10,0"
-          Minimum="0" Maximum="500"  Value="{Binding BandLow}"    
+          Minimum="10" Maximum="100"  Value="{Binding MaxFrequency}"    
           TickPlacement="BottomRight" TickFrequency="10" SmallChange="5" LargeChange="100"  AutoToolTipPlacement="TopLeft" Height="34"
          />
-        <ComboBox Grid.Column="4" HorizontalAlignment="Left" Margin="10,43,0,0" Grid.Row="4" VerticalAlignment="Top" Width="120" SelectionChanged="ComboBox_SelectionChanged" Height="33"/>
+        <ComboBox Grid.Column="4" HorizontalAlignment="Left" Margin="10,43,0,0" Grid.Row="4" VerticalAlignment="Top" Width="120" Height="33" SelectedItem="{Binding selectedFilter}">
+            <ComboBoxItem>No Filter</ComboBoxItem>
+            <ComboBoxItem>BandPass</ComboBoxItem>
+            <ComboBoxItem>BandStop</ComboBoxItem>
+        </ComboBox>
         <Label Content="Label"/>
         <Label Grid.Column="4" Content="Filter" HorizontalAlignment="Center" Margin="0,8,0,0" Grid.Row="4" VerticalAlignment="Top" Width="110"/>
 

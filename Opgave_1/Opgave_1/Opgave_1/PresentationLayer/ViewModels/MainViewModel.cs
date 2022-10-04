@@ -46,12 +46,20 @@ public class MainViewModel : ObservableObject, IDisposable
         }
     }
 
-    public int BindHigh
+    public int MinFrequency
     {
-        get => _controller.BindHigh;
+        get => _controller.minFrequency;
         set
         {
-            if (_controller != null) _controller.BindHigh = value;
+            if (_controller != null) _controller.minFrequency = value;
+        }
+    }
+    public int MaxFrequency
+    {
+        get => _controller.maxFrequency;
+        set
+        {
+            if (_controller != null) _controller.maxFrequency = value;
         }
     }
 
