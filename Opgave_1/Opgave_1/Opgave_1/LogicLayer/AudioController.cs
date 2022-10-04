@@ -40,7 +40,12 @@ public class AudioController : IAudioController
     private float _volume = 50f;
     private int _minFreq;
     private int _maxFreq;
+    private int _indexHigh;
+    private int _indexLow;
+
+    private int _selectedIndex;
     private bool _disposedValue;
+    private double _frequencyResolutie;
     private Complex[] _complexArrayLeft;
     private Complex[] _complexArrayRight;
     private int _range = 0;
@@ -60,15 +65,31 @@ public class AudioController : IAudioController
         }
     }
 
-    public int minFrequency 
+    public int MinFrequency 
     { 
         get => _minFreq;
-        set => _minFreq = value;
+        set
+        {
+            if(_maxFreq != value && value < _maxFreq)
+            {
+                _minFreq = value;
+            }
+        }
     }
-    public int maxFrequency
+    public int MaxFrequency
     {
         get => _maxFreq;
-        set => _maxFreq = value;
+        set
+        {
+            if (_minFreq != value && value > _minFreq)
+            {
+                _maxFreq = value;
+            }
+        }}
+    public int SelectedIndex
+    {
+        get => _selectedIndex;
+        set => _selectedIndex = value;
     }
 
     public  TimeSpan MaxEchoDelay => TimeSpan.FromSeconds(1);
@@ -252,34 +273,54 @@ public class AudioController : IAudioController
     //"Forward " fourier time => frequency
     public void Calculateblok()
     {
+
+        if (_selectedIndex == 0)
+        {
+            Debug.WriteLine("No Filter");
+        }
+        else if (_selectedIndex == 1)
+        {
+            Debug.WriteLine("BandPass");
+            CalculateFreqResolutie();
+            FFTransform(_complexArrayLeft);
+            FFTransform(_complexArrayRight);
+            _indexHigh = Searchindex(_maxFreq, _frequencyResolutie);
+            _indexLow = GetLowIndex(_frequencyResolutie, _minFreq);
+            BandPass(_complexArrayLeft, _indexHigh, _indexLow);
+            BandPass(_complexArrayRight, _indexHigh, _indexLow);
+            IFFTransform(_complexArrayLeft);
+            IFFTransform(_complexArrayRight);
+        }
+
+        else if(_selectedIndex == 2)
+        {
+            Debug.WriteLine("BandStop");
+            CalculateFreqResolutie();
+            FFTransform(_complexArrayLeft);
+            FFTransform(_complexArrayRight);
+            int IndexHigh = Searchindex(_maxFreq, _frequencyResolutie);
+            int indexLow = GetLowIndex(_frequencyResolutie, _minFreq);
+
+            BandStop(_complexArrayLeft, IndexHigh, indexLow);// 4945 - 4565
+            BandStop(_complexArrayRight, IndexHigh, indexLow);
+
+            IFFTransform(_complexArrayLeft);
+            IFFTransform(_complexArrayRight);
+        }    
+    }
+
+    public void CalculateFreqResolutie()
+    {
         int samplerate = _reader.SampleRate;
         int n = BerekenN(samplerate);
         Debug.WriteLine(n);
 
-        double FrequencyResolutie = (double)samplerate / _complexArrayLeft.Length;
+        _frequencyResolutie = (double)samplerate / _complexArrayLeft.Length;
         /*
          * f-band tussen 0 en 2,69 Hz ronden we op naar boven met Math.ceiling dus 3Hz per blok
          */
-        int bloksize = (int)Math.Ceiling(FrequencyResolutie);
-        Debug.WriteLine(_maxFreq);
-
-        Debug.WriteLine(_minFreq);
-
-
-        FFTransform(_complexArrayLeft);
-        FFTransform(_complexArrayRight);
-
-        
-        int IndexHigh = Searchindex(_maxFreq, FrequencyResolutie);
-        int indexLow = GetLowIndex(FrequencyResolutie, _minFreq);
-        BandPass(_complexArrayLeft, IndexHigh, indexLow);
-        BandPass(_complexArrayRight, IndexHigh, indexLow);
-        //BandStop(_complexArrayLeft, IndexHigh, indexLow);// 4945 - 4565
-        //BandStop(_complexArrayRight, IndexHigh, indexLow);
-
-        IFFTransform(_complexArrayLeft);
-        IFFTransform(_complexArrayRight);
-
+        int bloksize = (int)Math.Ceiling(_frequencyResolutie);
+        // Debug.WriteLine(_maxFreq);
     }
 
     /// <summary>
@@ -316,10 +357,7 @@ public class AudioController : IAudioController
     /// hier wordt FFT gedaan
     /// </summary>
     /// <param name="complexarray"></param>
-    public  void FFTransform(Complex[] complexarray)
-    {
-        Fourier.Forward(complexarray);
-    }
+    public static void FFTransform(Complex[] complexarray) => Fourier.Forward(complexarray);
 
     /// <summary>
     /// Hier wordt de index van het BindHigh berekent
@@ -327,7 +365,7 @@ public class AudioController : IAudioController
     /// <param name="filterHz"></param>
     /// <param name="opgeslist"></param>
     /// <returns></returns>
-    public  int Searchindex(int filterHz, double opgeslist)
+    public static int Searchindex(int filterHz, double opgeslist)
     {
         int index = 0;
         index = (int)Math.Floor(filterHz / opgeslist);
@@ -341,7 +379,7 @@ public class AudioController : IAudioController
     /// <param name="waarde"></param>
     /// <param name="low"></param>
     /// <returns></returns>
-    public  int GetLowIndex(double waarde, int low)
+    public static int GetLowIndex(double waarde, int low)
     {
         double value = waarde;
         int indexLow = 0;
@@ -360,7 +398,7 @@ public class AudioController : IAudioController
     /// <param name="complex"></param>
     /// <param name="indexHigh"></param>
     /// <param name="indexLow"></param>
-    public  void BandStop(Complex[] complex, int indexHigh, int indexLow)
+    public static void BandStop(Complex[] complex, int indexHigh, int indexLow)
     {
 
         for (int i = indexLow ; i < indexHigh + 1; i++)
@@ -382,7 +420,7 @@ public class AudioController : IAudioController
     /// <param name="complex"></param>
     /// <param name="indexHigh"></param>
     /// <param name="indexLow"></param>
-    public  void BandPass(Complex[] complex, int indexHigh, int indexLow)
+    public static void BandPass(Complex[] complex, int indexHigh, int indexLow)
     {
         Complex[] ComplexKopie = new Complex[complex.Length];
         for (int i = 0; i < complex.Length; i++)
@@ -410,7 +448,7 @@ public class AudioController : IAudioController
     /// Hier wordt een inverse FFT gedaan
     /// </summary>
     /// <param name="complex"></param>
-    public  void IFFTransform(Complex[] complex)
+    public static void IFFTransform(Complex[] complex)
     {
         Fourier.Inverse(complex);
     }}

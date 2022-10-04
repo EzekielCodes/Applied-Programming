@@ -11,9 +11,11 @@ public interface IAudioController
     bool IsRecording { get; }
     float Volume { get; set; }
 
-    int minFrequency { get; set; }
+    int MinFrequency { get; set; }
 
-    int maxFrequency { get; set; }
+    int MaxFrequency { get; set; }
+
+    int SelectedIndex { get; set; }
 
     void Dispose();
     void SetDevice(string device);
