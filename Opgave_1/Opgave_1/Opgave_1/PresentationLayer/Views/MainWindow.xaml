@@ -22,89 +22,82 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100"/>
-            <ColumnDefinition Width="100"/>
-            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="122"/>
+            <ColumnDefinition Width="13.143"/>
+            <ColumnDefinition Width="114.857"/>
             <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBlock 
-            Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4"
+        <TextBlock Grid.Column="0" Grid.ColumnSpan="5"
             Text="{Binding AudioFilePath}"
             d:Text="- select an audiofile - "
             VerticalAlignment="Center"
-            Margin="10,5"            
+            Margin="10,0,10,0" Height="16"            
         />
         <Button
-            Grid.Row="0" Grid.Column="4"
+            Grid.Row="0" Grid.Column="5"
             Content="Select"
-            Height="35"
-            Width="110"
-            Command="{Binding OpenFileCommand}"
+            Command="{Binding OpenFileCommand}" Margin="20,25,19,26"
          />
         <Button
-            Grid.Row="1" Grid.Column="4"
+            Grid.Row="1" Grid.Column="5"
             Content="Play"
-            Height="35"
-            Width="110"
-            Command="{Binding PlayCommand}"
+            Command="{Binding PlayCommand}" Margin="20,25,19,26"
          />
         <Button
-            Grid.Row="2" Grid.Column="4"
+            Grid.Row="2" Grid.Column="5"
             Content="Pause"
-            Height="35"
-            Width="110"
-            Command="{Binding PauseCommand}"
+            Command="{Binding PauseCommand}" Margin="20,25,19,26"
          />
         <Button
-            Grid.Row="3" Grid.Column="4"
+            Grid.Row="3" Grid.Column="5"
             Content="{Binding RecordButtonCaption}"
-            Height="35"
-            Width="110"
             FontSize="14"
-            Command="{Binding RecordCommand}"
+            Command="{Binding RecordCommand}" Margin="20,25,19,25"
          />
-        <Label Grid.Row="1" Grid.Column="0" Content="Output:" VerticalAlignment="Center"/>
-        <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" ItemsSource="{Binding Devices}" SelectedItem="{Binding SelectedDevice}" Height="30"/>
+        <Label Grid.Row="1" Grid.Column="0" Content="Output:" VerticalAlignment="Center" Height="26"/>
+        <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" ItemsSource="{Binding Devices}" SelectedItem="{Binding SelectedDevice}" Margin="0,28,0,28"/>
 
-        <Label Grid.Row="2" Grid.Column="0" Content="Total time:" VerticalAlignment="Center"/>
-        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding AudioLength}" d:Text="00:00:00" VerticalAlignment="Center"/>
-        <Label Grid.Row="3" Grid.Column="0" Content="Position:" VerticalAlignment="Center"/>
-        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding AudioPosition}" d:Text="00:00:00" VerticalAlignment="Center"/>
-        <Label Grid.Row="2" Grid.Column="2" Content="Echo delay (ms):" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+        <Label Grid.Row="2" Grid.Column="0" Content="Total time:" VerticalAlignment="Center" Height="26"/>
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding AudioLength}" d:Text="00:00:00" VerticalAlignment="Center" Height="16"/>
+        <Label Grid.Row="3" Grid.Column="0" Content="Position:" VerticalAlignment="Center" Height="26"/>
+        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding AudioPosition}" d:Text="00:00:00" VerticalAlignment="Center" Height="16"/>
+        <Label Grid.Row="2" Grid.Column="3" Content="Echo delay (ms):" VerticalAlignment="Top" HorizontalAlignment="Center" Height="26" Margin="0,33,0,0" Width="95"/>
         <Slider
-          Grid.Row="2" Grid.Column="3" VerticalAlignment="Center" Margin="5,5,0,0"
+          Grid.Row="2" Grid.Column="4" VerticalAlignment="Center" Margin="5,0,0,0"
           Minimum="0" Maximum="{Binding MaxDelayMilliseconds}"  Value="{Binding DelayMilliseconds}"    
-          TickPlacement="BottomRight" TickFrequency="10" SmallChange="5" LargeChange="100"  AutoToolTipPlacement="TopLeft"
+          TickPlacement="BottomRight" TickFrequency="10" SmallChange="5" LargeChange="100"  AutoToolTipPlacement="TopLeft" Height="24"
          />
-        <Label Grid.Row="3" Grid.Column="2" Content="Volume:" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+        <Label Grid.Row="3" Grid.Column="3" Content="Volume:" VerticalAlignment="Top" HorizontalAlignment="Center" Height="26" Margin="0,28,0,0" Width="53"/>
         <Slider
-          Grid.Row="3" Grid.Column="3" VerticalAlignment="Center" Margin="5,5,0,0"
+          Grid.Row="3" Grid.Column="4" VerticalAlignment="Center" Margin="5,0,0,0"
           Minimum="0" Maximum="100"  Value="{Binding Volume}"    
-          TickPlacement="BottomRight" TickFrequency="5"   AutoToolTipPlacement="TopLeft"
+          TickPlacement="BottomRight" TickFrequency="5"   AutoToolTipPlacement="TopLeft" Height="24"
          />
 
 
-        <Label Grid.Row="4" Content="Min-Frequency:" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="-2,0,0,0"/>
-        <Slider
-          Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center" Margin="0,0,10,0"
-          Minimum="0" Maximum="100"  Value="{Binding MinFrequency}"    
-          TickPlacement="BottomRight" TickFrequency="5" SmallChange="5" LargeChange="5"  AutoToolTipPlacement="TopLeft" Height="34" IsSnapToTickEnabled="True"
-         />
+        <Label Grid.Row="4" Content="Min-Frequency:" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,27,0,0" Height="26" Width="92"/>
 
 
-        <Label Grid.Row="5" Content="Max-Frequency:" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="-2,0,0,0"/>
-        <Slider
-          Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3" VerticalAlignment="Center" Margin="0,0,10,0"
-          Minimum="0" Maximum="100"  Value="{Binding MaxFrequency}"    
-          TickPlacement="BottomRight" TickFrequency="5" SmallChange="5" LargeChange="5"  AutoToolTipPlacement="TopLeft" Height="34" IsSnapToTickEnabled="True"
-         />
-        <ComboBox Grid.Column="4" HorizontalAlignment="Left" Margin="10,43,0,0" Grid.Row="4" VerticalAlignment="Top" Width="120" Height="33" SelectedIndex="{Binding SelectedIndex}">
+        <Label Grid.Row="5" Content="Max-Frequency:" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="-4,33,0,0" Height="26" Width="94"/>
+        <ComboBox Grid.Column="5" HorizontalAlignment="Left" Margin="10,43,0,0" Grid.Row="4" VerticalAlignment="Top" Width="120" Height="33" SelectedIndex="{Binding SelectedIndex}">
             <ComboBoxItem>No Filter</ComboBoxItem>
             <ComboBoxItem>BandPass</ComboBoxItem>
             <ComboBoxItem>BandStop</ComboBoxItem>
         </ComboBox>
-        <Label Content="Label"/>
-        <Label Grid.Column="4" Content="Filter" HorizontalAlignment="Center" Margin="0,8,0,0" Grid.Row="4" VerticalAlignment="Top" Width="110"/>
+        <Label Content="Label" Margin="0,0,0,86" Grid.RowSpan="2"/>
+        <Label Grid.Column="5" Content="Select Filter" HorizontalAlignment="Center" Margin="0,8,0,0" Grid.Row="4" VerticalAlignment="Top" Width="110" Height="26"/>
+        <TextBox HorizontalAlignment="Center" Grid.Row="4" Text="{Binding MinFrequency}" TextWrapping="Wrap" VerticalAlignment="Center" Width="102" Height="46" Grid.Column="1"/>
+        <TextBox Grid.Column="1" Grid.Row="5" TextWrapping="Wrap" Text="{Binding MaxFrequency}" VerticalAlignment="Center" Height="43" RenderTransformOrigin="0.5,0.5" Margin="9,0,10,0">
+            <TextBox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleY="-0.896"/>
+                    <RotateTransform Angle="0.358"/>
+                    <TranslateTransform Y="0.61"/>
+                </TransformGroup>
+            </TextBox.RenderTransform>
+        </TextBox>
 
 
 

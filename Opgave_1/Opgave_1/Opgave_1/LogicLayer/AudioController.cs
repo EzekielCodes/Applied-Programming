@@ -1,25 +1,9 @@
-﻿using AudioTools.Factories;
-using AudioTools.Implementation;
+﻿using AudioTools.Implementation;
 using AudioTools.Interfaces;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Globals.Interfaces;
-using System.Diagnostics;
-using System.Windows.Controls;
-//for complex numbers
 using System.Numerics;
-
-//
 using MathNet.Numerics.IntegralTransforms;
-using System.Windows.Markup;
-using ScottPlot;
-using System.Windows.Documents;
-using ScottPlot.Palettes;
+
 
 namespace LogicLayer;
 public class AudioController : IAudioController
@@ -127,7 +111,7 @@ public class AudioController : IAudioController
         _reader = _audioFileReaderFactory.Create(path);
         CalculateSampleRate();
         ReadSamples();
-        Fillcomplex();
+        Calculateblok();
         CreatePlayer();
     }
 
@@ -169,7 +153,6 @@ public class AudioController : IAudioController
             _player?.WriteSampleFrame(sampleFrame);
 
         }
-       // 
     }
 
     /// <summary>
@@ -265,22 +248,15 @@ public class AudioController : IAudioController
         _complexArrayLeft = new Complex[ExpectedSize];
         _complexArrayRight = new Complex[ExpectedSize];
     }
-    public void Fillcomplex()
-    {
-        Calculateblok();
-    }
 
-    //"Forward " fourier time => frequency
+    /// <summary>
+    /// Hier wordt gechekt welke Filter gekozen is en eventueel de filter
+    /// funtie uitvoeren
+    /// </summary>
     public void Calculateblok()
     {
-
-        if (_selectedIndex == 0)
+        if (_selectedIndex == 1)
         {
-            Debug.WriteLine("No Filter");
-        }
-        else if (_selectedIndex == 1)
-        {
-            Debug.WriteLine("BandPass");
             CalculateFreqResolutie();
             FFTransform(_complexArrayLeft);
             FFTransform(_complexArrayRight);
@@ -291,36 +267,29 @@ public class AudioController : IAudioController
             IFFTransform(_complexArrayLeft);
             IFFTransform(_complexArrayRight);
         }
-
         else if(_selectedIndex == 2)
         {
-            Debug.WriteLine("BandStop");
             CalculateFreqResolutie();
             FFTransform(_complexArrayLeft);
             FFTransform(_complexArrayRight);
             int IndexHigh = Searchindex(_maxFreq, _frequencyResolutie);
             int indexLow = GetLowIndex(_frequencyResolutie, _minFreq);
-
-            BandStop(_complexArrayLeft, IndexHigh, indexLow);// 4945 - 4565
+            BandStop(_complexArrayLeft, IndexHigh, indexLow);
             BandStop(_complexArrayRight, IndexHigh, indexLow);
-
             IFFTransform(_complexArrayLeft);
             IFFTransform(_complexArrayRight);
-        }    
-    }
+        }}
 
+    /// <summary>
+    /// Hier wordt de FrequencyResolutie berekent
+    /// </summary>
     public void CalculateFreqResolutie()
     {
         int samplerate = _reader.SampleRate;
         int n = BerekenN(samplerate);
-        Debug.WriteLine(n);
 
         _frequencyResolutie = (double)samplerate / _complexArrayLeft.Length;
-        /*
-         * f-band tussen 0 en 2,69 Hz ronden we op naar boven met Math.ceiling dus 3Hz per blok
-         */
         int bloksize = (int)Math.Ceiling(_frequencyResolutie);
-        // Debug.WriteLine(_maxFreq);
     }
 
     /// <summary>

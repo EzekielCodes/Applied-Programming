@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>LogicLayer</id>
+    <version>1.0.0</version>
+    <authors>LogicLayer</authors>
+    <description>Package Description</description>
+    <dependencies>
+      <group targetFramework="net6.0-windows7.0">
+        <dependency id="Globals" version="1.0.0" exclude="Build,Analyzers" />
+        <dependency id="AudioTools" version="0.3.3" exclude="Build,Analyzers" />
+        <dependency id="FftSharp" version="1.1.6" exclude="Build,Analyzers" />
+        <dependency id="MathNet.Numerics" version="5.0.0" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.DependencyInjection" version="6.0.0" exclude="Build,Analyzers" />
+        <dependency id="ScottPlot" version="4.1.58" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+    <frameworkReferences>
+      <group targetFramework="net6.0-windows7.0">
+        <frameworkReference name="Microsoft.WindowsDesktop.App.WPF" />
+      </group>
+    </frameworkReferences>
+  </metadata>
+  <files>
+    <file src="C:\Users\Guest\git_repos\Applied_programming\2223-ap-ezekiel.akindele\Opgave_1\Opgave_1\Opgave_1\LogicLayer\bin\Release\net6.0-windows\LogicLayer.dll" target="lib\net6.0-windows7.0\LogicLayer.dll" />
+  </files>
+</package>
