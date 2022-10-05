@@ -48,7 +48,7 @@ public class MainViewModel : ObservableObject, IDisposable
 
     public int MinFrequency
     {
-        get => _controller.MinFrequency;
+        get => _controller?.MinFrequency ?? 0;
         set
         {
             if (_controller != null) _controller.MinFrequency = value;
@@ -56,7 +56,7 @@ public class MainViewModel : ObservableObject, IDisposable
     }
     public int MaxFrequency
     {
-        get => _controller.MaxFrequency;
+        get => _controller?.MaxFrequency ?? 0;
         set
         {
             if (_controller != null) _controller.MaxFrequency = value;
@@ -65,7 +65,7 @@ public class MainViewModel : ObservableObject, IDisposable
 
     public int SelectedIndex
     {
-        get => _controller.SelectedIndex;
+        get => _controller?.SelectedIndex ?? 0;
         set
         {
             if (_controller != null) _controller.SelectedIndex = value;

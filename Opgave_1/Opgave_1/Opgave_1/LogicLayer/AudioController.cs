@@ -3,8 +3,6 @@ using AudioTools.Interfaces;
 using Globals.Interfaces;
 using System.Numerics;
 using MathNet.Numerics.IntegralTransforms;
-
-
 namespace LogicLayer;
 public class AudioController : IAudioController
 {
@@ -54,7 +52,7 @@ public class AudioController : IAudioController
         get => _minFreq;
         set
         {
-            if(_maxFreq != value && value < _maxFreq)
+            if(_maxFreq != value && value < _maxFreq && value % 5 == 0)
             {
                 _minFreq = value;
             }
@@ -65,7 +63,7 @@ public class AudioController : IAudioController
         get => _maxFreq;
         set
         {
-            if (_minFreq != value && value > _minFreq)
+            if (_minFreq != value && value > _minFreq && value % 5 ==0)
             {
                 _maxFreq = value;
             }
@@ -87,8 +85,7 @@ public class AudioController : IAudioController
             _delayLine.Delay = TimeSpanToFrames(_delay);
         }
     }
-
-    
+   
 
     public AudioController(IAudioFileReaderFactory audioFileReaderFactory, IAudioPlayerFactory audioPlayerFactory, IMp3FileWriterFactory mdlFileWriterFactory, IDelaylineFactory delayLineFactory)
     {
@@ -111,7 +108,8 @@ public class AudioController : IAudioController
         _reader = _audioFileReaderFactory.Create(path);
         CalculateSampleRate();
         ReadSamples();
-        Calculateblok();
+        if (_selectedIndex == 1 || _selectedIndex == 2)
+            ConvertandFilter();
         CreatePlayer();
     }
 
@@ -164,9 +162,9 @@ public class AudioController : IAudioController
         for (int i = 0; i < _complexArrayLeft.Length; i++)
         {
 
-            var x = _reader.ReadSampleFrame();
-            _complexArrayLeft[i] = x.Left;
-            _complexArrayRight[i] = x.Right;
+            var SampleFrame = _reader!.ReadSampleFrame();
+            _complexArrayLeft[i] = SampleFrame.Left;
+            _complexArrayRight[i] = SampleFrame.Right;
         }
     }
 
@@ -241,7 +239,7 @@ public class AudioController : IAudioController
     /// </summary>
     public void CalculateSampleRate()
     {
-        double TotalsampleRate = _reader.TimeLength.TotalSeconds * _reader.SampleRate;
+        double TotalsampleRate = _reader!.TimeLength.TotalSeconds * _reader.SampleRate;
         int sampleRate = (int)TotalsampleRate;
         int ExpectedSize = GetValuePow(sampleRate, 1);
 
@@ -253,55 +251,34 @@ public class AudioController : IAudioController
     /// Hier wordt gechekt welke Filter gekozen is en eventueel de filter
     /// funtie uitvoeren
     /// </summary>
-    public void Calculateblok()
-    {
-        if (_selectedIndex == 1)
-        {
-            CalculateFreqResolutie();
-            FFTransform(_complexArrayLeft);
-            FFTransform(_complexArrayRight);
-            _indexHigh = Searchindex(_maxFreq, _frequencyResolutie);
-            _indexLow = GetLowIndex(_frequencyResolutie, _minFreq);
+    public void ConvertandFilter()
+    {      
+       CalculateFreqResolutie();
+       FFTransform(_complexArrayLeft);
+       FFTransform(_complexArrayRight);
+       _indexHigh = Searchindex(_maxFreq, _frequencyResolutie);
+       _indexLow = GetLowIndex(_frequencyResolutie, _minFreq);
+       if (_selectedIndex == 1)
+       {
             BandPass(_complexArrayLeft, _indexHigh, _indexLow);
-            BandPass(_complexArrayRight, _indexHigh, _indexLow);
-            IFFTransform(_complexArrayLeft);
-            IFFTransform(_complexArrayRight);
-        }
-        else if(_selectedIndex == 2)
-        {
-            CalculateFreqResolutie();
-            FFTransform(_complexArrayLeft);
-            FFTransform(_complexArrayRight);
-            int IndexHigh = Searchindex(_maxFreq, _frequencyResolutie);
-            int indexLow = GetLowIndex(_frequencyResolutie, _minFreq);
-            BandStop(_complexArrayLeft, IndexHigh, indexLow);
-            BandStop(_complexArrayRight, IndexHigh, indexLow);
-            IFFTransform(_complexArrayLeft);
-            IFFTransform(_complexArrayRight);
-        }}
+            BandPass(_complexArrayRight, _indexHigh, _indexLow);          
+       }     
+       else if(_selectedIndex == 2)
+       {  
+            BandStop(_complexArrayLeft, _indexHigh, _indexLow);
+            BandStop(_complexArrayRight, _indexHigh, _indexLow);
+       }
+        IFFTransform(_complexArrayLeft);
+        IFFTransform(_complexArrayRight);
+    }
 
     /// <summary>
     /// Hier wordt de FrequencyResolutie berekent
     /// </summary>
     public void CalculateFreqResolutie()
     {
-        int samplerate = _reader.SampleRate;
-        int n = BerekenN(samplerate);
-
-        _frequencyResolutie = (double)samplerate / _complexArrayLeft.Length;
-        int bloksize = (int)Math.Ceiling(_frequencyResolutie);
-    }
-
-    /// <summary>
-    /// 5 = 5hz veresite nauwkeurigheid
-    /// </summary>
-    /// <param name="samplerate"></param>
-    /// <returns></returns>
-    public int BerekenN(int samplerate)
-    {
-        int mod = samplerate / 5;
-        int n = GetValuePow(mod, 1);
-        return n;
+        int Samplerate = _reader!.SampleRate;
+        _frequencyResolutie = (double)Samplerate / _complexArrayLeft.Length;
     }
 
     /// <summary>
@@ -312,11 +289,11 @@ public class AudioController : IAudioController
     /// <returns></returns>
     public int GetValuePow(int sampleRate, int x)
     {  
-        int pow = (int)Math.Pow(2, x);
+        int Pow = (int)Math.Pow(2, x);
 
-        if (pow > sampleRate)
+        if (Pow > sampleRate)
         {
-            return pow;
+            return Pow;
         }
         x++;
         return GetValuePow(sampleRate, x);
@@ -329,7 +306,7 @@ public class AudioController : IAudioController
     public static void FFTransform(Complex[] complexarray) => Fourier.Forward(complexarray);
 
     /// <summary>
-    /// Hier wordt de index van het BindHigh berekent
+    /// Hier wordt de index van hoogste index berekent
     /// </summary>
     /// <param name="filterHz"></param>
     /// <param name="opgeslist"></param>
@@ -343,7 +320,7 @@ public class AudioController : IAudioController
     }
 
     /// <summary>
-    /// Hier wordt de index van het bindLow berekent
+    /// Hier wordt de index van het laagste index berekent
     /// </summary>
     /// <param name="waarde"></param>
     /// <param name="low"></param>
