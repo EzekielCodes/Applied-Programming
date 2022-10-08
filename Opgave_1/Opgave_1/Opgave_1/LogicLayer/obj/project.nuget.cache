@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "wYGBkrI3p1onvkws6Ln67+EU0v0qhBW3G8HH5yryEjqO/25lVUhOh9MVZ8ExsqotGVIQPsi3fQtGE3qRLB/LrQ==",
+  "dgSpecHash": "pwNEndd0PA4ZUKD8PJfJhmSc3krgHHxg5wcD1aFCeyJb+U4Pe68Ep7LvkNuN60UTwZ9UC+6OFwf2B2YO/+1cvg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Guest\\git_repos\\Applied_programming\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\LogicLayer\\LogicLayer.csproj",
   "expectedPackageFiles": [
@@ -24,7 +24,10 @@
     "C:\\Users\\Guest\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512",
     "C:\\Users\\Guest\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
     "C:\\Users\\Guest\\.nuget\\packages\\system.security.accesscontrol\\4.7.0\\system.security.accesscontrol.4.7.0.nupkg.sha512",
-    "C:\\Users\\Guest\\.nuget\\packages\\system.security.principal.windows\\4.7.0\\system.security.principal.windows.4.7.0.nupkg.sha512"
+    "C:\\Users\\Guest\\.nuget\\packages\\system.security.principal.windows\\4.7.0\\system.security.principal.windows.4.7.0.nupkg.sha512",
+    "C:\\Users\\Guest\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x86\\6.0.9\\microsoft.netcore.app.runtime.win-x86.6.0.9.nupkg.sha512",
+    "C:\\Users\\Guest\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x86\\6.0.9\\microsoft.windowsdesktop.app.runtime.win-x86.6.0.9.nupkg.sha512",
+    "C:\\Users\\Guest\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x86\\6.0.9\\microsoft.aspnetcore.app.runtime.win-x86.6.0.9.nupkg.sha512"
   ],
   "logs": []
 }

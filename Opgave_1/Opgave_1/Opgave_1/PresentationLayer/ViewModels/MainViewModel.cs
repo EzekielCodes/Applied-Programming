@@ -85,7 +85,7 @@ public class MainViewModel : ObservableObject, IDisposable
     public IRelayCommand OpenFileCommand { get; }
     public IRelayCommand PlayCommand { get; }
     public IRelayCommand PauseCommand { get; }
-    public IRelayCommand RecordCommand { get; }
+   
 
     public MainViewModel(IAudioController? controller)
     {
@@ -94,7 +94,7 @@ public class MainViewModel : ObservableObject, IDisposable
         OpenFileCommand = new RelayCommand(OpenFile);
         PlayCommand = new RelayCommand(PlaySource, () => _sourceSelected && !_playing);
         PauseCommand = new RelayCommand(StopSource, () => _playing);
-        RecordCommand = new RelayCommand(ToggleRecording, () => _playing);
+       
         SelectedDevice = Devices[0];
 
     }
@@ -143,7 +143,7 @@ public class MainViewModel : ObservableObject, IDisposable
     {
         PlayCommand.NotifyCanExecuteChanged();
         PauseCommand.NotifyCanExecuteChanged();
-        RecordCommand.NotifyCanExecuteChanged();
+       
         OnPropertyChanged(nameof(RecordButtonCaption));
     }
 
@@ -158,7 +158,7 @@ public class MainViewModel : ObservableObject, IDisposable
         {
             OnPropertyChanged(nameof(AudioPosition));
           
-           // if ((_controller != null) && (_controller.AudioPosition >= _controller.AudioLength)) StopSource();
+            if ((_controller != null) && (_controller.AudioPosition >= _controller.AudioLength)) StopSource();
         } }
 
     private void StopSource()
@@ -169,18 +169,7 @@ public class MainViewModel : ObservableObject, IDisposable
         UpdateUiCommandsState();
     }
 
-    private void ToggleRecording()
-    {
-        if (_controller!.IsRecording)
-        {
-            _controller.StopRecording();
-        }
-        else
-        {
-            _controller.StartRecording();
-        }
-        OnPropertyChanged(nameof(RecordButtonCaption));
-    }
+   
 
     protected virtual void Dispose(bool disposing)
     {

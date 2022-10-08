@@ -9,10 +9,10 @@
   <Identity
     Name="41d1de47-4585-4846-92ed-53e6da9c78fa"
     Publisher="CN=Guest"
-    Version="1.0.0.0" />
+    Version="2.0.1.0" />
 
   <Properties>
-    <DisplayName>Presentation.Packaging</DisplayName>
+    <DisplayName>BatchVerwerking</DisplayName>
     <PublisherDisplayName>Akindele Ezekiel</PublisherDisplayName>
     <Logo>Images\StoreLogo.png</Logo>
   </Properties>

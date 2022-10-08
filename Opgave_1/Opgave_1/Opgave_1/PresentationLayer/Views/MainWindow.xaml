@@ -49,12 +49,7 @@
             Content="Pause"
             Command="{Binding PauseCommand}" Margin="20,25,19,26"
          />
-        <Button
-            Grid.Row="3" Grid.Column="5"
-            Content="{Binding RecordButtonCaption}"
-            FontSize="14"
-            Command="{Binding RecordCommand}" Margin="20,25,19,25"
-         />
+        
         <Label Grid.Row="1" Grid.Column="0" Content="Output:" VerticalAlignment="Center" Height="26"/>
         <ComboBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" ItemsSource="{Binding Devices}" SelectedItem="{Binding SelectedDevice}" Margin="0,28,0,28"/>
 
@@ -87,13 +82,13 @@
         </ComboBox>
         <Label Content="Label" Margin="0,0,0,86" Grid.RowSpan="2"/>
         <Label Grid.Column="5" Content="Select Filter" HorizontalAlignment="Center" Margin="0,8,0,0" Grid.Row="4" VerticalAlignment="Top" Width="110" Height="26"/>
-        <TextBox HorizontalAlignment="Center" Grid.Row="4" Text="{Binding MinFrequency}" TextWrapping="Wrap" VerticalAlignment="Center" Width="102" Height="46" Grid.Column="1"/>
-        <TextBox Grid.Column="1" Grid.Row="5" TextWrapping="Wrap" Text="{Binding MaxFrequency}" VerticalAlignment="Center" Height="43" RenderTransformOrigin="0.5,0.5" Margin="9,0,10,0">
+        <TextBox HorizontalAlignment="Center" Grid.Row="4" Text="{Binding MinFrequency}" TextWrapping="Wrap" VerticalAlignment="Center" Width="102" Height="33" Grid.Column="1"/>
+        <TextBox Grid.Column="1" Grid.Row="5" TextWrapping="Wrap" Text="{Binding MaxFrequency}" VerticalAlignment="Center" Height="29" RenderTransformOrigin="0.5,0.5" Margin="15,0,14,0">
             <TextBox.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
                     <SkewTransform AngleY="-0.896"/>
-                    <RotateTransform Angle="0.358"/>
+                    <RotateTransform Angle="-0.041"/>
                     <TranslateTransform Y="0.61"/>
                 </TransformGroup>
             </TextBox.RenderTransform>

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "BDhH7C2/38m2oJkEeBaWSyXXpo9HGTCIGDmfn9qbrKprAWaOEykFQUt7Aj0tcxXeY590HLSj7b5SCK4u98XXmg==",
+  "dgSpecHash": "YOGxm8k1s6Z+Mi0KCtk0pstlIfPMpi8iCsmd9ukhe8Xokry56OBjdWLD7xCJM6AUDtdGQHj1ZNeGx1t3fJEJMw==",
   "success": true,
   "projectFilePath": "C:\\Users\\Guest\\git_repos\\Applied_programming\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\PresentationLayer\\PresentationLayer.csproj",
   "expectedPackageFiles": [
@@ -13,7 +13,10 @@
     "C:\\Users\\Guest\\.nuget\\packages\\scottplot.wpf\\4.1.58\\scottplot.wpf.4.1.58.nupkg.sha512",
     "C:\\Users\\Guest\\.nuget\\packages\\system.drawing.common\\4.6.1\\system.drawing.common.4.6.1.nupkg.sha512",
     "C:\\Users\\Guest\\.nuget\\packages\\system.numerics.vectors\\4.5.0\\system.numerics.vectors.4.5.0.nupkg.sha512",
-    "C:\\Users\\Guest\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512"
+    "C:\\Users\\Guest\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
+    "C:\\Users\\Guest\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x86\\6.0.9\\microsoft.netcore.app.runtime.win-x86.6.0.9.nupkg.sha512",
+    "C:\\Users\\Guest\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x86\\6.0.9\\microsoft.windowsdesktop.app.runtime.win-x86.6.0.9.nupkg.sha512",
+    "C:\\Users\\Guest\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x86\\6.0.9\\microsoft.aspnetcore.app.runtime.win-x86.6.0.9.nupkg.sha512"
   ],
   "logs": []
 }

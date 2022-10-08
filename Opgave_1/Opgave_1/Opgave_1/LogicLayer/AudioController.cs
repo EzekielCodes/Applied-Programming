@@ -20,21 +20,28 @@ public class AudioController : IAudioController
     public bool IsRecording { get; private set; } = false;
     private TimeSpan _delay = TimeSpan.FromMilliseconds(0);
     private float _volume = 50f;
+
+   
+    //filter frequencies
     private int _minFreq;
     private int _maxFreq;
+
+    //index variablen
     private int _indexHigh;
     private int _indexLow;
 
     private int _selectedIndex;
     private bool _disposedValue;
     private double _frequencyResolutie;
+
+    //complex arrays
     private Complex[] _complexArrayLeft;
     private Complex[] _complexArrayRight;
-    private int _range = 0;
+    private int _range;
     public List<string> Devices => (new List<string> { "Default" }).Concat(AudioSystem.OutputDeviceCapabilities.Select(c => c.ProductName)).ToList();
 
     public TimeSpan AudioLength => _reader?.TimeLength ?? new TimeSpan();
-    public TimeSpan AudioPosition => _reader?.TimePosition ?? new TimeSpan();
+    public TimeSpan AudioPosition => TimeSpan.FromSeconds(_range/44100);
 
     public float Volume
     {
@@ -103,7 +110,6 @@ public class AudioController : IAudioController
 
     public void SetSource(string path)
     {
-        StopRecording();
         _playing = false;
         _reader = _audioFileReaderFactory.Create(path);
         CalculateSampleRate();
@@ -188,26 +194,11 @@ public class AudioController : IAudioController
         _playing = true;
     }
 
-    public void StartRecording()
-    {
-        const string filePath = "fragment.mp3";
-        if (!_playing) return;
-        _recorder = _mp3FileWriterFactory.Create(filePath, _reader!.SampleRate);
-        IsRecording = true;
-    }
-
-    public void StopRecording()
-    {
-        if (!IsRecording) return;
-        _recorder!.Close();
-        _recorder = null;
-        IsRecording = false;
-    }
+   
 
     public void Stop()
     {
         _player?.Stop();
-        StopRecording();
         _playing = false;
     }
 

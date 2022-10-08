@@ -21,7 +21,7 @@ public interface IAudioController
     void SetDevice(string device);
     void SetSource(string path);
     void Start();
-    void StartRecording();
+    
     void Stop();
-    void StopRecording();
+    
 }
