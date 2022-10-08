@@ -8,8 +8,8 @@
 
   <Identity
     Name="41d1de47-4585-4846-92ed-53e6da9c78fa"
-    Publisher="CN=Guest"
-    Version="2.0.1.0" />
+    Publisher="CN=Ezekiel"
+    Version="4.0.3.0" />
 
   <Properties>
     <DisplayName>BatchVerwerking</DisplayName>
