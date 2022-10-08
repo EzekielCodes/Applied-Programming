@@ -52,7 +52,7 @@ public class AudioController : IAudioController
         get => _minFreq;
         set
         {
-            if(_maxFreq != value && value < _maxFreq && value % 5 == 0)
+            if(_maxFreq != value && value < _maxFreq)
             {
                 _minFreq = value;
             }
@@ -63,7 +63,7 @@ public class AudioController : IAudioController
         get => _maxFreq;
         set
         {
-            if (_minFreq != value && value > _minFreq && value % 5 ==0)
+            if (_minFreq != value && value > _minFreq)
             {
                 _maxFreq = value;
             }
@@ -248,7 +248,7 @@ public class AudioController : IAudioController
     }
 
     /// <summary>
-    /// Hier wordt gechekt welke Filter gekozen is en eventueel de filter
+    /// Hier wordt gechekt welke Filter gekozen(door selectedindex) is en eventueel de filter
     /// funtie uitvoeren
     /// </summary>
     public void ConvertandFilter()
@@ -290,7 +290,6 @@ public class AudioController : IAudioController
     public int GetValuePow(int sampleRate, int x)
     {  
         int Pow = (int)Math.Pow(2, x);
-
         if (Pow > sampleRate)
         {
             return Pow;
@@ -339,14 +338,13 @@ public class AudioController : IAudioController
     }
 
     /// <summary>
-    /// BandStop frequency binnen een bepaalde range wegfilteren
+    /// BandStop: frequency binnen een bepaalde range wegfilteren
     /// </summary>
     /// <param name="complex"></param>
     /// <param name="indexHigh"></param>
     /// <param name="indexLow"></param>
     public static void BandStop(Complex[] complex, int indexHigh, int indexLow)
     {
-
         for (int i = indexLow ; i < indexHigh + 1; i++)
         {
                 complex[i] = new Complex(0, 0);
@@ -361,14 +359,14 @@ public class AudioController : IAudioController
     }
 
     /// <summary>
-    /// BandPass frequency binnen een bepaalde range laten
+    /// BandPass: frequency binnen een bepaalde range laten
     /// </summary>
     /// <param name="complex"></param>
     /// <param name="indexHigh"></param>
     /// <param name="indexLow"></param>
     public static void BandPass(Complex[] complex, int indexHigh, int indexLow)
     {
-        Complex[] ComplexKopie = new Complex[complex.Length];
+        var ComplexKopie = new Complex[complex.Length];
         for (int i = 0; i < complex.Length; i++)
             ComplexKopie[i] = complex[i];
 
@@ -376,25 +374,17 @@ public class AudioController : IAudioController
             complex[i] = new Complex(0, 0);
 
         for (int i = indexLow; i < indexHigh + 1; i++)
-        {
-            if (ComplexKopie[i].Real > 0)
-                complex[i] = ComplexKopie[i];
-        }
+           complex[i] = ComplexKopie[i];
 
         int indexHighInverse = complex.Length - indexHigh;
         int indexLowInverse = complex.Length - indexLow;
         for (int i = indexHighInverse; i < indexLowInverse; i++)
-        {
-            if (ComplexKopie[i].Real > 0)
-                complex[i] = ComplexKopie[i]; 
-        }}
+           complex[i] = ComplexKopie[i];
+    }
 
-    
     /// <summary>
     /// Hier wordt een inverse FFT gedaan
     /// </summary>
     /// <param name="complex"></param>
-    public static void IFFTransform(Complex[] complex)
-    {
-        Fourier.Inverse(complex);
-    }}
+    public static void IFFTransform(Complex[] complex) => Fourier.Inverse(complex);
+}

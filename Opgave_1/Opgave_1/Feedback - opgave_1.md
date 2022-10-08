@@ -10,10 +10,10 @@
 --> Nog niet beoordeeld
 
 ***Modulair, meerlagenmodel***
-
-- [ ] *Meerlagenmodel via mappen of klassebibliotheken*
+[ ] *Meerlagenmodel via mappen of klassebibliotheken*
 - [ ] *Dependency injection*
-- [ ] *Gebruik  MVVM Design pattern*
+- [ ] 
+- *Gebruik  MVVM Design pattern*
 
 ***'Separation of concern'***
 
@@ -39,7 +39,7 @@
 
 - [ ] *Layout code*
 - [ ] *Correct gebruik commentaar*
-- [ ] *Algemene programmeerstijl*
+- [ ] * programmeeAlgemenerstijl*
 
 #### User interface, functionaliteit, UX (15%) 
 

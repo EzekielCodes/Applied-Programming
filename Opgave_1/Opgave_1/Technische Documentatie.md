@@ -4,22 +4,41 @@
 
 ##### AudioController.cs / ```CalculateSampleRate()```
 
-- Deze functie  berkent de lengte van de complexe array door de TotalSeconds * samplerate
+- Deze functie berekent de lengte van de complexe array door de TotalSeconds * samplerate
   De waarde de we hieruit krijgen doen we eerst tot de macht van 2 want FFT werkt met waarde van de macht van 2.
+  De ```GetValuePow ``` functie zorgt ervoor dat de arrayLength macht van 2 is.
 
 
 ##### AudioController.cs / ```BandStop(Complex[] complex, int indexHigh, int indexLow)```
 
-- Deze funtie berekent de BandStop door alle index tussen de indexLow en indexHigh op 0 te zetten
-  De inverse index zetten we ook op 0 
+- Deze functie berekent de BandStop door alle indexen tussen de indexLow en indexHigh op 0 te zetten
+  De inverse van deze indexen worden ook op 0 gezet. 
 
 
 ##### AudioController.cs / ```BandPass(Complex[] complex, int indexHigh, int indexLow)```
 
-- Deze functie berekent de BandPass door alle index tussen de indexLow en indexHigh die laager zijn dan 0 op die op 0 te zetten.
-  we doen het zelfde voor het inverse indexen
+- Deze functie berekent de BandPass door alle indexen op 0 te zetten behalve die in de index range
+  We doen hetzelfde voor het inverse indexen.
 
 
 ##### AudioController.cs / ``` ConvertandFilter() ```
-- in deze functie gebeurt roepen we onze bandpass en bandstop maar eerst wordt er gechecked welke toepassing onze gebruiker
-  nodig heeft en hiermee kunnen we een no filter , bandstop of bandpass toepassing gebruiken.
+- 
+  De ``` CalculateFreqResolutie() ``` functie berekent de frequentie resolutie door de sampleRate te delen door de lengte van de array.
+- In deze functie gebeurt roepen we onze bandpass en bandstop maar eerst wordt er gecheckt welke toepassing onze gebruiker (via GUI)
+  nodig heeft en hiermee kunnen we een no filter, bandstop of bandpass toepassing gebruiken.
+
+  **De mogelijke filters zijn:**
+    1. No filter
+    2. Bandpass
+    3. Bandstop
+
+  + Bij no filter wordt geen berekening gedaan op de complex arrays, de oorspronkelijke waarden worden gewoon afgespeeld.
+  + Bij BandPass wordt eerst een FFT transform gedaan, daarna woorden de arrays gefilterd door alle indexen op 0 te zetten behalve die in de index range.
+  + Bij BandStop wordt eerst een FFT transform gedaan, daarna woorden de arrays gefilterd door de waarden van de index range op 0 te zetten.
+
+
+##### AudioController.cs / ``` FFTransform() ```
+- Deze functie doet de FFT Transform, Hiervoor gebruiken we de MathNet.Numerics.IntegralTransforms package.
+
+##### AudioController.cs / ``` IFFTransform() ```
+- Deze functie doet de IFFT Transform, Hiervoor gebruiken we de MathNet.Numerics.IntegralTransforms package.
