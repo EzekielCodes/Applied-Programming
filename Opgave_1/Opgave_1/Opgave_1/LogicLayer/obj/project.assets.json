@@ -356,322 +356,6 @@
           "bin/placeholder/Globals.dll": {}
         }
       }
-    },
-    "net6.0-windows7.0/win-x86": {
-      "AudioTools/0.3.3": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Extensions.DependencyInjection": "6.0.0",
-          "NAudio": "2.1.0"
-        },
-        "compile": {
-          "lib/net6.0-windows7.0/AudioTools.dll": {}
-        },
-        "runtime": {
-          "lib/net6.0-windows7.0/AudioTools.dll": {}
-        }
-      },
-      "FftSharp/1.1.6": {
-        "type": "package",
-        "compile": {
-          "lib/net5.0/FftSharp.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net5.0/FftSharp.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "MathNet.Numerics/5.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/net6.0/MathNet.Numerics.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0/MathNet.Numerics.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Microsoft.Extensions.DependencyInjection/6.0.0": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
-          "System.Runtime.CompilerServices.Unsafe": "6.0.0"
-        },
-        "compile": {
-          "lib/net6.0/Microsoft.Extensions.DependencyInjection.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0/Microsoft.Extensions.DependencyInjection.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "buildTransitive/netcoreapp3.1/_._": {}
-        }
-      },
-      "Microsoft.Extensions.DependencyInjection.Abstractions/6.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/net6.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "buildTransitive/netcoreapp3.1/_._": {}
-        }
-      },
-      "Microsoft.NETCore.Platforms/3.1.0": {
-        "type": "package",
-        "compile": {
-          "lib/netstandard1.0/_._": {}
-        },
-        "runtime": {
-          "lib/netstandard1.0/_._": {}
-        }
-      },
-      "Microsoft.Win32.Registry/4.7.0": {
-        "type": "package",
-        "dependencies": {
-          "System.Security.AccessControl": "4.7.0",
-          "System.Security.Principal.Windows": "4.7.0"
-        },
-        "compile": {
-          "ref/netstandard2.0/Microsoft.Win32.Registry.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "runtimes/win/lib/netstandard2.0/Microsoft.Win32.Registry.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Microsoft.Win32.SystemEvents/4.6.0": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.NETCore.Platforms": "3.0.0"
-        },
-        "compile": {
-          "ref/netstandard2.0/_._": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "runtimes/win/lib/netcoreapp3.0/Microsoft.Win32.SystemEvents.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "NAudio/2.1.0": {
-        "type": "package",
-        "dependencies": {
-          "NAudio.Asio": "2.1.0",
-          "NAudio.Core": "2.1.0",
-          "NAudio.Midi": "2.1.0",
-          "NAudio.Wasapi": "2.1.0",
-          "NAudio.WinForms": "2.1.0",
-          "NAudio.WinMM": "2.1.0"
-        },
-        "compile": {
-          "lib/net6.0-windows7.0/NAudio.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0-windows7.0/NAudio.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "NAudio.Asio/2.1.0": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Win32.Registry": "4.7.0",
-          "NAudio.Core": "2.1.0"
-        },
-        "compile": {
-          "lib/netstandard2.0/NAudio.Asio.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/NAudio.Asio.dll": {}
-        }
-      },
-      "NAudio.Core/2.1.0": {
-        "type": "package",
-        "compile": {
-          "lib/netstandard2.0/NAudio.Core.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/NAudio.Core.dll": {}
-        }
-      },
-      "NAudio.Midi/2.1.0": {
-        "type": "package",
-        "dependencies": {
-          "NAudio.Core": "2.1.0"
-        },
-        "compile": {
-          "lib/netstandard2.0/NAudio.Midi.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/NAudio.Midi.dll": {}
-        }
-      },
-      "NAudio.Wasapi/2.1.0": {
-        "type": "package",
-        "dependencies": {
-          "NAudio.Core": "2.1.0"
-        },
-        "compile": {
-          "lib/netstandard2.0/NAudio.Wasapi.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/NAudio.Wasapi.dll": {}
-        }
-      },
-      "NAudio.WinForms/2.1.0": {
-        "type": "package",
-        "dependencies": {
-          "NAudio.WinMM": "2.1.0"
-        },
-        "compile": {
-          "lib/netcoreapp3.1/NAudio.WinForms.dll": {}
-        },
-        "runtime": {
-          "lib/netcoreapp3.1/NAudio.WinForms.dll": {}
-        },
-        "frameworkReferences": [
-          "Microsoft.WindowsDesktop.App.WindowsForms"
-        ]
-      },
-      "NAudio.WinMM/2.1.0": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.Win32.Registry": "4.7.0",
-          "NAudio.Core": "2.1.0"
-        },
-        "compile": {
-          "lib/netstandard2.0/NAudio.WinMM.dll": {}
-        },
-        "runtime": {
-          "lib/netstandard2.0/NAudio.WinMM.dll": {}
-        }
-      },
-      "ScottPlot/4.1.58": {
-        "type": "package",
-        "dependencies": {
-          "System.Drawing.Common": "4.6.1",
-          "System.Numerics.Vectors": "4.5.0"
-        },
-        "compile": {
-          "lib/net6.0/ScottPlot.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0/ScottPlot.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "System.Drawing.Common/4.6.1": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.NETCore.Platforms": "3.0.0",
-          "Microsoft.Win32.SystemEvents": "4.6.0"
-        },
-        "compile": {
-          "ref/netcoreapp3.0/System.Drawing.Common.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "runtimes/win/lib/netcoreapp3.0/System.Drawing.Common.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "System.Numerics.Vectors/4.5.0": {
-        "type": "package",
-        "compile": {
-          "ref/netcoreapp2.0/_._": {}
-        },
-        "runtime": {
-          "lib/netcoreapp2.0/_._": {}
-        }
-      },
-      "System.Runtime.CompilerServices.Unsafe/6.0.0": {
-        "type": "package",
-        "compile": {
-          "lib/net6.0/System.Runtime.CompilerServices.Unsafe.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0/System.Runtime.CompilerServices.Unsafe.dll": {
-            "related": ".xml"
-          }
-        },
-        "build": {
-          "buildTransitive/netcoreapp3.1/_._": {}
-        }
-      },
-      "System.Security.AccessControl/4.7.0": {
-        "type": "package",
-        "dependencies": {
-          "Microsoft.NETCore.Platforms": "3.1.0",
-          "System.Security.Principal.Windows": "4.7.0"
-        },
-        "compile": {
-          "ref/netstandard2.0/System.Security.AccessControl.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "runtimes/win/lib/netcoreapp2.0/System.Security.AccessControl.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "System.Security.Principal.Windows/4.7.0": {
-        "type": "package",
-        "compile": {
-          "ref/netcoreapp3.0/System.Security.Principal.Windows.dll": {
-            "related": ".xml"
-          }
-        },
-        "runtime": {
-          "runtimes/win/lib/netcoreapp2.1/System.Security.Principal.Windows.dll": {
-            "related": ".xml"
-          }
-        }
-      },
-      "Globals/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v6.0",
-        "dependencies": {
-          "Microsoft.Extensions.DependencyInjection": "6.0.0"
-        },
-        "compile": {
-          "bin/placeholder/Globals.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Globals.dll": {}
-        }
-      }
     }
   },
   "libraries": {
@@ -1220,23 +904,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Guest\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\Johan\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Guest\\git_repos\\Applied_programming\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\LogicLayer\\LogicLayer.csproj",
+      "projectUniqueName": "D:\\Git\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\LogicLayer\\LogicLayer.csproj",
       "projectName": "LogicLayer",
-      "projectPath": "C:\\Users\\Guest\\git_repos\\Applied_programming\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\LogicLayer\\LogicLayer.csproj",
-      "packagesPath": "C:\\Users\\Guest\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Guest\\git_repos\\Applied_programming\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\LogicLayer\\obj\\",
+      "projectPath": "D:\\Git\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\LogicLayer\\LogicLayer.csproj",
+      "packagesPath": "C:\\Users\\Johan\\.nuget\\packages\\",
+      "outputPath": "D:\\Git\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\LogicLayer\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\Guest\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Johan\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -1245,14 +931,16 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "C:\\Program Files\\dotnet\\library-packs": {},
+        "https://api.nuget.org/v3/index.json": {},
+        "https://nuget.ikdoeict.be/nuget": {}
       },
       "frameworks": {
         "net6.0-windows7.0": {
           "targetAlias": "net6.0-windows",
           "projectReferences": {
-            "C:\\Users\\Guest\\git_repos\\Applied_programming\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\Globals\\Globals.csproj": {
-              "projectPath": "C:\\Users\\Guest\\git_repos\\Applied_programming\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\Globals\\Globals.csproj"
+            "D:\\Git\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\Globals\\Globals.csproj": {
+              "projectPath": "D:\\Git\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\Globals\\Globals.csproj"
             }
           }
         }
@@ -1299,20 +987,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Runtime.win-x86",
-            "version": "[6.0.9, 6.0.9]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Runtime.win-x86",
-            "version": "[6.0.9, 6.0.9]"
-          },
-          {
-            "name": "Microsoft.WindowsDesktop.App.Runtime.win-x86",
-            "version": "[6.0.9, 6.0.9]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
@@ -1322,11 +996,6 @@
           }
         },
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
-      }
-    },
-    "runtimes": {
-      "win-x86": {
-        "#import": []
       }
     }
   }

@@ -17301,12 +17301,11 @@
       ]
     },
     "System.Diagnostics.Contracts/4.3.0": {
-      "sha512": "eelRRbnm+OloiQvp9CXS0ixjNQldjjkHO4iIkR5XH2VIP8sUB/SIpa1TdUW6/+HDcQ+MlhP3pNa1u5SbzYuWGA==",
+      "sha512": "zUC10i1Cqkw32Owje5Dl2Kk3kUb/20XmKkijdwcftRKxlWA5+KMsCgP2nsdTDWHYLWALccTgoY8qAAkVbpW1bA==",
       "type": "package",
       "path": "system.diagnostics.contracts/4.3.0",
       "files": [
         ".nupkg.metadata",
-        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -18271,12 +18270,11 @@
       ]
     },
     "System.Net.NameResolution/4.3.0": {
-      "sha512": "AFYl08R7MrsrEjqpQWTZWBadqXyTzNDaWpMqyxhb0d6sGhV6xMDKueuBXlLL30gz+DIRY6MpdgnHWlCh5wmq9w==",
+      "sha512": "XGpcw3rfNswFHKmq/2yi4jioAFdcgxyKXfiE4phDmrBtanweveETjohhnrMEW0Zt7FEKlQb94wAGVQp/ugeHdw==",
       "type": "package",
       "path": "system.net.nameresolution/4.3.0",
       "files": [
         ".nupkg.metadata",
-        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -18642,12 +18640,11 @@
       ]
     },
     "System.Reflection.Emit.ILGeneration/4.3.0": {
-      "sha512": "59tBslAk9733NXLrUJrwNZEzbMAcu8k344OYo+wfSVygcgZ9lgBdGIzH/nrg3LYhXceynyvTc8t5/GD4Ri0/ng==",
+      "sha512": "FgXXPkUbRTRL2FbHKqB/1fTuWHkrqJIKBJGInfuBu2wcXedhjo8vUpviM6xuSZLVSxC/E7aN8BDwL280qXcUFg==",
       "type": "package",
       "path": "system.reflection.emit.ilgeneration/4.3.0",
       "files": [
         ".nupkg.metadata",
-        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -18687,12 +18684,11 @@
       ]
     },
     "System.Reflection.Emit.Lightweight/4.3.0": {
-      "sha512": "oadVHGSMsTmZsAF864QYN1t1QzZjIcuKU3l2S9cZOwDdDueNTrqq1yRj7koFfIGEnKpt6NjpL3rOzRhs4ryOgA==",
+      "sha512": "v8t19kFm8TfTNEnXhB1je3F3zGIaEo2VYg8S+hMxZ6a33a9heapDiOU9v5FjmOdqtbIa6O0lSgtIJyTItSxctg==",
       "type": "package",
       "path": "system.reflection.emit.lightweight/4.3.0",
       "files": [
         ".nupkg.metadata",
-        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -18846,12 +18842,11 @@
       ]
     },
     "System.Reflection.TypeExtensions/4.3.0": {
-      "sha512": "7u6ulLcZbyxB5Gq0nMkQttcdBTx57ibzw+4IOXEfR+sXYQoHvjW5LTLyNr8O22UIMrqYbchJQJnos4eooYzYJA==",
+      "sha512": "FaneiTANFBkEdWM1jRDY2Z6NVshdOApAFx2FYuGvcfCQT0wPrKY/F6EARPVPxi9tejO0wREb6sOB1BbznpKRbA==",
       "type": "package",
       "path": "system.reflection.typeextensions/4.3.0",
       "files": [
         ".nupkg.metadata",
-        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -19475,12 +19470,11 @@
       ]
     },
     "System.Security.Cryptography.Cng/4.3.0": {
-      "sha512": "03idZOqFlsKRL4W+LuCpJ6dBYDUWReug6lZjBa3uJWnk5sPCUXckocevTaUA8iT/MFSrY/2HXkOt753xQ/cf8g==",
+      "sha512": "H/hd0oKGhnKgm1aJhWiBqbH1Tl/kxL5dBfJofO8Ip41Mxp649uF8KOv95EYNhpw28TGtVVHxhWaYErilBC5Fng==",
       "type": "package",
       "path": "system.security.cryptography.cng/4.3.0",
       "files": [
         ".nupkg.metadata",
-        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/net46/System.Security.Cryptography.Cng.dll",
@@ -19920,12 +19914,11 @@
       ]
     },
     "System.Threading.Overlapped/4.3.0": {
-      "sha512": "m3HQ2dPiX/DSTpf+yJt8B0c+SRvzfqAJKx+QDWi+VLhz8svLT23MVjEOHPF/KiSLeArKU/iHescrbLd3yVgyNg==",
+      "sha512": "xmtztZNYUSSyQs7PV4r2ZSkcHBjP1D78ZZ6lZQBpTBJxcGAZxMyRQt4VOgSjiLVHlObFti7zZn4T1dwSmjqy4A==",
       "type": "package",
       "path": "system.threading.overlapped/4.3.0",
       "files": [
         ".nupkg.metadata",
-        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/net46/System.Threading.Overlapped.dll",
@@ -20303,23 +20296,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Guest\\.nuget\\packages\\": {},
+    "C:\\Users\\Johan\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Guest\\git_repos\\Applied_programming\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Presentation.Packaging\\Presentation.Packaging.wapproj",
+      "projectUniqueName": "D:\\Git\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Presentation.Packaging\\Presentation.Packaging.wapproj",
       "projectName": "Presentation.Packaging",
-      "projectPath": "C:\\Users\\Guest\\git_repos\\Applied_programming\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Presentation.Packaging\\Presentation.Packaging.wapproj",
-      "packagesPath": "C:\\Users\\Guest\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Guest\\git_repos\\Applied_programming\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Presentation.Packaging\\obj\\",
+      "projectPath": "D:\\Git\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Presentation.Packaging\\Presentation.Packaging.wapproj",
+      "packagesPath": "C:\\Users\\Johan\\.nuget\\packages\\",
+      "outputPath": "D:\\Git\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Presentation.Packaging\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Guest\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Johan\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -20328,14 +20321,15 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {},
+        "https://nuget.ikdoeict.be/nuget": {}
       },
       "frameworks": {
         "uap10.0.14393": {
           "targetAlias": "net451",
           "projectReferences": {
-            "C:\\Users\\Guest\\git_repos\\Applied_programming\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\AppRoot\\AppRoot.csproj": {
-              "projectPath": "C:\\Users\\Guest\\git_repos\\Applied_programming\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\AppRoot\\AppRoot.csproj"
+            "D:\\Git\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\AppRoot\\AppRoot.csproj": {
+              "projectPath": "D:\\Git\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\AppRoot\\AppRoot.csproj"
             }
           }
         }

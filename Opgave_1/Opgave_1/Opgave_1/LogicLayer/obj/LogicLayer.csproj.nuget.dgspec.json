@@ -1,23 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Guest\\git_repos\\Applied_programming\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\LogicLayer\\LogicLayer.csproj": {}
+    "D:\\Git\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\LogicLayer\\LogicLayer.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Guest\\git_repos\\Applied_programming\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\Globals\\Globals.csproj": {
+    "D:\\Git\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\Globals\\Globals.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Guest\\git_repos\\Applied_programming\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\Globals\\Globals.csproj",
+        "projectUniqueName": "D:\\Git\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\Globals\\Globals.csproj",
         "projectName": "Globals",
-        "projectPath": "C:\\Users\\Guest\\git_repos\\Applied_programming\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\Globals\\Globals.csproj",
-        "packagesPath": "C:\\Users\\Guest\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Guest\\git_repos\\Applied_programming\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\Globals\\obj\\",
+        "projectPath": "D:\\Git\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\Globals\\Globals.csproj",
+        "packagesPath": "C:\\Users\\Johan\\.nuget\\packages\\",
+        "outputPath": "D:\\Git\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\Globals\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Guest\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Johan\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,7 +27,9 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.ikdoeict.be/nuget": {}
         },
         "frameworks": {
           "net6.0": {
@@ -60,20 +63,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Runtime.win-x86",
-              "version": "[6.0.9, 6.0.9]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Runtime.win-x86",
-              "version": "[6.0.9, 6.0.9]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Runtime.win-x86",
-              "version": "[6.0.9, 6.0.9]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
@@ -81,27 +70,23 @@
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
         }
-      },
-      "runtimes": {
-        "win-x86": {
-          "#import": []
-        }
       }
     },
-    "C:\\Users\\Guest\\git_repos\\Applied_programming\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\LogicLayer\\LogicLayer.csproj": {
+    "D:\\Git\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\LogicLayer\\LogicLayer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Guest\\git_repos\\Applied_programming\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\LogicLayer\\LogicLayer.csproj",
+        "projectUniqueName": "D:\\Git\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\LogicLayer\\LogicLayer.csproj",
         "projectName": "LogicLayer",
-        "projectPath": "C:\\Users\\Guest\\git_repos\\Applied_programming\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\LogicLayer\\LogicLayer.csproj",
-        "packagesPath": "C:\\Users\\Guest\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Guest\\git_repos\\Applied_programming\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\LogicLayer\\obj\\",
+        "projectPath": "D:\\Git\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\LogicLayer\\LogicLayer.csproj",
+        "packagesPath": "C:\\Users\\Johan\\.nuget\\packages\\",
+        "outputPath": "D:\\Git\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\LogicLayer\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Guest\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Johan\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -110,14 +95,16 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.ikdoeict.be/nuget": {}
         },
         "frameworks": {
           "net6.0-windows7.0": {
             "targetAlias": "net6.0-windows",
             "projectReferences": {
-              "C:\\Users\\Guest\\git_repos\\Applied_programming\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\Globals\\Globals.csproj": {
-                "projectPath": "C:\\Users\\Guest\\git_repos\\Applied_programming\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\Globals\\Globals.csproj"
+              "D:\\Git\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\Globals\\Globals.csproj": {
+                "projectPath": "D:\\Git\\2223-ap-ezekiel.akindele\\Opgave_1\\Opgave_1\\Opgave_1\\Globals\\Globals.csproj"
               }
             }
           }
@@ -164,20 +151,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Runtime.win-x86",
-              "version": "[6.0.9, 6.0.9]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Runtime.win-x86",
-              "version": "[6.0.9, 6.0.9]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Runtime.win-x86",
-              "version": "[6.0.9, 6.0.9]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
@@ -187,11 +160,6 @@
             }
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
-        }
-      },
-      "runtimes": {
-        "win-x86": {
-          "#import": []
         }
       }
     }
