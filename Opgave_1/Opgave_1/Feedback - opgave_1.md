@@ -55,6 +55,7 @@
 * De 'echo' slider is niet functioneel (en overbodig): verwijder die.
 * UI is eerder elementair.
 * 'Min' frequentie kan pas ingesteld worden als de bovenste al ingegeven is.
+* * De bediening van de filterparameters kan ook nog aangepast worden tijdens het afspelen (en dan heeft die geen effect meer bij batchverwerking).
 * Waarom gebruik je een `RenderTransform` voor de positionering van de 'Max Frequentie' textbox (samen met een `Margin`)? 
 * Na het selecteren van een bestand, geef je best een indicatie aan de gebruiker dat de verwerking bezig is.
 
