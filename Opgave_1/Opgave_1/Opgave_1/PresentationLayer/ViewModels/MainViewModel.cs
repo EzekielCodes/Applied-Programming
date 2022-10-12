@@ -63,12 +63,12 @@ public class MainViewModel : ObservableObject, IDisposable
         }
     }
 
-    public int SelectedIndex
+    public int SelectedFilter
     {
-        get => _controller?.SelectedIndex ?? 0;
+        get => _controller?.SelectedFilter ?? 0;
         set
         {
-            if (_controller != null) _controller.SelectedIndex = value;
+            if (_controller != null) _controller.SelectedFilter = value;
         }
     }
 

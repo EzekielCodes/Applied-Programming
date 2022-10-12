@@ -30,7 +30,7 @@ public class AudioController : IAudioController
     private int _indexHigh;
     private int _indexLow;
 
-    private int _selectedIndex;
+    private int _selectedFilter;
     private bool _disposedValue;
     private double _frequencyResolutie;
 
@@ -75,10 +75,10 @@ public class AudioController : IAudioController
                 _maxFreq = value;
             }
         }}
-    public int SelectedIndex
+    public int SelectedFilter
     {
-        get => _selectedIndex;
-        set => _selectedIndex = value;
+        get => _selectedFilter;
+        set => _selectedFilter = value;
     }
 
     public  TimeSpan MaxEchoDelay => TimeSpan.FromSeconds(1);
@@ -114,7 +114,7 @@ public class AudioController : IAudioController
         _reader = _audioFileReaderFactory.Create(path);
         CalculateSampleRate();
         ReadSamples();
-        if (_selectedIndex == 1 || _selectedIndex == 2)
+        if (_selectedFilter == 1 || _selectedFilter == 2)
             ConvertandFilter();
         CreatePlayer();
     }
@@ -249,12 +249,12 @@ public class AudioController : IAudioController
        FFTransform(_complexArrayRight);
        _indexHigh = Searchindex(_maxFreq, _frequencyResolutie);
        _indexLow = GetLowIndex(_frequencyResolutie, _minFreq);
-       if (_selectedIndex == 1)
+       if (_selectedFilter == 1)
        {
             BandPass(_complexArrayLeft, _indexHigh, _indexLow);
             BandPass(_complexArrayRight, _indexHigh, _indexLow);          
        }     
-       else if(_selectedIndex == 2)
+       else if(_selectedFilter == 2)
        {  
             BandStop(_complexArrayLeft, _indexHigh, _indexLow);
             BandStop(_complexArrayRight, _indexHigh, _indexLow);
