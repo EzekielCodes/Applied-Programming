@@ -7,7 +7,10 @@
 
 #### Architectuur (10%)
 
-
+** removed rendertransform
+** removed logic,data en idata classes
+** gitginore fixed for private key
+** changed variable selectedindex to selected filter
 ***Modulair, meerlagenmodel***
 - [x] *Meerlagenmodel via mappen of klassebibliotheken*
 - [x] *Dependency injection*

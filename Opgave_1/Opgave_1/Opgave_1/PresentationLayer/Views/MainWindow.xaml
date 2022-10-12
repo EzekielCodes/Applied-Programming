@@ -57,12 +57,7 @@
         <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding AudioLength}" d:Text="00:00:00" VerticalAlignment="Center" Height="16"/>
         <Label Grid.Row="3" Grid.Column="0" Content="Position:" VerticalAlignment="Center" Height="26"/>
         <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding AudioPosition}" d:Text="00:00:00" VerticalAlignment="Center" Height="16"/>
-        <Label Grid.Row="2" Grid.Column="3" Content="Echo delay (ms):" VerticalAlignment="Top" HorizontalAlignment="Center" Height="26" Margin="0,33,0,0" Width="95"/>
-        <Slider
-          Grid.Row="2" Grid.Column="4" VerticalAlignment="Center" Margin="5,0,0,0"
-          Minimum="0" Maximum="{Binding MaxDelayMilliseconds}"  Value="{Binding DelayMilliseconds}"    
-          TickPlacement="BottomRight" TickFrequency="10" SmallChange="5" LargeChange="100"  AutoToolTipPlacement="TopLeft" Height="24"
-         />
+
         <Label Grid.Row="3" Grid.Column="3" Content="Volume:" VerticalAlignment="Top" HorizontalAlignment="Center" Height="26" Margin="0,28,0,0" Width="53"/>
         <Slider
           Grid.Row="3" Grid.Column="4" VerticalAlignment="Center" Margin="5,0,0,0"
@@ -75,7 +70,7 @@
 
 
         <Label Grid.Row="5" Content="Min-Frequency:" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="-4,33,0,0" Height="26" Width="94"/>
-        <ComboBox Grid.Column="5" HorizontalAlignment="Left" Margin="10,43,0,0" Grid.Row="4" VerticalAlignment="Top" Width="120" Height="33" SelectedIndex="{Binding SelectedIndex}">
+        <ComboBox Grid.Column="5" HorizontalAlignment="Left" Margin="10,43,0,0" Grid.Row="4" VerticalAlignment="Top" Width="120" Height="33" SelectedIndex="{Binding SelectedFilter}">
             <ComboBoxItem>No Filter</ComboBoxItem>
             <ComboBoxItem>BandPass</ComboBoxItem>
             <ComboBoxItem>BandStop</ComboBoxItem>
