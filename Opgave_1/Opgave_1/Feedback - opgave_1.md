@@ -14,6 +14,7 @@
 ** echo slider removed
 ** Removed Getlowindex using only selectedindex Function
 ** Removed parts of code for wegschrijven in "audiocontroller"
+** Als je tijdens het afspelen van een audiofragment een nieuw bestand selecteert en afspeelt, start dat niet bij het begin...(fixed)
 
 
 ***Modulair, meerlagenmodel***

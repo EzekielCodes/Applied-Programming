@@ -114,6 +114,7 @@ public class AudioController : IAudioController
         ReadSamples();
         if (_selectedFilter == 1 || _selectedFilter == 2)
             ConvertandFilter();
+        _range = 0;
         CreatePlayer();
     }
 
@@ -122,6 +123,7 @@ public class AudioController : IAudioController
         _player = _audioPlayerFactory.Create(_currentDevice, _reader!.SampleRate);
         _player.Volume = _volume;
         _delayLine.Clear();
+        
         _player.SampleFramesNeeded += Player_OnSampleFramesNeeded;
 
     }
