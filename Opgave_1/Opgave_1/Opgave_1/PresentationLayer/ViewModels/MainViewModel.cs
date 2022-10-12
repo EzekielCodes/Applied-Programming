@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 //
 
@@ -92,7 +93,7 @@ public class MainViewModel : ObservableObject, IDisposable
 
     }
 
-    private void OpenFile()
+    private async void OpenFile()
     {
 
         _sourceSelected = false;
@@ -103,7 +104,7 @@ public class MainViewModel : ObservableObject, IDisposable
         {
             if (!string.IsNullOrEmpty(path))
             {
-                _controller?.SetSource(path);
+                await Task.Run(() => _controller?.SetSource(path)) ;
                 _sourceSelected = true;
                 AudioFilePath = System.IO.Path.GetFileName(path);
                 OnPropertyChanged(nameof(AudioFilePath));

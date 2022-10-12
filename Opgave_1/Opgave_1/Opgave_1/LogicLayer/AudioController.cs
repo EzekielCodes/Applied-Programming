@@ -32,6 +32,7 @@ public class AudioController : IAudioController
     private int _selectedFilter;
     private bool _disposedValue;
     private double _frequencyResolutie;
+    private readonly PeriodicTimer _timer = new(TimeSpan.FromMilliseconds(10));
 
     //complex arrays
     private Complex[] _complexArrayLeft;
@@ -94,7 +95,7 @@ public class AudioController : IAudioController
         return (int)interval.TotalMilliseconds * (_reader?.SampleRate ?? 0) / 1000;
     }
 
-    public void SetSource(string path)
+    public  void SetSource(string path)
     {
         _playing = false;
         _reader = _audioFileReaderFactory.Create(path);
@@ -104,6 +105,8 @@ public class AudioController : IAudioController
             ConvertandFilter();
         _range = 0;
         CreatePlayer();
+
+
     }
 
     private void CreatePlayer()
@@ -149,8 +152,9 @@ public class AudioController : IAudioController
     /// Hier wordt de 2 complexe array opgevuld met samples
     /// De methode ReadSampleFrame geeft een sampleframe terug
     /// </summary>
-    private  void ReadSamples()
+    private void ReadSamples()
     {
+        
         for (int i = 0; i < _complexArrayLeft.Length; i++)
         {
 
@@ -158,6 +162,8 @@ public class AudioController : IAudioController
             _complexArrayLeft[i] = SampleFrame.Left;
             _complexArrayRight[i] = SampleFrame.Right;
         }
+
+        
     }
 
     
@@ -216,12 +222,16 @@ public class AudioController : IAudioController
     /// </summary>
     public void CalculateSampleRate()
     {
+
         double TotalsampleRate = _reader!.TimeLength.TotalSeconds * _reader.SampleRate;
         int sampleRate = (int)TotalsampleRate;
         int ExpectedSize = GetValuePow(sampleRate, 1);
 
         _complexArrayLeft = new Complex[ExpectedSize];
         _complexArrayRight = new Complex[ExpectedSize];
+
+        
+
     }
 
     /// <summary>
