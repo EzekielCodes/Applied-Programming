@@ -248,7 +248,7 @@ public class AudioController : IAudioController
        FFTransform(_complexArrayLeft);
        FFTransform(_complexArrayRight);
        _indexHigh = Searchindex(_maxFreq, _frequencyResolutie);
-       _indexLow = GetLowIndex(_frequencyResolutie, _minFreq);
+       _indexLow = Searchindex(_minFreq, _frequencyResolutie);
        if (_selectedFilter == 1)
        {
             BandPass(_complexArrayLeft, _indexHigh, _indexLow);
@@ -307,25 +307,6 @@ public class AudioController : IAudioController
         index = (int)Math.Floor(filterHz / opgeslist);
         
         return index;
-    }
-
-    /// <summary>
-    /// Hier wordt de index van het laagste index berekent
-    /// </summary>
-    /// <param name="waarde"></param>
-    /// <param name="low"></param>
-    /// <returns></returns>
-    public static int GetLowIndex(double waarde, int low)
-    {
-        double value = waarde;
-        int indexLow = 0;
-        while (waarde < low)
-        {
-            indexLow++;
-            waarde += value;
-        }
-
-        return indexLow;
     }
 
     /// <summary>

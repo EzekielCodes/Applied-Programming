@@ -11,6 +11,9 @@
 ** removed logic,data en idata classes
 ** gitginore fixed for private key
 ** changed variable selectedindex to selected filter
+** echo slider removed
+
+
 ***Modulair, meerlagenmodel***
 - [x] *Meerlagenmodel via mappen of klassebibliotheken*
 - [x] *Dependency injection*
