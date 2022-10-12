@@ -1,2 +1,0 @@
-MainPackage=C:\Users\Guest\git_repos\Applied_programming\2223-ap-ezekiel.akindele\Opgave_1\Opgave_1\Presentation.Packaging\bin\x64\Release\Presentation.Packaging_4.0.3.0_x64.appx
-SymbolPackage=C:\Users\Guest\git_repos\Applied_programming\2223-ap-ezekiel.akindele\Opgave_1\Opgave_1\Presentation.Packaging\obj\x64\Release\Symbols\Presentation.Packaging_4.0.3.0_x64.appxsym
