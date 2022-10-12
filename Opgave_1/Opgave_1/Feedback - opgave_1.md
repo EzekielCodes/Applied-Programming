@@ -12,6 +12,8 @@
 ** gitginore fixed for private key
 ** changed variable selectedindex to selected filter
 ** echo slider removed
+** Removed Getlowindex using only selectedindex Function
+** Removed parts of code for wegschrijven in "audiocontroller"
 
 
 ***Modulair, meerlagenmodel***

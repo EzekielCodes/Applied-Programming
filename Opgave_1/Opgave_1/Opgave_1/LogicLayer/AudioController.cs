@@ -8,13 +8,12 @@ public class AudioController : IAudioController
 {
     private readonly IAudioFileReaderFactory _audioFileReaderFactory;
     private readonly IAudioPlayerFactory _audioPlayerFactory;
-    private readonly IMp3FileWriterFactory _mp3FileWriterFactory;
+
 
     // max delay is calculated based an a maximum samplerate of 48000Hz and the constant MaxEchoDelay property. 
     private readonly IDelayLine<AudioSampleFrame> _delayLine;
     private IAudioFileReader? _reader;
     private IAudioPlayer? _player;
-    private IMp3FileWriter? _recorder;
     private string _currentDevice;
     private bool _playing = false;
     public bool IsRecording { get; private set; } = false;
@@ -94,12 +93,11 @@ public class AudioController : IAudioController
     }
    
 
-    public AudioController(IAudioFileReaderFactory audioFileReaderFactory, IAudioPlayerFactory audioPlayerFactory, IMp3FileWriterFactory mdlFileWriterFactory, IDelaylineFactory delayLineFactory)
+    public AudioController(IAudioFileReaderFactory audioFileReaderFactory, IAudioPlayerFactory audioPlayerFactory, IDelaylineFactory delayLineFactory)
     {
         _currentDevice = Devices[0];
         _audioFileReaderFactory = audioFileReaderFactory;
         _audioPlayerFactory = audioPlayerFactory;
-        _mp3FileWriterFactory = mdlFileWriterFactory;
         _delayLine = delayLineFactory.Create<AudioSampleFrame>((int)(MaxEchoDelay.TotalSeconds * 48000));
     }
 
@@ -153,7 +151,6 @@ public class AudioController : IAudioController
         {
             var sampleFrame = CalculateNextFrame();
             _range++;
-            if (IsRecording) _recorder!.WriteSampleFrame(sampleFrame);
             _player?.WriteSampleFrame(sampleFrame);
 
         }
