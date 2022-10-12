@@ -71,10 +71,10 @@
          />
 
 
-        <Label Grid.Row="4" Content="Min-Frequency:" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,27,0,0" Height="26" Width="92"/>
+        <Label Grid.Row="4" Content="Max-Frequency:" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,27,0,0" Height="26" Width="92"/>
 
 
-        <Label Grid.Row="5" Content="Max-Frequency:" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="-4,33,0,0" Height="26" Width="94"/>
+        <Label Grid.Row="5" Content="Min-Frequency:" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="-4,33,0,0" Height="26" Width="94"/>
         <ComboBox Grid.Column="5" HorizontalAlignment="Left" Margin="10,43,0,0" Grid.Row="4" VerticalAlignment="Top" Width="120" Height="33" SelectedIndex="{Binding SelectedIndex}">
             <ComboBoxItem>No Filter</ComboBoxItem>
             <ComboBoxItem>BandPass</ComboBoxItem>
@@ -82,8 +82,8 @@
         </ComboBox>
         <Label Content="Label" Margin="0,0,0,86" Grid.RowSpan="2"/>
         <Label Grid.Column="5" Content="Select Filter" HorizontalAlignment="Center" Margin="0,8,0,0" Grid.Row="4" VerticalAlignment="Top" Width="110" Height="26"/>
-        <TextBox HorizontalAlignment="Center" Grid.Row="4" Text="{Binding MinFrequency}" TextWrapping="Wrap" VerticalAlignment="Center" Width="102" Height="33" Grid.Column="1"/>
-        <TextBox Grid.Column="1" Grid.Row="5" TextWrapping="Wrap" Text="{Binding MaxFrequency}" VerticalAlignment="Center" Height="29"/>
+        <TextBox HorizontalAlignment="Center" Grid.Row="4" Text="{Binding MaxFrequency}" TextWrapping="Wrap" VerticalAlignment="Center" Width="102" Height="33" Grid.Column="1"/>
+        <TextBox Grid.Column="1" Grid.Row="5" TextWrapping="Wrap" Text="{Binding MinFrequency}" VerticalAlignment="Center" Height="29"/>
 
     </Grid>
 
