@@ -80,17 +80,6 @@ public class AudioController : IAudioController
         set => _selectedFilter = value;
     }
 
-    public  TimeSpan MaxEchoDelay => TimeSpan.FromSeconds(1);
-
-    public TimeSpan EchoDelay
-    {
-        get => TimeSpan.FromMilliseconds(_delayLine.Delay * 1000 / (_reader?.SampleRate ?? 44100));
-        set
-        {
-            _delay = (value <= MaxEchoDelay) ? value : MaxEchoDelay;
-            _delayLine.Delay = TimeSpanToFrames(_delay);
-        }
-    }
    
 
     public AudioController(IAudioFileReaderFactory audioFileReaderFactory, IAudioPlayerFactory audioPlayerFactory, IDelaylineFactory delayLineFactory)
@@ -98,7 +87,6 @@ public class AudioController : IAudioController
         _currentDevice = Devices[0];
         _audioFileReaderFactory = audioFileReaderFactory;
         _audioPlayerFactory = audioPlayerFactory;
-        _delayLine = delayLineFactory.Create<AudioSampleFrame>((int)(MaxEchoDelay.TotalSeconds * 48000));
     }
 
     private int TimeSpanToFrames(TimeSpan interval)
@@ -122,7 +110,6 @@ public class AudioController : IAudioController
     {
         _player = _audioPlayerFactory.Create(_currentDevice, _reader!.SampleRate);
         _player.Volume = _volume;
-        _delayLine.Clear();
         
         _player.SampleFramesNeeded += Player_OnSampleFramesNeeded;
 

@@ -74,14 +74,7 @@ public class MainViewModel : ObservableObject, IDisposable
 
     public string RecordButtonCaption => _controller!.IsRecording ? "Stop Recording" : "Start Recording";
 
-    public double MaxDelayMilliseconds => _controller.MaxEchoDelay.TotalMilliseconds;
-
-    public double DelayMilliseconds
-    {
-        get => _controller!.EchoDelay.TotalMilliseconds;
-        set => _controller!.EchoDelay = TimeSpan.FromMilliseconds(value);
-    }
-
+    
     public IRelayCommand OpenFileCommand { get; }
     public IRelayCommand PlayCommand { get; }
     public IRelayCommand PauseCommand { get; }

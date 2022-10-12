@@ -5,9 +5,7 @@ public interface IAudioController
     
     TimeSpan AudioLength { get; }
     TimeSpan AudioPosition { get; }
-    TimeSpan MaxEchoDelay { get; }
     public List<string> Devices { get; }
-    TimeSpan EchoDelay { get; set; }
     bool IsRecording { get; }
     float Volume { get; set; }
 
