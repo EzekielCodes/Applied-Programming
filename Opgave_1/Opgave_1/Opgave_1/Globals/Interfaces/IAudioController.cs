@@ -15,6 +15,8 @@ public interface IAudioController
 
     int SelectedFilter { get; set; }
 
+    string MessageLabel { get;set; }
+
     void Dispose();
     void SetDevice(string device);
     void SetSource(string path);

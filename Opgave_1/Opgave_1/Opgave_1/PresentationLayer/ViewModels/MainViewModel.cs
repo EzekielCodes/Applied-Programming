@@ -3,11 +3,13 @@ using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Win32;
 using ScottPlot;
+using ScottPlot.Renderable;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 //
 
@@ -73,10 +75,19 @@ public class MainViewModel : ObservableObject, IDisposable
         }
     }
 
+    public string MessageLabel
+    {
+        get => _controller?.MessageLabel;
+        set
+        {
+            _controller.MessageLabel = value;
+        }
+    }
+
     public string RecordButtonCaption => _controller!.IsRecording ? "Stop Recording" : "Start Recording";
 
     
-    public IRelayCommand OpenFileCommand { get; }
+    public IAsyncRelayCommand OpenFileCommand { get; }
     public IRelayCommand PlayCommand { get; }
     public IRelayCommand PauseCommand { get; }
    
@@ -85,7 +96,7 @@ public class MainViewModel : ObservableObject, IDisposable
     {
 
         _controller = controller;
-        OpenFileCommand = new RelayCommand(OpenFile);
+        OpenFileCommand = new AsyncRelayCommand(OpenFile);
         PlayCommand = new RelayCommand(PlaySource, () => _sourceSelected && !_playing);
         PauseCommand = new RelayCommand(StopSource, () => _playing);
        
@@ -93,7 +104,7 @@ public class MainViewModel : ObservableObject, IDisposable
 
     }
 
-    private async void OpenFile()
+    private async Task OpenFile()
     {
 
         _sourceSelected = false;
@@ -105,6 +116,7 @@ public class MainViewModel : ObservableObject, IDisposable
             if (!string.IsNullOrEmpty(path))
             {
                 await Task.Run(() => _controller?.SetSource(path)) ;
+                Debug.WriteLine("heey");
                 _sourceSelected = true;
                 AudioFilePath = System.IO.Path.GetFileName(path);
                 OnPropertyChanged(nameof(AudioFilePath));

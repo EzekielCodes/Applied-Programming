@@ -30,6 +30,8 @@ public class AudioController : IAudioController
     private int _indexLow;
 
     private int _selectedFilter;
+
+    private string _messagelabel;
     private bool _disposedValue;
     private double _frequencyResolutie;
     private readonly PeriodicTimer _timer = new(TimeSpan.FromMilliseconds(10));
@@ -81,7 +83,13 @@ public class AudioController : IAudioController
         set => _selectedFilter = value;
     }
 
-   
+    public string MessageLabel
+    {
+        get => _messagelabel;
+        set => _messagelabel = value;
+    }
+
+
 
     public AudioController(IAudioFileReaderFactory audioFileReaderFactory, IAudioPlayerFactory audioPlayerFactory, IDelaylineFactory delayLineFactory)
     {
@@ -97,6 +105,7 @@ public class AudioController : IAudioController
 
     public  void SetSource(string path)
     {
+        _messagelabel = "Processing please wait";
         _playing = false;
         _reader = _audioFileReaderFactory.Create(path);
         CalculateSampleRate();
