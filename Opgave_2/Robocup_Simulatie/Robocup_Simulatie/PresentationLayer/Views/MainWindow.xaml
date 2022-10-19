@@ -12,7 +12,7 @@
 
     <DockPanel LastChildFill="false">
         <Border x:Name="viewPortControl" Margin="10" BorderThickness="1" BorderBrush="Black" Background="White"
-                    MouseDown="ViewPortMouseDown" >
+                    MouseDown="ViewPortMouseDown" Width="777" >
             <Viewport3D x:Name="mainViewPort" Camera="{Binding Camera}" >
                 <ModelVisual3D x:Name ="visual3D" Content="{Binding Visual3dContent}" />
             </Viewport3D>

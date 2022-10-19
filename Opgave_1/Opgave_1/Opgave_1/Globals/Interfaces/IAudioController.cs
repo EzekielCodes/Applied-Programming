@@ -13,10 +13,11 @@ public interface IAudioController
 
     int MaxFrequency { get; set; }
 
+    bool Minisenabled { get; set; }
+
+    bool Maxisenabled { get; set; }
+
     int SelectedFilter { get; set; }
-
-    string MessageLabel { get;set; }
-
     void Dispose();
     void SetDevice(string device);
     void SetSource(string path);

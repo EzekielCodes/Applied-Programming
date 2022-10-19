@@ -75,15 +75,23 @@ public class MainViewModel : ObservableObject, IDisposable
         }
     }
 
-    public string MessageLabel
+    public bool Minisenabled
     {
-        get => _controller?.MessageLabel;
+        get => _controller?.Minisenabled ?? false;
         set
         {
-            _controller.MessageLabel = value;
+            if (_controller != null) _controller.Minisenabled = value;
         }
     }
 
+    public bool Maxisenabled
+    {
+        get => _controller?.Maxisenabled ?? false;
+        set
+        {
+            if (_controller != null) _controller.Maxisenabled = value;
+        }
+    }
     public string RecordButtonCaption => _controller!.IsRecording ? "Stop Recording" : "Start Recording";
 
     
@@ -116,7 +124,6 @@ public class MainViewModel : ObservableObject, IDisposable
             if (!string.IsNullOrEmpty(path))
             {
                 await Task.Run(() => _controller?.SetSource(path)) ;
-                Debug.WriteLine("heey");
                 _sourceSelected = true;
                 AudioFilePath = System.IO.Path.GetFileName(path);
                 OnPropertyChanged(nameof(AudioFilePath));

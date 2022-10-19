@@ -9,15 +9,13 @@ public class AudioController : IAudioController
     private readonly IAudioFileReaderFactory _audioFileReaderFactory;
     private readonly IAudioPlayerFactory _audioPlayerFactory;
 
-
     // max delay is calculated based an a maximum samplerate of 48000Hz and the constant MaxEchoDelay property. 
-    private readonly IDelayLine<AudioSampleFrame> _delayLine;
+    
     private IAudioFileReader? _reader;
     private IAudioPlayer? _player;
     private string _currentDevice;
     private bool _playing = false;
     public bool IsRecording { get; private set; } = false;
-    private TimeSpan _delay = TimeSpan.FromMilliseconds(0);
     private float _volume = 50f;
 
    
@@ -28,13 +26,11 @@ public class AudioController : IAudioController
     //index variablen
     private int _indexHigh;
     private int _indexLow;
-
     private int _selectedFilter;
-
-    private string _messagelabel;
     private bool _disposedValue;
     private double _frequencyResolutie;
-    private readonly PeriodicTimer _timer = new(TimeSpan.FromMilliseconds(10));
+    private bool _minisenabled = true;
+    private bool _maxisenabled = true;
 
     //complex arrays
     private Complex[] _complexArrayLeft;
@@ -83,39 +79,36 @@ public class AudioController : IAudioController
         set => _selectedFilter = value;
     }
 
-    public string MessageLabel
+    public bool Maxisenabled
     {
-        get => _messagelabel;
-        set => _messagelabel = value;
+        get => _maxisenabled;
+        set => _maxisenabled = value;
     }
 
+    public bool Minisenabled
+    {
+        get => _minisenabled;
+        set => _minisenabled = value;
+    }
 
-
-    public AudioController(IAudioFileReaderFactory audioFileReaderFactory, IAudioPlayerFactory audioPlayerFactory, IDelaylineFactory delayLineFactory)
+    public AudioController(IAudioFileReaderFactory audioFileReaderFactory, IAudioPlayerFactory audioPlayerFactory)
     {
         _currentDevice = Devices[0];
         _audioFileReaderFactory = audioFileReaderFactory;
         _audioPlayerFactory = audioPlayerFactory;
     }
-
-    private int TimeSpanToFrames(TimeSpan interval)
-    {
-        return (int)interval.TotalMilliseconds * (_reader?.SampleRate ?? 0) / 1000;
-    }
-
     public  void SetSource(string path)
     {
-        _messagelabel = "Processing please wait";
         _playing = false;
         _reader = _audioFileReaderFactory.Create(path);
+        _maxisenabled = false;
+        _minisenabled = false;
         CalculateSampleRate();
         ReadSamples();
         if (_selectedFilter == 1 || _selectedFilter == 2)
             ConvertandFilter();
         _range = 0;
         CreatePlayer();
-
-
     }
 
     private void CreatePlayer()
@@ -170,10 +163,7 @@ public class AudioController : IAudioController
             var SampleFrame = _reader!.ReadSampleFrame();
             _complexArrayLeft[i] = SampleFrame.Left;
             _complexArrayRight[i] = SampleFrame.Right;
-        }
-
-        
-    }
+        }}
 
     
     /// <summary>

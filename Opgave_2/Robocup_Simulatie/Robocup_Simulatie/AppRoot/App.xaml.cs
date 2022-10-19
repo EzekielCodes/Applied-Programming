@@ -3,6 +3,7 @@ using Globals;
 using LogicLayer;
 using Microsoft.Extensions.DependencyInjection;
 using PresentationLayer;
+using PresentationLayer.ViewModels;
 using PresentationLayer.Views;
 using System.Windows;
 
@@ -21,12 +22,12 @@ public partial class App : Application
         _serviceProvider = serviceCollection.BuildServiceProvider();
     }
 
-    private void ConfigureServices(ServiceCollection serviceCollection)
+    private static void ConfigureServices(ServiceCollection serviceCollection)
     {
-        serviceCollection.AddGlobalServices();
-        serviceCollection.AddDataAccessServices();
+        serviceCollection.AddWpf3dServices();
+        serviceCollection.AddTransient<MainViewModel>();
+        serviceCollection.AddSingleton<MainWindow>();
         serviceCollection.AddLogicServices();
-        serviceCollection.AddPresentationServices();
     }
 
     protected override void OnStartup(StartupEventArgs e)
