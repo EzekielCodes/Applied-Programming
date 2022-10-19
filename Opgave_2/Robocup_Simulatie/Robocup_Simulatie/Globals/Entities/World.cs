@@ -11,60 +11,49 @@ namespace Globals.Entities;
 public class World : IWorld
 {
     private const int _worldSize = 1000;
-    private readonly PeriodicTimer _timer = new(TimeSpan.FromMilliseconds(10));
-    
 
-    private Parallelogram? _terrein;
-    private Parallelogram? _rand;
-    private Beam? _goalpostOne;
-    private Beam? _goalpostTwo;
     private Sphere? _ball;
-    
-
 
     public Point3D Origin => new();
     public (Point3D p1, Point3D p2) Bounds { get; private set; }
 
     public List<IItem3D> Items { get; } = new();
 
+    public List<Cylinder> TeamBlue { get; } = new();
+    public List<Cylinder> TeamRed { get; } = new();
+
+    public int FieldLength => 900;
+    public int FieldWidth => 600;
+
     public World()
     {
         Bounds = (new Point3D(-_worldSize / 2, -_worldSize / 2, -_worldSize / 2),
                       new Point3D(_worldSize / 2, _worldSize / 2, _worldSize / 2));
-
         CreateItems();
     }
 
     private void CreateItems()
     {
-        CreatePlayers();
-        _goalpostOne = new Beam(position: new Point3D(400, 0, 70), xSize: 50, ySize: 80, zSize: 150, Colors.Blue);
-        _goalpostTwo = new Beam(position: new Point3D(-450, 0, 70), xSize: 50, ySize: 80, zSize: 150, Colors.Brown);
-       
-        Items.Add(_goalpostTwo);
-        Items.Add(_goalpostOne);
-        _terrein = new Parallelogram(origin: new(-450, 0, -300), side1: new(900, 0, 0), new(0, 0, 600), Colors.Green);
-        Items.Add(_terrein);
-
-        _ball = new Sphere(position: new(50, 10, 0), radius: 10, Colors.Orange);
+        CreatePlayers(2);
+        _ball = new Sphere(position: new(0, 10, 0), radius: 10, Colors.Orange);
         Items.Add(_ball);
     }
 
-    private void CreatePlayers()
+    private void CreatePlayers(int aantal)
     {
         int teller = 20;
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < aantal; i++)
         {
-            Items.Add(new Cylinder(position: new(300, 0, -100 + teller), radius: 20, axis: new(0, 20, 0), Colors.Red));
-            teller = teller + 100;
+            TeamRed.Add(new Cylinder(position: new(300, 0, -100 + teller), radius: 20, axis: new(0, 20, 0), Colors.Red));
+            teller += 100;
             
         }
 
         teller = 20;
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < aantal; i++)
         {
-            Items.Add(new Cylinder(position: new(-300, 0, -100 + teller), radius: 20, axis: new(0, 20, 0), Colors.Blue));
-            teller = teller + 100;
+            TeamBlue.Add(new Cylinder(position: new(-300, 0, -100 + teller), radius: 20, axis: new(0, 20, 0), Colors.Blue));
+            teller += 100;
             
         }
     }

@@ -17,7 +17,7 @@ public record class Sphere : IItem3D
 
     public Color Color { get; set; }
 
-    
+
 
     public Sphere(Point3D position, double radius, Color colour)
     {
