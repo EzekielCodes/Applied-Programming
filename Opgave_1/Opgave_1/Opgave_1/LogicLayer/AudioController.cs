@@ -29,9 +29,6 @@ public class AudioController : IAudioController
     private int _selectedFilter;
     private bool _disposedValue;
     private double _frequencyResolutie;
-    private bool _minisenabled = true;
-    private bool _maxisenabled = true;
-
     //complex arrays
     private Complex[] _complexArrayLeft;
     private Complex[] _complexArrayRight;
@@ -79,18 +76,6 @@ public class AudioController : IAudioController
         set => _selectedFilter = value;
     }
 
-    public bool Maxisenabled
-    {
-        get => _maxisenabled;
-        set => _maxisenabled = value;
-    }
-
-    public bool Minisenabled
-    {
-        get => _minisenabled;
-        set => _minisenabled = value;
-    }
-
     public AudioController(IAudioFileReaderFactory audioFileReaderFactory, IAudioPlayerFactory audioPlayerFactory)
     {
         _currentDevice = Devices[0];
@@ -101,8 +86,6 @@ public class AudioController : IAudioController
     {
         _playing = false;
         _reader = _audioFileReaderFactory.Create(path);
-        _maxisenabled = false;
-        _minisenabled = false;
         CalculateSampleRate();
         ReadSamples();
         if (_selectedFilter == 1 || _selectedFilter == 2)

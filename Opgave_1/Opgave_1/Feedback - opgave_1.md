@@ -17,6 +17,7 @@
 ** Als je tijdens het afspelen van een audiofragment een nieuw bestand selecteert en afspeelt, start dat niet bij het begin...(fixed)
 ** code voor de delay mechanisme deleted
 ** GUI blijft responsive
+** Filters worden disabled tijdens afspelen
 
 
 ***Modulair, meerlagenmodel***

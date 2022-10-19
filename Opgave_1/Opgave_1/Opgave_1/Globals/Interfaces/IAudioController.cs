@@ -12,11 +12,6 @@ public interface IAudioController
     int MinFrequency { get; set; }
 
     int MaxFrequency { get; set; }
-
-    bool Minisenabled { get; set; }
-
-    bool Maxisenabled { get; set; }
-
     int SelectedFilter { get; set; }
     void Dispose();
     void SetDevice(string device);

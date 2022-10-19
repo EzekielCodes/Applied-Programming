@@ -70,7 +70,7 @@
 
 
         <Label Grid.Row="5" Content="Min-Frequency:" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="-4,33,0,0" Height="26" Width="94"/>
-        <ComboBox Grid.Column="5" HorizontalAlignment="Left" Margin="10,43,0,0" Grid.Row="4" VerticalAlignment="Top" Width="120" Height="33" SelectedIndex="{Binding SelectedFilter}">
+        <ComboBox Grid.Column="5" HorizontalAlignment="Left" Margin="10,43,0,0" Grid.Row="4" VerticalAlignment="Top" Width="120" Height="33" SelectedIndex="{Binding SelectedFilter}" IsEnabled="{Binding Filterisenabled}">
             <ComboBoxItem>No Filter</ComboBoxItem>
             <ComboBoxItem>BandPass</ComboBoxItem>
             <ComboBoxItem>BandStop</ComboBoxItem>

@@ -75,23 +75,11 @@ public class MainViewModel : ObservableObject, IDisposable
         }
     }
 
-    public bool Minisenabled
-    {
-        get => _controller?.Minisenabled ?? false;
-        set
-        {
-            if (_controller != null) _controller.Minisenabled = value;
-        }
-    }
+    public bool Minisenabled { get; set; }
 
-    public bool Maxisenabled
-    {
-        get => _controller?.Maxisenabled ?? false;
-        set
-        {
-            if (_controller != null) _controller.Maxisenabled = value;
-        }
-    }
+    public bool Maxisenabled { get; set; }
+
+    public bool Filterisenabled { get; set; }
     public string RecordButtonCaption => _controller!.IsRecording ? "Stop Recording" : "Start Recording";
 
     
@@ -102,7 +90,7 @@ public class MainViewModel : ObservableObject, IDisposable
 
     public MainViewModel(IAudioController? controller)
     {
-
+        EnableFilters();
         _controller = controller;
         OpenFileCommand = new AsyncRelayCommand(OpenFile);
         PlayCommand = new RelayCommand(PlaySource, () => _sourceSelected && !_playing);
@@ -114,7 +102,6 @@ public class MainViewModel : ObservableObject, IDisposable
 
     private async Task OpenFile()
     {
-
         _sourceSelected = false;
         StopSource();
         _timer?.Dispose();
@@ -123,6 +110,7 @@ public class MainViewModel : ObservableObject, IDisposable
         {
             if (!string.IsNullOrEmpty(path))
             {
+                DisableFilters();
                 await Task.Run(() => _controller?.SetSource(path)) ;
                 _sourceSelected = true;
                 AudioFilePath = System.IO.Path.GetFileName(path);
@@ -130,6 +118,7 @@ public class MainViewModel : ObservableObject, IDisposable
                 OnPropertyChanged(nameof(AudioLength));
                 
                 PlaySource();
+                
             }
         }
         catch (ArgumentException e)
@@ -155,6 +144,7 @@ public class MainViewModel : ObservableObject, IDisposable
     private void UpdateUiCommandsState()
     {
         PlayCommand.NotifyCanExecuteChanged();
+        DisableFilters();
         PauseCommand.NotifyCanExecuteChanged();
        
         OnPropertyChanged(nameof(RecordButtonCaption));
@@ -172,13 +162,16 @@ public class MainViewModel : ObservableObject, IDisposable
             OnPropertyChanged(nameof(AudioPosition));
           
             if ((_controller != null) && (_controller.AudioPosition >= _controller.AudioLength)) StopSource();
-        } }
+        }
+        EnableFilters();
+    }
 
     private void StopSource()
     {
         _timer?.Dispose();
         _controller?.Stop();
         _playing = false;
+        //EnableFilters();
         UpdateUiCommandsState();
     }
 
@@ -201,6 +194,26 @@ public class MainViewModel : ObservableObject, IDisposable
         // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
         Dispose(disposing: true);
         GC.SuppressFinalize(this);
+    }
+
+    public void DisableFilters()
+    {
+        Minisenabled = false;
+        Maxisenabled = false;
+        Filterisenabled = false;
+        OnPropertyChanged(nameof(Maxisenabled));
+        OnPropertyChanged(nameof(Minisenabled));
+        OnPropertyChanged(nameof(Filterisenabled));
+    }
+
+    public void EnableFilters()
+    {
+        Minisenabled = true;
+        Maxisenabled = true;
+        Filterisenabled = true;
+        OnPropertyChanged(nameof(Maxisenabled));
+        OnPropertyChanged(nameof(Minisenabled));
+        OnPropertyChanged(nameof(Filterisenabled));
     }
 
   
