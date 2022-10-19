@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Media;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,4 +14,6 @@ public interface IItem3D
         public double Scale { get; }
 
         public double YRotation { get; }
+
+        public Color Color { get; }
 }

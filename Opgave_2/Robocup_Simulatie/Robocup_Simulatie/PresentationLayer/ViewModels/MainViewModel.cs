@@ -171,9 +171,10 @@ public class MainViewModel : ObservableObject
                 Cylinder cyl => _shapesFactory.CreateCylinder(cyl.Radius, cyl.Axis, GetMaterial(3)),
                 Cone cone => _shapesFactory.CreateCone(cone.Radius, cone.Axis, GetMaterial(4)),
                 // add rectangles with backface culling (no backMaterials parameter used)*/
-                Parallelogram rect => _shapesFactory.CreateParallelogram(rect.Side1, rect.Side2, GetMaterial(1)),
-                Beam beam => _shapesFactory.CreateBeam(beam.XSize, beam.YSize, beam.ZSize, GetMaterial(5)),
-                Sphere => _shapesFactory.CreateSphere(GetMaterial(2)),
+                Parallelogram rect => _shapesFactory.CreateParallelogram(rect.Side1, rect.Side2, GetMaterial(rect.Color)),
+                Beam beam => _shapesFactory.CreateBeam(beam.XSize, beam.YSize, beam.ZSize, GetMaterial(beam.Color)),
+                Cylinder cyl => _shapesFactory.CreateCylinder(cyl.Radius, cyl.Axis, GetMaterial(cyl.Color)),
+                Sphere sphere  => _shapesFactory.CreateSphere(GetMaterial(sphere.Color)),
                 // show circles without backface culling (by providing a backMaterials parameter).
                 _ => throw new ArgumentException("Unknown type of a item"),
             };

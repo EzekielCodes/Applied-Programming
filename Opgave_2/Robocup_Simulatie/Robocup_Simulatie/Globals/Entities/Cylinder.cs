@@ -8,21 +8,25 @@ using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
 
 namespace Globals.Entities;
-public record class Sphere : IItem3D
+public record class Cylinder : IItem3D
 {
     public Point3D Position { get; set; }
-    public double Scale => Radius;
+
+    public double Scale => 1;
+
     public double YRotation => 0;
+
     public double Radius { get; init; }
 
-    public Color Color { get; set; }
+    public Vector3D Axis { get; init; }
 
-    
+    public Color Color { get; }
 
-    public Sphere(Point3D position, double radius, Color colour)
+    public Cylinder(Point3D position, double radius, Vector3D axis, Color colours)
     {
         Position = position;
         Radius = radius;
-        Color = colour;
+        Axis = axis;
+        Color = colours;
     }
 }
