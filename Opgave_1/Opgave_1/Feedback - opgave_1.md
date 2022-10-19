@@ -18,6 +18,7 @@
 ** code voor de delay mechanisme deleted
 ** GUI blijft responsive
 ** Filters worden disabled tijdens afspelen
+** technische documentatie aangepast (flowchar togeevoegd (flowchat technische.png)) + methode worden in volgorde besproken
 
 
 ***Modulair, meerlagenmodel***

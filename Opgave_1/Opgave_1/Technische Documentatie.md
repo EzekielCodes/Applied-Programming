@@ -9,21 +9,14 @@
   De ```GetValuePow ``` functie zorgt ervoor dat de arrayLength macht van 2 is.
 
 
-##### AudioController.cs / ```BandStop(Complex[] complex, int indexHigh, int indexLow)```
+##### AuddioController.cs /```ReadSamples()```
 
-- Deze functie berekent de BandStop door alle indexen tussen de indexLow en indexHigh op 0 te zetten
-  De inverse van deze indexen worden ook op 0 gezet. 
-
-
-##### AudioController.cs / ```BandPass(Complex[] complex, int indexHigh, int indexLow)```
-
-- Deze functie berekent de BandPass door alle indexen op 0 te zetten behalve die in de index range
-  We doen hetzelfde voor het inverse indexen.
+- Deze functie vult de 2 complexe array op met samples die uit de reader funtie ReadSampleFrame komt, De samples bevat een linker en rechter kanaal
 
 
 ##### AudioController.cs / ``` ConvertandFilter() ```
 - 
-  De ``` CalculateFreqResolutie() ``` functie berekent de frequentie resolutie door de sampleRate te delen door de lengte van de array.
+    De ``` CalculateFreqResolutie() ``` functie berekent de frequentie resolutie door de sampleRate te delen door de lengte van de array.
 - In deze functie gebeurt roepen we onze bandpass en bandstop maar eerst wordt er gecheckt welke toepassing onze gebruiker (via GUI)
   nodig heeft en hiermee kunnen we een no filter, bandstop of bandpass toepassing gebruiken.
 
@@ -37,8 +30,23 @@
   + Bij BandStop wordt eerst een FFT transform gedaan, daarna woorden de arrays gefilterd door de waarden van de index range op 0 te zetten.
 
 
-##### AudioController.cs / ``` FFTransform() ```
-- Deze functie doet de FFT Transform, Hiervoor gebruiken we de MathNet.Numerics.IntegralTransforms package.
+  - ``` FFTransform() ```
+    - Deze functie doet de FFT Transform, Hiervoor gebruiken we de MathNet.Numerics.IntegralTransforms package.
 
-##### AudioController.cs / ``` IFFTransform() ```
-- Deze functie doet de IFFT Transform, Hiervoor gebruiken we de MathNet.Numerics.IntegralTransforms package.
+  ```BandStop(Complex[] complex, int indexHigh, int indexLow)```
+
+  - Deze functie berekent de BandStop door alle indexen tussen de indexLow en indexHigh op 0 te zetten
+    De inverse van deze indexen worden ook op 0 gezet. 
+
+
+  ```BandPass(Complex[] complex, int indexHigh, int indexLow)```
+
+  - Deze functie berekent de BandPass door alle indexen op 0 te zetten behalve die in de index range
+    We doen hetzelfde voor het inverse indexen.
+
+
+  ``` IFFTransform() ```
+  - Deze functie doet de IFFT Transform, Hiervoor gebruiken we de MathNet.Numerics.IntegralTransforms package.
+
+
+
