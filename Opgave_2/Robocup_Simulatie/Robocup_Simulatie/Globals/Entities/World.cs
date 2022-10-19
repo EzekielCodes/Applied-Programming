@@ -11,11 +11,12 @@ public class World : IWorld
 {
     private const int _worldSize = 1000;
     private readonly PeriodicTimer _timer = new(TimeSpan.FromMilliseconds(10));
-    private Ball? _ball;
+    
 
     private Parallelogram? _rectangle;
     private Beam? _goalpostOne;
     private Beam? _goalpostTwo;
+    private Sphere? _ball;
 
 
     public Point3D Origin => new();
@@ -45,8 +46,8 @@ public class World : IWorld
         Items.Add(_goalpostOne);
         _rectangle = new Parallelogram(origin: new(-450, 0, -300), side1: new(900, 0, 0), new(0, 0, 600));
         Items.Add(_rectangle);
-        
-        _ball = new Ball(center: new Point3D(-250, 100, 0), radius: 50, normal: new(0, 1, 1));
+
+        _ball = new Sphere(position: new(250, 10, 0), radius: 10);
         Items.Add(_ball);
     }
 }

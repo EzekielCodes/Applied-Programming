@@ -166,15 +166,15 @@ public class MainViewModel : ObservableObject
             var geometry = item switch
             {
                 /*Cube => _shapesFactory.CreateCube(GetMaterial(0)),
-                Sphere => _shapesFactory.CreateSphere(GetMaterial(1)),
+               
                 Beam beam => _shapesFactory.CreateBeam(beam.XSize, beam.YSize, beam.ZSize, GetMaterial(2)),
                 Cylinder cyl => _shapesFactory.CreateCylinder(cyl.Radius, cyl.Axis, GetMaterial(3)),
                 Cone cone => _shapesFactory.CreateCone(cone.Radius, cone.Axis, GetMaterial(4)),
                 // add rectangles with backface culling (no backMaterials parameter used)*/
                 Parallelogram rect => _shapesFactory.CreateParallelogram(rect.Side1, rect.Side2, GetMaterial(5)),
-                Beam beam => _shapesFactory.CreateBeam(beam.XSize, beam.YSize, beam.ZSize, GetMaterial(2)),
+                Beam beam => _shapesFactory.CreateBeam(beam.XSize, beam.YSize, beam.ZSize, GetMaterial(1)),
+                Sphere => _shapesFactory.CreateSphere(GetMaterial(2)),
                 // show circles without backface culling (by providing a backMaterials parameter).
-                Ball circle => _shapesFactory.CreateCircle(normal: circle.Normal, materials: GetMaterial(6), backMaterials: GetMaterial(7)),
                 _ => throw new ArgumentException("Unknown type of a item"),
             };
             _itemsList.Add(geometry);
