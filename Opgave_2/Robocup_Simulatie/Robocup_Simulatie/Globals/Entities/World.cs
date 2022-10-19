@@ -38,7 +38,11 @@ public class World : IWorld
         Items.Add(new Beam(position: new Point3D(350, 75, 50), xSize: 50, ySize: 80, zSize: 200));
         Items.Add(new Cylinder(position: new(500, 50, 50), radius: 30, axis: new(0, 150, -100)));
         Items.Add(new Cone(position: new(650, 50, -50), radius: 40, axis: new(0, 150, 100)));*/
+        _goalpostOne = new Beam(position: new Point3D(400, 0, 70), xSize: 50, ySize: 80, zSize: 150);
+        _goalpostTwo = new Beam(position: new Point3D(-450, 0, 70), xSize: 50, ySize: 80, zSize: 150);
        
+        Items.Add(_goalpostTwo);
+        Items.Add(_goalpostOne);
         _rectangle = new Parallelogram(origin: new(-450, 0, -300), side1: new(900, 0, 0), new(0, 0, 600));
         Items.Add(_rectangle);
         
