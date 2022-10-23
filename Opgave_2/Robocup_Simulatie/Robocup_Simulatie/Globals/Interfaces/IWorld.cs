@@ -12,6 +12,13 @@ public interface IWorld
 
     int FieldWidth { get; }
 
+    int AantalSpelers { get; set; }
+
     List<Cylinder> TeamRed { get; }
     List<Cylinder> TeamBlue { get; }
+    void Start();
+
+    void Stop();
+
+    void MovePlayers();
 }

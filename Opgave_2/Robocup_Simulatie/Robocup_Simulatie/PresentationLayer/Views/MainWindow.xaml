@@ -34,13 +34,13 @@
             </Viewport3D>
 
         </Border>
-        <Label Grid.Column="1" Content="Players:" VerticalAlignment="Center" Height="26"/>
-        <Label Grid.Row="1" Grid.Column="1" Content="Time:" VerticalAlignment="Center" Height="26"/>
+        <Label Grid.Column="1" Content="Players:" VerticalAlignment="Center" Height="52" FontSize="22"/>
+        <Label Grid.Row="1" Grid.Column="1" Content="Time:" VerticalAlignment="Center" Height="52" FontSize="22"/>
 
         <Button
             Grid.Row="2" Grid.Column="2"
             Content="Start"
-            Command="{Binding StartCommand}" Margin="20,5,20,5"
+            Command="{Binding PlayCommand}" Margin="20,5,20,5"
          />
         <Button
             Grid.Row="3" Grid.Column="2"
@@ -54,7 +54,9 @@
             Command="{Binding RestartCommand}" Margin="20,5,20,5"
          />
 
-        <TextBlock Text="{Binding CurrentTime}" Name="TimerCountDown" Margin="20,5,20,5" Grid.Row="1" Grid.Column="2" ></TextBlock>
+        <TextBlock Text="{Binding CurrentTime}" Name="TimerCountDown" Margin="20,5,20,5" Grid.Row="1" Grid.Column="2" FontSize="22" ></TextBlock>
+        <TextBox Grid.Column="2" TextWrapping="Wrap" Text="{Binding AantalSpelers}" VerticalAlignment="Center" Height="52" Margin="20,0,34,0" IsEnabled="{Binding AantalSpelersisEnabled}"/>
+
 
 
     </Grid>

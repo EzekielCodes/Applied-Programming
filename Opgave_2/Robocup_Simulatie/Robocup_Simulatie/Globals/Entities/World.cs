@@ -11,10 +11,13 @@ namespace Globals.Entities;
 public class World : IWorld
 {
     private const int _worldSize = 1000;
+    private IWorld? _game;
 
     private Sphere? _ball;
     private readonly PeriodicTimer _timer = new(TimeSpan.FromMilliseconds(10));
     private IBall _ballTest;
+    private bool _playing = false;
+    private int _aantalspelers;
 
     public Point3D Origin => new();
     public (Point3D p1, Point3D p2) Bounds { get; private set; }
@@ -27,25 +30,37 @@ public class World : IWorld
     public int FieldLength => 900;
     public int FieldWidth => 600;
 
+
+    public int AantalSpelers
+    {
+        get => _aantalspelers;
+        set
+        {
+            if ( value > 0)
+            {
+                _aantalspelers = value;
+            }
+        }
+    }
     public World()
     {
         Bounds = (new Point3D(-_worldSize / 2, -_worldSize / 2, -_worldSize / 2),
                       new Point3D(_worldSize / 2, _worldSize / 2, _worldSize / 2));
 
-        Task.Run(async () =>
+       /* Task.Run(async () =>
         {
             while (true)
             {
                 await _timer.WaitForNextTickAsync();
-                MovePlayers();
+                //MovePlayers();
             }
-        });
+        });*/
         CreateItems();
     }
 
     private void CreateItems()
     {
-        CreatePlayers(2);
+        CreatePlayers(_aantalspelers);
         _ball = new Sphere(position: new(0, 10, 0), radius: 10, Colors.Orange);
         _ballTest = new Ball(position: new(0, 10, 0), radius: 10, Colors.Orange);
         Items.Add(_ball);
@@ -70,7 +85,7 @@ public class World : IWorld
         }
     }
 
-    private void MovePlayers()
+    public void MovePlayers()
     {
         for (int i = 0; i < TeamBlue.Count; i++)
         {
@@ -78,5 +93,20 @@ public class World : IWorld
             TeamBlue[i].Position = new Point3D(TeamBlue[i].Position.X + 0.5, 0, TeamBlue[i].Position.Z + 0.5);
 
         }
+    }
+
+    public void Stop()
+    {
+        _game?.Stop();
+        _playing = false;
+    }
+
+    public void Start()
+    {
+        if (_game == null) return;
+
+        _game.Start();
+
+        _playing = true;
     }
 }

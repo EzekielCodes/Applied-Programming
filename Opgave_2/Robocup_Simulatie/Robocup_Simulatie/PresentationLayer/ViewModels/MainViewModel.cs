@@ -5,6 +5,7 @@ using Microsoft.Toolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.DirectoryServices.ActiveDirectory;
 using System.Security.Policy;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,12 +24,14 @@ public class MainViewModel : ObservableObject
     private readonly IShapesFactory _shapesFactory;
     public ProjectionCamera Camera => _cameraController.Camera;
     private readonly PeriodicTimer _timer = new(TimeSpan.FromMilliseconds(10));
+    
 
     private string _title = "WpfApp (MVVM)";
 
     // binding properties
     private int _currentTime = 120;
-    private DispatcherTimer _timeCounter;
+    private DispatcherTimer _timeCounter = new DispatcherTimer();
+    private PeriodicTimer? _gametimer;
 
     public string Title
     {
@@ -57,6 +60,15 @@ public class MainViewModel : ObservableObject
 
     public IRelayCommand UpdateCommand { get; }
 
+    public int AantalSpelers
+    {
+        get => _world?.AantalSpelers ?? 0;
+        set
+        {
+            if (_world != null) _world.AantalSpelers = value;
+        }
+    }
+
     public bool? ShowAxes
     {
         get => _showAxes;
@@ -75,22 +87,35 @@ public class MainViewModel : ObservableObject
         }
     }
 
+    public IRelayCommand PlayCommand { get; }
+    public IRelayCommand PauseCommand { get; }
+    public IRelayCommand RestartCommand { get; }
+
+    private bool _playing = false;
+
     public MainViewModel(IWorld logic, ISphericalCameraController cameraController, IShapesFactory shapesFactory)
     {
         _world = logic;
         _cameraController = cameraController;
         _shapesFactory = shapesFactory;
+        Init3DPresentation();
+
+
+        InitItemGeometries();
+        //initialseTimer();
+        InitPresentation();
+        CurrentTime = String.Format("00:0{0}:{1}", 120 / 60, 120 % 60);
 
         ZoomCommand = new RelayCommand<MouseWheelEventArgs>(ZoomByMouse);
         ControlByMouseCommand = new RelayCommand<Vector>(ControlByMouse);
 
-        Init3DPresentation();
+        PlayCommand = new RelayCommand(StartGame, () => !_playing);
+        PauseCommand = new RelayCommand(PauseGame, () => _playing);
 
-        
-        InitItemGeometries();
-        initialseTimer();
-        InitPresentation();
-        
+
+
+
+
 
         //InitPlayers();
         _ = Animate();
@@ -107,12 +132,38 @@ public class MainViewModel : ObservableObject
     }
 
     private void initialseTimer()
-    {
-        _timeCounter = new DispatcherTimer();
+    {   
         _timeCounter.Interval = new TimeSpan(0,0,1);
         _timeCounter.Tick += Timer_Tick;
         _timeCounter.Start();
 
+    }
+
+    private async void StartGame()
+    {
+        _world.Start();
+        _playing = true;
+        UpdateUiCommandsState();
+        _gametimer = new(TimeSpan.FromSeconds(1));
+        while (_playing && await _gametimer.WaitForNextTickAsync())
+        {
+            _world?.MovePlayers();
+            initialseTimer();
+            _ = Animate();
+            if ((_world != null) && (_currentTime <= 0)) PauseGame();
+            //UpdateCommand = new RelayCommand(NotifyTimeChanged);
+
+        }
+    }
+
+    private void PauseGame()
+    {
+        _gametimer?.Dispose();
+        _timeCounter.Stop();
+        _world?.Stop();
+        _playing = false;
+        //EnableFilters();
+        UpdateUiCommandsState();
     }
 
     private void Timer_Tick(object? sender, EventArgs e)
@@ -149,13 +200,21 @@ public class MainViewModel : ObservableObject
             itemTransform.Children.Add(new TranslateTransform3D(_world.TeamRed[i].Position - _world.Origin));
             _teamRed[i].Transform = itemTransform;
         };
+
+       
     }
 
     private void NotifyTimeChanged()
     {
         OnPropertyChanged(nameof(Time));
     }
-    
+
+    private void UpdateUiCommandsState()
+    {
+        PlayCommand.NotifyCanExecuteChanged();
+        PauseCommand.NotifyCanExecuteChanged();
+    }
+
 
     private void Init3DPresentation()
     {
