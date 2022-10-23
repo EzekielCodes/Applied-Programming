@@ -93,15 +93,18 @@ public class MainViewModel : ObservableObject
 
     private bool _playing = false;
 
-    public MainViewModel(IWorld logic, ISphericalCameraController cameraController, IShapesFactory shapesFactory)
+    public bool AantalSpelersisEnabled { get; set; }
+
+public MainViewModel(IWorld logic, ISphericalCameraController cameraController, IShapesFactory shapesFactory)
     {
+        AantalSpelersisEnabled = true;
         _world = logic;
         _cameraController = cameraController;
         _shapesFactory = shapesFactory;
         Init3DPresentation();
 
 
-        InitItemGeometries();
+        
         //initialseTimer();
         InitPresentation();
         CurrentTime = String.Format("00:0{0}:{1}", 120 / 60, 120 % 60);
@@ -143,6 +146,10 @@ public class MainViewModel : ObservableObject
     {
         _world.Start();
         _playing = true;
+        AantalSpelersisEnabled = false;
+        OnPropertyChanged(nameof(AantalSpelersisEnabled));
+        _world.CreateItems();
+        InitItemGeometries();
         UpdateUiCommandsState();
         _gametimer = new(TimeSpan.FromSeconds(1));
         while (_playing && await _gametimer.WaitForNextTickAsync())

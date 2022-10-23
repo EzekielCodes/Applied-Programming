@@ -21,4 +21,6 @@ public interface IWorld
     void Stop();
 
     void MovePlayers();
+
+    void CreateItems();
 }

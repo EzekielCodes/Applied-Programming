@@ -55,7 +55,7 @@
          />
 
         <TextBlock Text="{Binding CurrentTime}" Name="TimerCountDown" Margin="20,5,20,5" Grid.Row="1" Grid.Column="2" FontSize="22" ></TextBlock>
-        <TextBox Grid.Column="2" TextWrapping="Wrap" Text="{Binding AantalSpelers}" VerticalAlignment="Center" Height="52" Margin="20,0,34,0" IsEnabled="{Binding AantalSpelersisEnabled}"/>
+        <TextBox Grid.Column="2" TextWrapping="Wrap" Text="{Binding AantalSpelers}" VerticalAlignment="Center" Height="52" Margin="20,0,169,0" IsEnabled="{Binding AantalSpelersisEnabled}" FontSize="22"/>
 
 
 

@@ -55,10 +55,10 @@ public class World : IWorld
                 //MovePlayers();
             }
         });*/
-        CreateItems();
+        //CreateItems();
     }
 
-    private void CreateItems()
+    public void CreateItems()
     {
         CreatePlayers(_aantalspelers);
         _ball = new Sphere(position: new(0, 10, 0), radius: 10, Colors.Orange);
@@ -83,6 +83,11 @@ public class World : IWorld
             teller += 100;
             
         }
+    }
+
+    private void GenerateRandomPosition()
+    {
+
     }
 
     public void MovePlayers()
