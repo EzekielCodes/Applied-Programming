@@ -8,16 +8,55 @@
         d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"         
         mc:Ignorable="d"
         Title="{Binding Title}" d:Title ="Designtime Title"
-        Height="450" Width="800">
+        Height="450" Width="853">
 
-    <DockPanel LastChildFill="false">
-        <Border x:Name="viewPortControl" Margin="10" BorderThickness="1" BorderBrush="Black" Background="White"
-                    MouseDown="ViewPortMouseDown" Width="777" >
-            <Viewport3D x:Name="mainViewPort" Camera="{Binding Camera}" >
+
+    <Grid Margin="0,0,0,4" HorizontalAlignment="Center" Width="853" >
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+
+            <ColumnDefinition Width="515*"/>
+            <ColumnDefinition Width="87"/>
+            <ColumnDefinition Width="251*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border x:Name="viewPortControl" Margin="10,36,0,36" BorderThickness="1" BorderBrush="Black" Background="White"
+                    MouseDown="ViewPortMouseDown" Grid.RowSpan="6" >
+            <Viewport3D x:Name="mainViewPort" Camera="{Binding Camera}" Margin="5,9,9,11" >
                 <ModelVisual3D x:Name ="visual3D" Content="{Binding Visual3dContent}" />
             </Viewport3D>
-        </Border>
 
-    </DockPanel>
-    
+        </Border>
+        <Label Grid.Column="1" Content="Players:" VerticalAlignment="Center" Height="26"/>
+        <Label Grid.Row="1" Grid.Column="1" Content="Time:" VerticalAlignment="Center" Height="26"/>
+
+        <Button
+            Grid.Row="2" Grid.Column="2"
+            Content="Start"
+            Command="{Binding StartCommand}" Margin="20,5,20,5"
+         />
+        <Button
+            Grid.Row="3" Grid.Column="2"
+            Content="Pause"
+            Command="{Binding PauseCommand}" Margin="20,5,20,5"
+         />
+
+        <Button
+            Grid.Row="4" Grid.Column="2"
+            Content="restart"
+            Command="{Binding RestartCommand}" Margin="20,5,20,5"
+         />
+
+        <TextBlock Text="{Binding CurrentTime}" Name="TimerCountDown" Margin="20,5,20,5" Grid.Row="1" Grid.Column="2" ></TextBlock>
+
+
+    </Grid>
+
 </Window>

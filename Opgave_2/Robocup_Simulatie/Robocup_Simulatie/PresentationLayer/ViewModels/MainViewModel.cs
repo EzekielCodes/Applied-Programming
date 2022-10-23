@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using System.Windows.Threading;
 using Wpf3dTools.Interfaces;
 
 namespace PresentationLayer.ViewModels;
@@ -26,6 +27,8 @@ public class MainViewModel : ObservableObject
     private string _title = "WpfApp (MVVM)";
 
     // binding properties
+    private int _currentTime = 120;
+    private DispatcherTimer _timeCounter;
 
     public string Title
     {
@@ -46,6 +49,7 @@ public class MainViewModel : ObservableObject
     private readonly List<GeometryModel3D> _itemsList = new();
     private bool _showAxes;
 
+    public String CurrentTime { get; set; }
     public string Time => DateTime.Now.ToLongTimeString();
 
     public IRelayCommand<MouseWheelEventArgs> ZoomCommand { get; private set; }
@@ -81,9 +85,13 @@ public class MainViewModel : ObservableObject
         ControlByMouseCommand = new RelayCommand<Vector>(ControlByMouse);
 
         Init3DPresentation();
+
         
         InitItemGeometries();
+        initialseTimer();
         InitPresentation();
+        
+
         //InitPlayers();
         _ = Animate();
         UpdateCommand = new RelayCommand(NotifyTimeChanged);
@@ -98,12 +106,29 @@ public class MainViewModel : ObservableObject
         }
     }
 
+    private void initialseTimer()
+    {
+        _timeCounter = new DispatcherTimer();
+        _timeCounter.Interval = new TimeSpan(0,0,1);
+        _timeCounter.Tick += Timer_Tick;
+        _timeCounter.Start();
+
+    }
+
+    private void Timer_Tick(object? sender, EventArgs e)
+    {
+        _currentTime--;
+        CurrentTime = String.Format("00:0{0}:{1}", _currentTime / 60, _currentTime % 60);
+        OnPropertyChanged(nameof(CurrentTime));
+    }
+
     private void UpdateWorldDisplay()
     {
+        //_itemsList
+
         for (int i = 0; i < _itemsList.Count; i++)
         {
             var itemTransform = new Transform3DGroup();
-            itemTransform.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), _world.Items[i].YRotation)));
             itemTransform.Children.Add(new ScaleTransform3D(_world.Items[i].Scale, _world.Items[i].Scale, _world.Items[i].Scale));
             itemTransform.Children.Add(new TranslateTransform3D(_world.Items[i].Position - _world.Origin));
             _itemsList[i].Transform = itemTransform;
@@ -112,7 +137,6 @@ public class MainViewModel : ObservableObject
         for (int i = 0; i < _teamBlue.Count; i++)
         {
             var itemTransform = new Transform3DGroup();
-            itemTransform.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), _world.TeamBlue[i].YRotation)));
             itemTransform.Children.Add(new ScaleTransform3D(_world.TeamBlue[i].Scale, _world.TeamBlue[i].Scale, _world.TeamBlue[i].Scale));
             itemTransform.Children.Add(new TranslateTransform3D(_world.TeamBlue[i].Position - _world.Origin));
             _teamBlue[i].Transform = itemTransform;
@@ -121,7 +145,6 @@ public class MainViewModel : ObservableObject
         for (int i = 0; i < _teamRed.Count; i++)
         {
             var itemTransform = new Transform3DGroup();
-            itemTransform.Children.Add(new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(0, 1, 0), _world.TeamRed[i].YRotation)));
             itemTransform.Children.Add(new ScaleTransform3D(_world.TeamRed[i].Scale, _world.TeamRed[i].Scale, _world.TeamRed[i].Scale));
             itemTransform.Children.Add(new TranslateTransform3D(_world.TeamRed[i].Position - _world.Origin));
             _teamRed[i].Transform = itemTransform;
@@ -212,6 +235,7 @@ public class MainViewModel : ObservableObject
         
        
     }
+
 
     private void InitPresentation()
     {

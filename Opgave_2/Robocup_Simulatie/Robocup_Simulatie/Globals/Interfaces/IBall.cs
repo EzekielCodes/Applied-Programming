@@ -1,10 +1,11 @@
 ﻿
 using System.Windows;
+using System.Windows.Media.Media3D;
 
-namespace Globals.Entities;
+namespace Globals.Interfaces;
 public interface IBall
 {
-    Point Position { get; set; }
+    Point3D Position { get; set; }
     double RollingResistanceCoeffienct { get; set; }
 
     Vector Speed { get; set; }

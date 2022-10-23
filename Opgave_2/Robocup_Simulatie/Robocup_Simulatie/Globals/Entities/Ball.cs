@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using Globals.Interfaces;
 
 namespace Globals.Entities;
 public record class Ball : IBall
@@ -13,7 +15,7 @@ public record class Ball : IBall
     private double _rollingDeceleration;
     private Vector _speed;
 
-    public Point Position { get; set; }
+    public Point3D Position { get; set; }
 
     public static double Radius = 0.1;
 
@@ -28,6 +30,14 @@ public record class Ball : IBall
     {
         get => _speed;
         set => _speed = value;
+    }
+    public Color Color { get; }
+
+    public Ball(Point3D position, double radius, Color colour)
+    {
+        Position = position;
+        Radius = radius;
+        Color = colour;
     }
 
 }

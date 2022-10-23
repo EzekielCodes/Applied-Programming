@@ -38,4 +38,15 @@ public partial class MainWindow : Window
         viewPortControl.PreviewMouseMove -= ViewPortMouseMove;
         viewPortControl.MouseUp -= ViewPortMouseUp;
     }
+
+    private void ComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+    {
+
+
+    }
+
+    private void TextBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+    {
+
+    }
 }
