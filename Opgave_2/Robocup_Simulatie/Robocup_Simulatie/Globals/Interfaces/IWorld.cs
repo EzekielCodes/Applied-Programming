@@ -11,6 +11,7 @@ public interface IWorld
     int FieldLength { get; }
 
     int FieldWidth { get; }
+    int GoalWidth { get; }
 
     int AantalSpelers { get; set; }
 

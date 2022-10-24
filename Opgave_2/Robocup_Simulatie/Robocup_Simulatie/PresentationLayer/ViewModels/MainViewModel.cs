@@ -322,20 +322,20 @@ public MainViewModel(IWorld logic, ISphericalCameraController cameraController, 
         Visual3dContent.Children.Add(terrain);
 
         //create goals
-        var goalBlue = _shapesFactory.CreateBeam(50, 80, 150, GetMaterial(Colors.Brown));
-        goalBlue.Transform = new TranslateTransform3D(new Point3D(-_world.FieldLength / 2, 0, 70) - new Point3D());
+        var goalBlue = _shapesFactory.CreateBeam(30, 100, _world.GoalWidth, GetMaterial(Colors.Brown));
+        goalBlue.Transform = new TranslateTransform3D(new Point3D(-_world.FieldLength / 2, 0, _world.GoalWidth/2) - new Point3D());
         Visual3dContent.Children.Add(goalBlue);
 
-        var goalRed = _shapesFactory.CreateBeam(-50, 80, 150, GetMaterial(Colors.Blue));
-        goalRed.Transform = new TranslateTransform3D(new Point3D(_world.FieldLength / 2, 0, 70) - new Point3D());
+        var goalRed = _shapesFactory.CreateBeam(-30, 100, _world.GoalWidth, GetMaterial(Colors.Blue));
+        goalRed.Transform = new TranslateTransform3D(new Point3D(_world.FieldLength / 2, 0, _world.GoalWidth/2) - new Point3D());
         Visual3dContent.Children.Add(goalRed);
 
         //create walls
         var wallMesh = new MeshGeometry3D();
         _shapesFactory.AddParalellogramToMesh(wallMesh, new Point3D(- _world.FieldLength / 2, 0, -_world.FieldWidth/ 2), new Vector3D(0, 10, _world.FieldWidth), new Vector3D(_world.FieldLength, 10, 0));
         _shapesFactory.AddParalellogramToMesh(wallMesh, new Point3D(- _world.FieldLength / 2, 0, -_world.FieldWidth / 2), new Vector3D(0, 10, _world.FieldWidth), new Vector3D(_world.FieldLength, 10, 0));
-        _shapesFactory.AddParalellogramToMesh(wallMesh, new Point3D(- _world.FieldLength / 2, 0, -_world.FieldWidth / 2), new Vector3D(0, 10, _world.FieldWidth), new Vector3D(_world.FieldLength, 10, 0));
-        _shapesFactory.AddParalellogramToMesh(wallMesh, new Point3D(- _world.FieldLength / 2, 0, -_world.FieldWidth / 2), new Vector3D(0, 10, _world.FieldWidth), new Vector3D(_world.FieldLength, 10, 0));
+        _shapesFactory.AddParalellogramToMesh(wallMesh, new Point3D(_world.FieldLength / 2, 0, -_world.FieldWidth / 2), new Vector3D(0, 10, _world.FieldWidth), new Vector3D(_world.FieldLength, 10, 0));
+        _shapesFactory.AddParalellogramToMesh(wallMesh, new Point3D(_world.FieldLength / 2, 0, -_world.FieldWidth / 2), new Vector3D(0, 10, _world.FieldWidth), new Vector3D(_world.FieldLength, 10, 0));
 
         var walls = new GeometryModel3D(wallMesh, GetMaterial(Colors.Gold));
         Visual3dContent.Children.Add(walls);

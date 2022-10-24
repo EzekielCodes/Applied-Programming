@@ -16,7 +16,6 @@ public class World : IWorld
 
     private Sphere? _ball;
     private readonly PeriodicTimer _timer = new(TimeSpan.FromMilliseconds(10));
-    private IBall _ballTest;
     private bool _playing = false;
     private int _aantalspelers;
     private Random _random;
@@ -31,6 +30,8 @@ public class World : IWorld
 
     public int FieldLength => 900;
     public int FieldWidth => 600;
+
+    public int GoalWidth => 150;
 
 
     public int AantalSpelers
@@ -64,7 +65,6 @@ public class World : IWorld
     {
         CreatePlayers(_aantalspelers);
         _ball = new Sphere(position: new(0, 10, 0), radius: 10, Colors.Orange);
-        _ballTest = new Ball(position: new(0, 10, 0), radius: 10, Colors.Orange);
         Items.Add(_ball);
     }
 
