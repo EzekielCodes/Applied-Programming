@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +19,8 @@ public class World : IWorld
     private IBall _ballTest;
     private bool _playing = false;
     private int _aantalspelers;
-
+    private Random _random;
+    private int[] _arrayCheck;
     public Point3D Origin => new();
     public (Point3D p1, Point3D p2) Bounds { get; private set; }
 
@@ -68,26 +70,41 @@ public class World : IWorld
 
     private void CreatePlayers(int aantal)
     {
-        int teller = 20;
+        _arrayCheck = new int[aantal];
         for (int i = 0; i < aantal; i++)
         {
-            TeamRed.Add(new Cylinder(position: new(300, 0, -100 + teller), radius: 20, axis: new(0, 20, 0), Colors.Red));
-            teller += 100;
+            TeamRed.Add(new Cylinder(position: new(RandomXPosition(FieldLength/2,i), 0, RandomZPosition(FieldWidth / 2,i)), radius: 20, axis: new(0, 20, 0), Colors.Red));
             
         }
-
-        teller = 20;
+        _arrayCheck = new int[aantal];
         for (int i = 0; i < aantal; i++)
         {
-            TeamBlue.Add(new Cylinder(position: new(-300, 0, -100 + teller), radius: 20, axis: new(0, 20, 0), Colors.Blue));
-            teller += 100;
-            
+            TeamBlue.Add(new Cylinder(position: new(-RandomXPosition(FieldLength / 2,i), 0, RandomZPosition(FieldWidth / 2,i)), radius: 20, axis: new(0, 20, 0), Colors.Blue));
         }
     }
 
-    private void GenerateRandomPosition()
+    private int RandomXPosition(int x, int i)
     {
+        _random = new Random();
+        int Randomint = _random.Next(100,x-100);
+        if (_arrayCheck.Contains(Randomint))
+        {
+            return RandomXPosition(x, i);
+        }
+        _arrayCheck[i] = Randomint;
+        return Randomint;
+    }
 
+    private int RandomZPosition(int z,int i)
+    {
+        _random = new Random();
+        int Randomint = _random.Next(-(FieldWidth/2)+50, z - 50);
+        if (_arrayCheck.Contains(Randomint))
+        {
+            return RandomZPosition(z, i);
+        }
+        _arrayCheck[i] = Randomint;
+        return Randomint;
     }
 
     public void MovePlayers()

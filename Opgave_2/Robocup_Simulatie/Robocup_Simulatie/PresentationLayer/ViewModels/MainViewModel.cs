@@ -69,6 +69,9 @@ public class MainViewModel : ObservableObject
         }
     }
 
+    public int ScoreTeamTwo { get; set; }
+    public int ScoreTeamone { get; set; }
+
     public bool? ShowAxes
     {
         get => _showAxes;
