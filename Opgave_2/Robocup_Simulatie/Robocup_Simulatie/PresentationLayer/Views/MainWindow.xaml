@@ -57,7 +57,7 @@
          />
 
         <TextBlock Text="{Binding CurrentTime}" Name="TimerCountDown" Margin="20,5,20,5" Grid.Row="1" Grid.Column="2" FontSize="22" Grid.ColumnSpan="2" ></TextBlock>
-        <TextBox Grid.Column="2" TextWrapping="Wrap" Text="{Binding AantalSpelers}" VerticalAlignment="Center" Height="52" Margin="20,0,36,0" IsEnabled="{Binding AantalSpelersisEnabled}" FontSize="22"/>
+        <TextBox  Grid.Column="2" TextWrapping="Wrap" Text="{Binding AantalSpelers}" VerticalAlignment="Center" Height="52" Margin="20,0,36,0" IsEnabled="{Binding AantalSpelersisEnabled}" FontSize="22"/>
         <Label Grid.Column="2"  Grid.Row="2" Content="{Binding ScoreTeamOne}" VerticalAlignment="Center" Height="52" Margin="20,0,36,0" IsEnabled="{Binding ScoreTeamOneisEnabled}" FontSize="22"/>
         <Label Grid.Column="3"  Grid.Row="2"  Content="{Binding ScoreTeamTwo}" VerticalAlignment="Center" Height="52" Margin="20,0,36,0" IsEnabled="{Binding ScoreTeamTwoisEnabled}" FontSize="22"/>
 

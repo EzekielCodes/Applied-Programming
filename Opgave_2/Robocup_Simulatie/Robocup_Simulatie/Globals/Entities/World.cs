@@ -17,8 +17,8 @@ public class World : IWorld
     private Sphere? _ball;
     private readonly PeriodicTimer _timer = new(TimeSpan.FromMilliseconds(10));
     private bool _playing = false;
-    private int _aantalspelers;
-    private Random _random;
+    private int _aantalspelers = 1;
+    private readonly Random _random = new();
     private int[] _arrayCheck;
     public Point3D Origin => new();
     public (Point3D p1, Point3D p2) Bounds { get; private set; }
@@ -85,7 +85,6 @@ public class World : IWorld
 
     private int RandomXPosition(int x, int i)
     {
-        _random = new Random();
         int Randomint = _random.Next(100,x-100);
         if (_arrayCheck.Contains(Randomint))
         {
@@ -97,7 +96,6 @@ public class World : IWorld
 
     private int RandomZPosition(int z,int i)
     {
-        _random = new Random();
         int Randomint = _random.Next(-(FieldWidth/2)+50, z - 50);
         if (_arrayCheck.Contains(Randomint))
         {
