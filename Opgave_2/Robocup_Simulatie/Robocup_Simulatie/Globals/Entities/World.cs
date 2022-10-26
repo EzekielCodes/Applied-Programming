@@ -14,7 +14,7 @@ public class World : IWorld
     private const int _worldSize = 1000;
     private IWorld? _game;
 
-    private Sphere? _ball;
+    public Ball Ball { get; set; }
     private readonly PeriodicTimer _timer = new(TimeSpan.FromMilliseconds(10));
     private bool _playing = false;
     private int _aantalspelers = 1;
@@ -23,10 +23,10 @@ public class World : IWorld
     public Point3D Origin => new();
     public (Point3D p1, Point3D p2) Bounds { get; private set; }
 
-    public List<IItem3D> Items { get; } = new();
+    //public IBall? Ball => _ball;
 
-    public List<Cylinder> TeamBlue { get; } = new();
-    public List<Cylinder> TeamRed { get; } = new();
+    public List<Players> TeamBlue { get; } = new();
+    public List<Players> TeamRed { get; } = new();
 
     public int FieldLength => 900;
     public int FieldWidth => 600;
@@ -39,12 +39,15 @@ public class World : IWorld
         get => _aantalspelers;
         set
         {
-            if ( value > 0)
+            if ( value > 0 && value < 4)
             {
                 _aantalspelers = value;
             }
         }
     }
+
+    //Ball IWorld.Ball => throw new NotImplementedException();
+
     public World()
     {
         Bounds = (new Point3D(-_worldSize / 2, -_worldSize / 2, -_worldSize / 2),
@@ -64,8 +67,13 @@ public class World : IWorld
     public void CreateItems()
     {
         CreatePlayers(_aantalspelers);
-        _ball = new Sphere(position: new(0, 10, 0), radius: 10, Colors.Orange);
-        Items.Add(_ball);
+       
+       
+    }
+
+    public void CreateBall()
+    {
+        Ball = new Ball(position: new(0, 10, 0), radius: 10, Colors.Orange);
     }
 
     private void CreatePlayers(int aantal)
@@ -73,13 +81,13 @@ public class World : IWorld
         _arrayCheck = new int[aantal];
         for (int i = 0; i < aantal; i++)
         {
-            TeamRed.Add(new Cylinder(position: new(RandomXPosition(FieldLength/2,i), 0, RandomZPosition(FieldWidth / 2,i)), radius: 20, axis: new(0, 20, 0), Colors.Red));
+            TeamRed.Add(new Players(position: new(RandomXPosition(FieldLength/2,i), 0, RandomZPosition(FieldWidth / 2,i)), radius: 20, axis: new(0, 20, 0), Colors.Red));
             
         }
         _arrayCheck = new int[aantal];
         for (int i = 0; i < aantal; i++)
         {
-            TeamBlue.Add(new Cylinder(position: new(-RandomXPosition(FieldLength / 2,i), 0, RandomZPosition(FieldWidth / 2,i)), radius: 20, axis: new(0, 20, 0), Colors.Blue));
+            TeamBlue.Add(new Players(position: new(-RandomXPosition(FieldLength / 2,i), 0, RandomZPosition(FieldWidth / 2,i)), radius: 20, axis: new(0, 20, 0), Colors.Blue));
         }
     }
 
@@ -109,8 +117,8 @@ public class World : IWorld
     {
         for (int i = 0; i < TeamBlue.Count; i++)
         {
-            TeamRed[i].Position = new Point3D(TeamRed[i].Position.X - 0.5, 0, TeamRed[i].Position.Z - 0.5);
-            TeamBlue[i].Position = new Point3D(TeamBlue[i].Position.X + 0.5, 0, TeamBlue[i].Position.Z + 0.5);
+            TeamRed[i].Position = new Point3D(TeamRed[i].Position.X - 1, 0, TeamRed[i].Position.Z - 1);
+            TeamBlue[i].Position = new Point3D(TeamBlue[i].Position.X + 1, 0, TeamBlue[i].Position.Z + 1);
 
         }
     }

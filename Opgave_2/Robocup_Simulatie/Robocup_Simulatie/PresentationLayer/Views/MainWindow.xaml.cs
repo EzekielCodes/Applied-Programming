@@ -20,8 +20,10 @@ public partial class MainWindow : Window
     {
         _lastPoint = e.GetPosition(mainViewPort);
         _ = viewPortControl.CaptureMouse();
+        PreviewKeyDown += WindowKeyDown;
         viewPortControl.MouseUp += ViewPortMouseUp;
         viewPortControl.PreviewMouseMove += ViewPortMouseMove;
+        viewPortControl.PreviewMouseWheel += ViewPortPreviewMouseWheel;
     }
 
     private void ViewPortMouseMove(object sender, MouseEventArgs e)
@@ -30,6 +32,16 @@ public partial class MainWindow : Window
         var vector = newPoint - _lastPoint;
         _viewModel.ControlByMouseCommand.Execute(vector);
         _lastPoint = newPoint;
+    }
+
+    private void WindowKeyDown(object sender, KeyEventArgs e)
+    {
+        _viewModel.ProcessKey(e.Key);
+    }
+
+    private void ViewPortPreviewMouseWheel(object sender, MouseWheelEventArgs e)
+    {
+        _viewModel.Zoom(e.Delta);
     }
 
     private void ViewPortMouseUp(object sender, MouseButtonEventArgs e)

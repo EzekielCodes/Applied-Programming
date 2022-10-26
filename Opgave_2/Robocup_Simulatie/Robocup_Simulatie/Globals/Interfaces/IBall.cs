@@ -1,5 +1,6 @@
 ﻿
 using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
 namespace Globals.Interfaces;
@@ -9,4 +10,9 @@ public interface IBall
     double RollingResistanceCoeffienct { get; set; }
 
     Vector Speed { get; set; }
+
+    public int Scale { get; }
+
+
+    public Color Color { get; }
 }

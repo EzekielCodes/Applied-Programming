@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
+using System.Windows;
 
 namespace Globals.Interfaces;
 public interface IItem3D
@@ -13,7 +14,7 @@ public interface IItem3D
 
         public double Scale { get; }
 
-        public double YRotation { get; }
 
         public Color Color { get; }
+        Vector3D Speed { get; set; }
 }

@@ -24,6 +24,7 @@ public class MainViewModel : ObservableObject
     private readonly IShapesFactory _shapesFactory;
     public ProjectionCamera Camera => _cameraController.Camera;
     private readonly PeriodicTimer _timer = new(TimeSpan.FromMilliseconds(10));
+    private int teller = 0;
     
 
     private string _title = "WpfApp (MVVM)";
@@ -49,7 +50,7 @@ public class MainViewModel : ObservableObject
     private readonly Model3DGroup _teamBlueitems = new();
     private readonly Model3DGroup _teamReditems = new();
     public Model3DGroup Visual3dContent => _model3dGroup;
-    private readonly List<GeometryModel3D> _itemsList = new();
+    private GeometryModel3D _ball = new();
     private bool _showAxes;
 
     public String CurrentTime { get; set; }
@@ -58,7 +59,7 @@ public class MainViewModel : ObservableObject
     public IRelayCommand<MouseWheelEventArgs> ZoomCommand { get; private set; }
     public IRelayCommand<Vector> ControlByMouseCommand { get; private set; }
 
-    public IRelayCommand UpdateCommand { get; }
+   // public IRelayCommand UpdateCommand { get; }
 
     public int AantalSpelers
     {
@@ -100,32 +101,24 @@ public class MainViewModel : ObservableObject
 
 public MainViewModel(IWorld logic, ISphericalCameraController cameraController, IShapesFactory shapesFactory)
     {
+        CurrentTime = String.Format("0{0}:{1}", 120 / 60, 120 % 60);
         AantalSpelersisEnabled = true;
         _world = logic;
         _cameraController = cameraController;
         _shapesFactory = shapesFactory;
         Init3DPresentation();
-
-
-        
-        //initialseTimer();
         InitPresentation();
-        CurrentTime = String.Format("00:0{0}:{1}", 120 / 60, 120 % 60);
+        
+
 
         ZoomCommand = new RelayCommand<MouseWheelEventArgs>(ZoomByMouse);
         ControlByMouseCommand = new RelayCommand<Vector>(ControlByMouse);
+        _ = Animate();
 
         PlayCommand = new RelayCommand(StartGame, () => !_playing);
         PauseCommand = new RelayCommand(PauseGame, () => _playing);
-
-
-
-
-
-
-        //InitPlayers();
-        _ = Animate();
-        UpdateCommand = new RelayCommand(NotifyTimeChanged);
+        RestartCommand = new RelayCommand(RestartGame);
+     
     }
 
     public async Task Animate()
@@ -133,16 +126,21 @@ public MainViewModel(IWorld logic, ISphericalCameraController cameraController, 
         while (true)
         {
             UpdateWorldDisplay();
+            if (_playing)
+            {
+                if (_playing && teller == 50)
+                {
+                    teller = 0;
+                    _currentTime--;
+                    CurrentTime = String.Format("0{0}:{1}", _currentTime / 60, _currentTime % 60);
+                    OnPropertyChanged(nameof(CurrentTime));
+                }
+                Debug.WriteLine(teller);
+                teller++;
+            }
+            
             await _timer.WaitForNextTickAsync();
         }
-    }
-
-    private void initialseTimer()
-    {   
-        _timeCounter.Interval = new TimeSpan(0,0,1);
-        _timeCounter.Tick += Timer_Tick;
-        _timeCounter.Start();
-
     }
 
     private async void StartGame()
@@ -154,14 +152,11 @@ public MainViewModel(IWorld logic, ISphericalCameraController cameraController, 
         _world.CreateItems();
         InitItemGeometries();
         UpdateUiCommandsState();
-        _gametimer = new(TimeSpan.FromSeconds(1));
+        _gametimer = new(TimeSpan.FromMilliseconds(1));
         while (_playing && await _gametimer.WaitForNextTickAsync())
         {
             _world?.MovePlayers();
-            initialseTimer();
-            _ = Animate();
             if ((_world != null) && (_currentTime <= 0)) PauseGame();
-            //UpdateCommand = new RelayCommand(NotifyTimeChanged);
 
         }
     }
@@ -171,29 +166,25 @@ public MainViewModel(IWorld logic, ISphericalCameraController cameraController, 
         _gametimer?.Dispose();
         _timeCounter.Stop();
         _world?.Stop();
+        AantalSpelersisEnabled = true;
         _playing = false;
-        //EnableFilters();
         UpdateUiCommandsState();
     }
 
-    private void Timer_Tick(object? sender, EventArgs e)
+    private void RestartGame()
     {
-        _currentTime--;
-        CurrentTime = String.Format("00:0{0}:{1}", _currentTime / 60, _currentTime % 60);
-        OnPropertyChanged(nameof(CurrentTime));
+        Process.Start(Application.ResourceAssembly.Location);
+        Application.Current.Shutdown();
     }
 
     private void UpdateWorldDisplay()
     {
-        //_itemsList
-
-        for (int i = 0; i < _itemsList.Count; i++)
-        {
-            var itemTransform = new Transform3DGroup();
-            itemTransform.Children.Add(new ScaleTransform3D(_world.Items[i].Scale, _world.Items[i].Scale, _world.Items[i].Scale));
-            itemTransform.Children.Add(new TranslateTransform3D(_world.Items[i].Position - _world.Origin));
-            _itemsList[i].Transform = itemTransform;
-        };
+        
+        var itemTransformBall = new Transform3DGroup();
+        itemTransformBall.Children.Add(new ScaleTransform3D(_world.Ball.Scale, _world.Ball.Scale, _world.Ball.Scale));
+        itemTransformBall.Children.Add(new TranslateTransform3D(_world.Ball.Position - _world.Origin));
+        _ball.Transform = itemTransformBall;
+      
 
         for (int i = 0; i < _teamBlue.Count; i++)
         {
@@ -247,6 +238,16 @@ public MainViewModel(IWorld logic, ISphericalCameraController cameraController, 
     {
         _cameraController.Zoom(args!.Delta);
     }
+
+    public void ProcessKey(Key key)
+    {
+        _cameraController.ControlByKey(key);
+    }
+    public void Zoom(int delta)
+    {
+        _cameraController.Zoom(delta);
+    }
+
     private void ControlByMouse(Vector vector)
     {
         _cameraController.ControlByMouse(vector);
@@ -263,26 +264,12 @@ public MainViewModel(IWorld logic, ISphericalCameraController cameraController, 
 
     private void InitItemGeometries()
     {
-        foreach (var item in _world.Items)
-        {
-            var geometry = item switch
-            {
-                Sphere sphere  => _shapesFactory.CreateSphere(GetMaterial(sphere.Color)),
-                // show circles without backface culling (by providing a backMaterials parameter).
-                _ => throw new ArgumentException("Unknown type of a item"),
-            };
-            _itemsList.Add(geometry);
-            _itemsGroup.Children.Add(geometry);
-            _model3dGroup.Children.Add(_itemsGroup);
-        }
+    
+         
 
         foreach (var item in _world.TeamBlue)
         {
-            var x = item switch
-            {
-                Cylinder cyl => _shapesFactory.CreateCylinder(cyl.Radius, cyl.Axis, GetMaterial(cyl.Color)),
-                _ => throw new ArgumentException("Unknown type of a item"),
-            };
+            var x = _shapesFactory.CreateCylinder(item.Radius, item.Axis, GetMaterial(Colors.Blue));
             _teamBlue.Add(x);
             _teamBlueitems.Children.Add(x);
             _model3dGroup.Children.Add(_teamBlueitems);
@@ -290,11 +277,8 @@ public MainViewModel(IWorld logic, ISphericalCameraController cameraController, 
 
         foreach (var item in _world.TeamRed)
         {
-            var x = item switch
-            {
-                Cylinder cyl => _shapesFactory.CreateCylinder(cyl.Radius, cyl.Axis, GetMaterial(cyl.Color)),
-                _ => throw new ArgumentException("Unknown type of a item"),
-            };
+
+            var x = _shapesFactory.CreateCylinder(item.Radius, item.Axis, GetMaterial(Colors.Red));
             _teamRed.Add(x);
             _teamReditems.Children.Add(x);
             _model3dGroup.Children.Add(_teamReditems);
@@ -308,6 +292,7 @@ public MainViewModel(IWorld logic, ISphericalCameraController cameraController, 
 
     private void InitPresentation()
     {
+        _world.CreateBall();
         //terrain aanmaken
         var terrain = _shapesFactory.CreateParallelogram
             (
@@ -323,22 +308,27 @@ public MainViewModel(IWorld logic, ISphericalCameraController cameraController, 
 
         //create goals
         var goalBlue = _shapesFactory.CreateBeam(30, 100, _world.GoalWidth, GetMaterial(Colors.Brown));
-        goalBlue.Transform = new TranslateTransform3D(new Point3D(-_world.FieldLength / 2, 0, _world.GoalWidth/2) - new Point3D());
+        goalBlue.Transform = new TranslateTransform3D(new Point3D((-_world.FieldLength / 2) + 5, 0, _world.GoalWidth/2) - new Point3D());
         Visual3dContent.Children.Add(goalBlue);
 
         var goalRed = _shapesFactory.CreateBeam(-30, 100, _world.GoalWidth, GetMaterial(Colors.Blue));
-        goalRed.Transform = new TranslateTransform3D(new Point3D(_world.FieldLength / 2, 0, _world.GoalWidth/2) - new Point3D());
+        goalRed.Transform = new TranslateTransform3D(new Point3D((_world.FieldLength / 2) - 5, 0, _world.GoalWidth/2) - new Point3D());
         Visual3dContent.Children.Add(goalRed);
 
         //create walls
         var wallMesh = new MeshGeometry3D();
-        _shapesFactory.AddParalellogramToMesh(wallMesh, new Point3D(- _world.FieldLength / 2, 0, -_world.FieldWidth/ 2), new Vector3D(0, 10, _world.FieldWidth), new Vector3D(_world.FieldLength, 10, 0));
-        _shapesFactory.AddParalellogramToMesh(wallMesh, new Point3D(- _world.FieldLength / 2, 0, -_world.FieldWidth / 2), new Vector3D(0, 10, _world.FieldWidth), new Vector3D(_world.FieldLength, 10, 0));
-        _shapesFactory.AddParalellogramToMesh(wallMesh, new Point3D(_world.FieldLength / 2, 0, -_world.FieldWidth / 2), new Vector3D(0, 10, _world.FieldWidth), new Vector3D(_world.FieldLength, 10, 0));
-        _shapesFactory.AddParalellogramToMesh(wallMesh, new Point3D(_world.FieldLength / 2, 0, -_world.FieldWidth / 2), new Vector3D(0, 10, _world.FieldWidth), new Vector3D(_world.FieldLength, 10, 0));
+        _shapesFactory.AddParalellogramToMesh(wallMesh, new Point3D(- _world.FieldLength / 2, 0, -_world.FieldWidth/ 2), new Vector3D(0, 20, 0), new Vector3D(_world.FieldLength, 0, 0));
+        _shapesFactory.AddParalellogramToMesh(wallMesh, new Point3D(- _world.FieldLength / 2, 0, _world.FieldWidth / 2), new Vector3D(0, 20, 0), new Vector3D(0, 0, - _world.FieldWidth));
+        _shapesFactory.AddParalellogramToMesh(wallMesh, new Point3D(-_world.FieldLength / 2, 0, _world.FieldWidth / 2), new Vector3D(0, 20, 0), new Vector3D(_world.FieldLength, 0, 0));
+        _shapesFactory.AddParalellogramToMesh(wallMesh, new Point3D(_world.FieldLength / 2, 0, - _world.FieldWidth / 2), new Vector3D(0, 20, 0), new Vector3D(0, 0,  _world.FieldWidth));
 
         var walls = new GeometryModel3D(wallMesh, GetMaterial(Colors.Gold));
+        walls.BackMaterial = GetMaterial(Colors.Silver);
         Visual3dContent.Children.Add(walls);
+
+        _ball = _shapesFactory.CreateSphere(GetMaterial(Colors.Orange));
+        Visual3dContent.Children.Add(_ball);
+
     }
 
     private static MaterialGroup GetMaterial(Color color)

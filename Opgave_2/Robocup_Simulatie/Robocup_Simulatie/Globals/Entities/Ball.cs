@@ -33,6 +33,8 @@ public record class Ball : IBall
     }
     public Color Color { get; }
 
+    public int Scale => 10;
+
     public Ball(Point3D position, double radius, Color colour)
     {
         Position = position;

@@ -6,7 +6,7 @@ public interface IWorld
 {
     (Point3D p1, Point3D p2) Bounds { get; }
     Point3D Origin { get; }
-    List<IItem3D> Items { get; }
+    
 
     int FieldLength { get; }
 
@@ -15,8 +15,10 @@ public interface IWorld
 
     int AantalSpelers { get; set; }
 
-    List<Cylinder> TeamRed { get; }
-    List<Cylinder> TeamBlue { get; }
+    List<Players> TeamRed { get; }
+    List<Players> TeamBlue { get; }
+
+    public Ball Ball { get; set; }
     void Start();
 
     void Stop();
@@ -24,4 +26,6 @@ public interface IWorld
     void MovePlayers();
 
     void CreateItems();
+
+    void CreateBall();
 }
