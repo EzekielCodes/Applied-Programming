@@ -22,7 +22,11 @@ public class MainViewModel : ObservableObject
     private readonly IWorld _world;
     private readonly ISphericalCameraController _cameraController;
     private readonly IShapesFactory _shapesFactory;
-    public ProjectionCamera Camera => _cameraController.Camera;
+    public ProjectionCamera Camera { get; private set; }
+    private ProjectionCamera _projectitonCamera;
+    private PerspectiveCamera _perspectiveCamera;
+
+    private int _checker = 0;
     private readonly PeriodicTimer _timer = new(TimeSpan.FromMilliseconds(10));
     private int teller = 0;
     
@@ -59,7 +63,9 @@ public class MainViewModel : ObservableObject
     public IRelayCommand<MouseWheelEventArgs> ZoomCommand { get; private set; }
     public IRelayCommand<Vector> ControlByMouseCommand { get; private set; }
 
-   // public IRelayCommand UpdateCommand { get; }
+    public IRelayCommand ChangeviewCommand { get; }
+
+    // public IRelayCommand UpdateCommand { get; }
 
     public int AantalSpelers
     {
@@ -71,7 +77,7 @@ public class MainViewModel : ObservableObject
     }
 
     public int ScoreTeamTwo { get; set; }
-    public int ScoreTeamone { get; set; }
+    public int ScoreTeamOne { get; set; }
 
     public bool? ShowAxes
     {
@@ -106,6 +112,9 @@ public MainViewModel(IWorld logic, ISphericalCameraController cameraController, 
         _world = logic;
         _cameraController = cameraController;
         _shapesFactory = shapesFactory;
+
+        Cameraaanmaken();
+        Camerachoice();
         Init3DPresentation();
         InitPresentation();
         
@@ -118,7 +127,8 @@ public MainViewModel(IWorld logic, ISphericalCameraController cameraController, 
         PlayCommand = new RelayCommand(StartGame, () => !_playing);
         PauseCommand = new RelayCommand(PauseGame, () => _playing);
         RestartCommand = new RelayCommand(RestartGame);
-     
+        ChangeviewCommand = new RelayCommand(Camerachoice);
+
     }
 
     public async Task Animate()
@@ -224,6 +234,29 @@ public MainViewModel(IWorld logic, ISphericalCameraController cameraController, 
         CreateAxesGroup();
         ShowAxes = true;
 
+    }
+
+    private void Cameraaanmaken()
+    {
+        _projectitonCamera = _cameraController.Camera;
+        _perspectiveCamera = new PerspectiveCamera(new Point3D(_world.Origin.X, 500, _world.Origin.Z), new Vector3D(0, -90, -1), new Vector3D(0, 1, 0), 100);
+    }
+
+    private void Camerachoice()
+    {
+        if (_checker == 0)
+        {
+            Camera = _projectitonCamera;
+            _checker = 1;
+
+            OnPropertyChanged(nameof(Camera));
+        }
+        else
+        {
+            _checker = 0;
+            Camera = _perspectiveCamera;
+            OnPropertyChanged(nameof(Camera));
+        }
     }
 
     private void SetupCamera()

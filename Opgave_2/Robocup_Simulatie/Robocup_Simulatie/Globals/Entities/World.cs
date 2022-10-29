@@ -53,6 +53,8 @@ public class World : IWorld
         Bounds = (new Point3D(-_worldSize / 2, -_worldSize / 2, -_worldSize / 2),
                       new Point3D(_worldSize / 2, _worldSize / 2, _worldSize / 2));
 
+        
+
        /* Task.Run(async () =>
         {
             while (true)
