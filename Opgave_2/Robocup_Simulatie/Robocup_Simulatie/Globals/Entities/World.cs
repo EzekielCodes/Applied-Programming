@@ -20,6 +20,8 @@ public class World : IWorld
     private int _aantalspelers = 1;
     private readonly Random _random = new();
     private int[] _arrayCheck;
+
+    private Point3D[] _arrayCheckPoint;
     public Point3D Origin => new();
     public (Point3D p1, Point3D p2) Bounds { get; private set; }
 
@@ -80,47 +82,54 @@ public class World : IWorld
 
     private void CreatePlayers(int aantal)
     {
+        _arrayCheckPoint = new Point3D[aantal];
         _arrayCheck = new int[aantal];
         for (int i = 0; i < aantal; i++)
         {
-            TeamRed.Add(new Players(position: new(RandomXPosition(FieldLength/2,i), 0, RandomZPosition(FieldWidth / 2,i)), radius: 20, axis: new(0, 20, 0), Colors.Red));
+            TeamRed.Add(new Players(GenerateRandomPoint(i,true), radius: 20, axis: new(0, 20, 0), Colors.Red));
             
         }
         _arrayCheck = new int[aantal];
         for (int i = 0; i < aantal; i++)
         {
-            TeamBlue.Add(new Players(position: new(-RandomXPosition(FieldLength / 2,i), 0, RandomZPosition(FieldWidth / 2,i)), radius: 20, axis: new(0, 20, 0), Colors.Blue));
+            TeamBlue.Add(new Players(GenerateRandomPoint(i, false), radius: 20, axis: new(0, 20, 0), Colors.Blue));
         }
     }
 
-    private int RandomXPosition(int x, int i)
+    private Point3D GenerateRandomPoint(int i, bool inverse)
     {
-        int Randomint = _random.Next(100,x-100);
-        if (_arrayCheck.Contains(Randomint))
+        Point3D point = new Point3D();
+        if (inverse)
         {
-            return RandomXPosition(x, i);
+            point.X = _random.Next(0, FieldLength / 2);
         }
-        _arrayCheck[i] = Randomint;
-        return Randomint;
-    }
+        else
+        {
+            point.X = _random.Next(-FieldLength / 2,0);
+        }
+        
+        point.Z = _random.Next(-FieldWidth/2,FieldWidth/2);
+       
+        
+        if (!_arrayCheckPoint.Contains(point))
+        {
+            _arrayCheckPoint[i] = point;
+        }
+        else
+        {
+            GenerateRandomPoint(i,inverse);
+        }
 
-    private int RandomZPosition(int z,int i)
-    {
-        int Randomint = _random.Next(-(FieldWidth/2)+50, z - 50);
-        if (_arrayCheck.Contains(Randomint))
-        {
-            return RandomZPosition(z, i);
-        }
-        _arrayCheck[i] = Randomint;
-        return Randomint;
+
+        return point;
     }
 
     public void MovePlayers()
     {
         for (int i = 0; i < TeamBlue.Count; i++)
         {
-            TeamRed[i].Position = new Point3D(TeamRed[i].Position.X - 1, 0, TeamRed[i].Position.Z - 1);
-            TeamBlue[i].Position = new Point3D(TeamBlue[i].Position.X + 1, 0, TeamBlue[i].Position.Z + 1);
+            TeamRed[i].Position = new Point3D(TeamRed[i].Position.X - 0.5, 0, TeamRed[i].Position.Z - 0.5);
+            TeamBlue[i].Position = new Point3D(TeamBlue[i].Position.X + 0.5, 0, TeamBlue[i].Position.Z + 0.5);
 
         }
     }

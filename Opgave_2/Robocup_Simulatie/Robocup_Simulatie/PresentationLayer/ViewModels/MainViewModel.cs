@@ -35,7 +35,9 @@ public class MainViewModel : ObservableObject
 
     // binding properties
     private int _currentTime = 120;
-    private DispatcherTimer _timeCounter = new DispatcherTimer();
+    private DateTime _startTime;
+    private DateTime _endTime;
+    private TimeSpan _matchTime = new TimeSpan(0,2,0);
     private PeriodicTimer? _gametimer;
 
     public string Title
@@ -138,15 +140,13 @@ public MainViewModel(IWorld logic, ISphericalCameraController cameraController, 
             UpdateWorldDisplay();
             if (_playing)
             {
-                if (_playing && teller == 50)
+                if(DateTime.Now >=_endTime)
                 {
-                    teller = 0;
-                    _currentTime--;
-                    CurrentTime = String.Format("0{0}:{1}", _currentTime / 60, _currentTime % 60);
-                    OnPropertyChanged(nameof(CurrentTime));
+                    _currentTime = 0;
+                    _playing = false;
                 }
-                Debug.WriteLine(teller);
-                teller++;
+                CurrentTime = String.Format("{0:mm}:{0:ss}", _endTime - DateTime.Now);
+                OnPropertyChanged(nameof(CurrentTime));
             }
             
             await _timer.WaitForNextTickAsync();
@@ -155,7 +155,7 @@ public MainViewModel(IWorld logic, ISphericalCameraController cameraController, 
 
     private async void StartGame()
     {
-        _world.Start();
+       // _world.Start();
         _playing = true;
         AantalSpelersisEnabled = false;
         OnPropertyChanged(nameof(AantalSpelersisEnabled));
@@ -163,6 +163,8 @@ public MainViewModel(IWorld logic, ISphericalCameraController cameraController, 
         InitItemGeometries();
         UpdateUiCommandsState();
         _gametimer = new(TimeSpan.FromMilliseconds(1));
+        _startTime = DateTime.Now;
+        _endTime = _startTime.Add(_matchTime);
         while (_playing && await _gametimer.WaitForNextTickAsync())
         {
             _world?.MovePlayers();
@@ -174,7 +176,6 @@ public MainViewModel(IWorld logic, ISphericalCameraController cameraController, 
     private void PauseGame()
     {
         _gametimer?.Dispose();
-        _timeCounter.Stop();
         _world?.Stop();
         AantalSpelersisEnabled = true;
         _playing = false;
@@ -340,12 +341,12 @@ public MainViewModel(IWorld logic, ISphericalCameraController cameraController, 
         Visual3dContent.Children.Add(terrain);
 
         //create goals
-        var goalBlue = _shapesFactory.CreateBeam(30, 100, _world.GoalWidth, GetMaterial(Colors.Brown));
-        goalBlue.Transform = new TranslateTransform3D(new Point3D((-_world.FieldLength / 2) + 5, 0, _world.GoalWidth/2) - new Point3D());
+        var goalBlue = _shapesFactory.CreateBeam(-20, 100, _world.GoalWidth, GetMaterial(Colors.Brown));
+        goalBlue.Transform = new TranslateTransform3D(new Point3D((-_world.FieldLength / 2) , 0, _world.GoalWidth/2) - new Point3D());
         Visual3dContent.Children.Add(goalBlue);
 
-        var goalRed = _shapesFactory.CreateBeam(-30, 100, _world.GoalWidth, GetMaterial(Colors.Blue));
-        goalRed.Transform = new TranslateTransform3D(new Point3D((_world.FieldLength / 2) - 5, 0, _world.GoalWidth/2) - new Point3D());
+        var goalRed = _shapesFactory.CreateBeam(20, 100, _world.GoalWidth, GetMaterial(Colors.Blue));
+        goalRed.Transform = new TranslateTransform3D(new Point3D((_world.FieldLength / 2) , 0, _world.GoalWidth/2) - new Point3D());
         Visual3dContent.Children.Add(goalRed);
 
         //create walls
