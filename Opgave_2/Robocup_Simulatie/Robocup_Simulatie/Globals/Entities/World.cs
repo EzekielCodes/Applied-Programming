@@ -19,14 +19,10 @@ public class World : IWorld
     private bool _playing = false;
     private int _aantalspelers = 1;
     private readonly Random _random = new();
-    private int[] _arrayCheck;
 
     private Point3D[] _arrayCheckPoint;
     public Point3D Origin => new();
     public (Point3D p1, Point3D p2) Bounds { get; private set; }
-
-    //public IBall? Ball => _ball;
-
     public List<Players> TeamBlue { get; } = new();
     public List<Players> TeamRed { get; } = new();
 
@@ -34,6 +30,7 @@ public class World : IWorld
     public int FieldWidth => 600;
 
     public int GoalWidth => 150;
+    private readonly int _playerRadius = 20;
 
 
     public int AantalSpelers
@@ -54,18 +51,6 @@ public class World : IWorld
     {
         Bounds = (new Point3D(-_worldSize / 2, -_worldSize / 2, -_worldSize / 2),
                       new Point3D(_worldSize / 2, _worldSize / 2, _worldSize / 2));
-
-        
-
-       /* Task.Run(async () =>
-        {
-            while (true)
-            {
-                await _timer.WaitForNextTickAsync();
-                //MovePlayers();
-            }
-        });*/
-        //CreateItems();
     }
 
     public void CreateItems()
@@ -83,16 +68,14 @@ public class World : IWorld
     private void CreatePlayers(int aantal)
     {
         _arrayCheckPoint = new Point3D[aantal];
-        _arrayCheck = new int[aantal];
         for (int i = 0; i < aantal; i++)
         {
-            TeamRed.Add(new Players(GenerateRandomPoint(i,true), radius: 20, axis: new(0, 20, 0), Colors.Red));
+            TeamRed.Add(new Players(GenerateRandomPoint(i,true), _playerRadius, axis: new(0, 20, 0), Colors.Red));
             
         }
-        _arrayCheck = new int[aantal];
         for (int i = 0; i < aantal; i++)
         {
-            TeamBlue.Add(new Players(GenerateRandomPoint(i, false), radius: 20, axis: new(0, 20, 0), Colors.Blue));
+            TeamBlue.Add(new Players(GenerateRandomPoint(i, false), _playerRadius, axis: new(0, 20, 0), Colors.Blue));
         }
     }
 
@@ -101,14 +84,14 @@ public class World : IWorld
         Point3D point = new Point3D();
         if (inverse)
         {
-            point.X = _random.Next(0, FieldLength / 2);
+            point.X = _random.Next(-_playerRadius, (FieldLength / 2)- _playerRadius);
         }
         else
         {
-            point.X = _random.Next(-FieldLength / 2,0);
+            point.X = _random.Next((-FieldLength / 2) + _playerRadius, _playerRadius);
         }
         
-        point.Z = _random.Next(-FieldWidth/2,FieldWidth/2);
+        point.Z = _random.Next((-FieldWidth/2)+ _playerRadius, (FieldWidth/2)- _playerRadius);
        
         
         if (!_arrayCheckPoint.Contains(point))

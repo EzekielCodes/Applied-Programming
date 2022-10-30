@@ -61,7 +61,8 @@ public class MainViewModel : ObservableObject
 
     public String CurrentTime { get; set; }
     public string Time => DateTime.Now.ToLongTimeString();
-
+    private DateTime _elaspedTime;
+    private TimeSpan _pauzetime;
     public IRelayCommand<MouseWheelEventArgs> ZoomCommand { get; private set; }
     public IRelayCommand<Vector> ControlByMouseCommand { get; private set; }
 
@@ -158,13 +159,23 @@ public MainViewModel(IWorld logic, ISphericalCameraController cameraController, 
        // _world.Start();
         _playing = true;
         AantalSpelersisEnabled = false;
-        OnPropertyChanged(nameof(AantalSpelersisEnabled));
-        _world.CreateItems();
-        InitItemGeometries();
         UpdateUiCommandsState();
         _gametimer = new(TimeSpan.FromMilliseconds(1));
-        _startTime = DateTime.Now;
-        _endTime = _startTime.Add(_matchTime);
+        if (_pauzetime.Seconds == 0)
+        {
+            
+            _startTime = DateTime.Now;
+            _endTime = _startTime.Add(_matchTime);
+            OnPropertyChanged(nameof(AantalSpelersisEnabled));
+            _world.CreateItems();
+            InitItemGeometries();
+            
+        }
+        else
+        {
+            _endTime = DateTime.Now.Add(_pauzetime);
+        }
+       
         while (_playing && await _gametimer.WaitForNextTickAsync())
         {
             _world?.MovePlayers();
@@ -175,6 +186,8 @@ public MainViewModel(IWorld logic, ISphericalCameraController cameraController, 
 
     private void PauseGame()
     {
+        _pauzetime = _endTime.Subtract(DateTime.Now);
+        Debug.WriteLine("remain "+ _pauzetime);
         _gametimer?.Dispose();
         _world?.Stop();
         AantalSpelersisEnabled = true;
