@@ -43,5 +43,6 @@ public record class Players : IItem3D
         Position += Speed * interval.TotalSeconds;
         Speed += Versnelling * interval.TotalSeconds;
         
+        
     }
 }

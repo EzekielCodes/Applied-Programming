@@ -179,6 +179,7 @@ public MainViewModel(IWorld logic, ISphericalCameraController cameraController, 
         while (_playing && await _gametimer.WaitForNextTickAsync())
         {
             _world?.MovePlayers();
+            //Debug.WriteLine(_world.TeamBlue[0].Position - _world.Ball.Position);
             if ((_world != null) && (_currentTime <= 0)) PauseGame();
 
         }
@@ -197,8 +198,10 @@ public MainViewModel(IWorld logic, ISphericalCameraController cameraController, 
 
     private void RestartGame()
     {
-        Process.Start(Application.ResourceAssembly.Location);
+        var currentExecutablePath = Process.GetCurrentProcess().MainModule.FileName;
+        Process.Start(currentExecutablePath);
         Application.Current.Shutdown();
+
     }
 
     private void UpdateWorldDisplay()
@@ -343,7 +346,7 @@ public MainViewModel(IWorld logic, ISphericalCameraController cameraController, 
         //terrain aanmaken
         var terrain = _shapesFactory.CreateParallelogram
             (
-                side1: new Vector3D(0, 0, 600),
+                side1: new Vector3D(0, 0, _world.FieldWidth),
                 side2: new Vector3D(_world.FieldLength, 0, 0),
                 materials: GetMaterial(Colors.LightGreen),
                 backMaterials: GetMaterial(Colors.Green)
@@ -370,7 +373,7 @@ public MainViewModel(IWorld logic, ISphericalCameraController cameraController, 
         _shapesFactory.AddParalellogramToMesh(wallMesh, new Point3D(_world.FieldLength / 2, 0, - _world.FieldWidth / 2), new Vector3D(0, 20, 0), new Vector3D(0, 0,  _world.FieldWidth));
 
         var walls = new GeometryModel3D(wallMesh, GetMaterial(Colors.Gold));
-        walls.BackMaterial = GetMaterial(Colors.Silver);
+        walls.BackMaterial = GetMaterial(Colors.Gold);
         Visual3dContent.Children.Add(walls);
 
         _ball = _shapesFactory.CreateSphere(GetMaterial(Colors.Orange));
