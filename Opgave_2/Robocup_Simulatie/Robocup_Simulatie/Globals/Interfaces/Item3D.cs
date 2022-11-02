@@ -10,13 +10,13 @@ using System.Windows;
 namespace Globals.Interfaces;
 public interface IItem3D
 {
-        public Point3D Position { get; }
+    public Point3D Position { get; }
 
-        public double Scale { get; }
+    public double Scale { get; }
 
 
-        public Color Color { get; }
-        double Speed { get; set; }
+    public Color Color { get; }
+    double Speed { get; set; }
 
     void Updatepostion(Point3D ball, TimeSpan interval);
 }

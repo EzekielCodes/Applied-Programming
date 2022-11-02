@@ -13,7 +13,7 @@ public record class Ball : IBall
 {
     private const double _gravConstant = 9.81;
     private double _rollingDeceleration;
-    private Vector _speed;
+    private double _speed;
 
     public Point3D Position { get; set; }
 
@@ -26,15 +26,18 @@ public record class Ball : IBall
         
     }
 
-    public Vector Speed
+    public Double Speed
     {
         get => _speed;
         set => _speed = value;
     }
+
+    public Vector3D Direction { get; set; }
     public Color Color { get; }
 
     public int Scale => 10;
 
+    public double MaxSpeed = 0.4;
     public Ball(Point3D position, double radius, Color colour)
     {
         Position = position;

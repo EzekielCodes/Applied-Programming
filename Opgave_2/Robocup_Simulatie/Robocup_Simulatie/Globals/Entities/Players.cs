@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
 using System.Windows;
+using System.Diagnostics;
 
 namespace Globals.Entities;
 public record class Players : IItem3D
@@ -21,7 +22,7 @@ public record class Players : IItem3D
 
     public double Radius { get; init; }
 
-    public Vector3D Axis { get; set; }
+    public Vector3D Direction { get; set; }
 
     public Color Color { get; }
 
@@ -37,19 +38,32 @@ public record class Players : IItem3D
         Speed = speed;
         Versnelling = versnelling;
         Radius = radius;
-        Axis = axis;
+        Direction = axis;
         Color = colours;
     }
 
     public void Updatepostion(Point3D ball, TimeSpan interval)
     {
         Vector3D direction = this.Position - ball;
+        direction.Y = 0;
+        this.Direction = direction;
         direction.Normalize();
-        this.Position -= (direction * (Speed / 1000)* interval.TotalSeconds);
-        Speed = (this.Versnelling / 1000) + interval.TotalSeconds;
-        //this.Versnelling = this.Speed / interval.TotalSeconds;
-        if (Speed > 3) Speed = 0.01;
+
+        this.Position -= (direction * this.Speed/1000 * interval.TotalMilliseconds);
+        double x = this.Position.X;
+        double z = this.Position.Z;
+        this.Speed += this.Versnelling *  interval.TotalMilliseconds;
+        if (this.Speed > 1) this.Speed = 0.01;
+        Debug.WriteLine(this.Position);
         this.Speed = Speed;        
         
     }
+
+    public void MoveObject(Ball ball , TimeSpan interval)
+    {
+        Point3D pos = ball.Position;
+        //Vector3D direction = ball.
+    }
+
+    
 }

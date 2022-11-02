@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using Globals.Interfaces;
+using LogicLayer;
 
 namespace Globals.Entities;
 public class World : IWorld
 {
+    private readonly IGamePhysics _gamePhysics;
     private const int _worldSize = 1000;
     private IWorld? _game;
 
@@ -134,9 +131,54 @@ public class World : IWorld
             for (int i = 0; i < TeamBlue.Count; i++)
             {
                 TeamBlue[i].Updatepostion(_ballPosition, ellapsedTime);
+                CollisionWithBall(ellapsedTime);
                 TeamRed[i].Updatepostion(_ballPosition, ellapsedTime);
             }
+
+           
         }
+    }
+
+    public void CollisionWithBall(TimeSpan interval)
+    {
+        for (int i = 0; i < TeamBlue.Count; i++)
+        {
+            Point3D ballPosition = Ball.Position;
+            Vector3D afstandTeamA = TeamBlue[i].Position - ballPosition;
+            Vector3D afstandTeamB = TeamRed[i].Position - ballPosition;
+
+            if (afstandTeamA.Length <= 30)
+            {
+                Debug.WriteLine("touch");
+                CollisionBallandPlayer(TeamBlue[i], Ball, interval);
+
+            }
+            else if (afstandTeamB.Length <= 30)
+            {
+                CollisionBallandPlayer(TeamRed[i], Ball, interval);
+            }
+        }
+    }
+
+    public void CollisionBallandPlayer(Players player, Ball ball, TimeSpan interval)
+    {
+        player.Speed = 0;
+        ball.Direction = player.Direction;
+        ball.Speed = ball.MaxSpeed;
+        ball.Position = MoveObject(ball,player, interval);
+    }
+
+    public Point3D MoveObject(Ball ball, Players player, TimeSpan interval)
+    {
+        Point3D position = ball.Position;
+        Vector3D direction = player.Direction;
+        direction.Normalize();
+        
+        position -= direction *  ball.Speed/1000 * interval.TotalMilliseconds;
+        ball.Speed -= ball.RollingResistanceCoeffienct * interval.TotalMilliseconds;
+        if (ball.Speed < 0) ball.Speed = 0;
+        return position;
+        
     }
 
     public void StopMove()

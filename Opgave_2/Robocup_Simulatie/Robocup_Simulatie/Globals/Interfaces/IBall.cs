@@ -9,10 +9,9 @@ public interface IBall
     Point3D Position { get; set; }
     double RollingResistanceCoeffienct { get; set; }
 
-    Vector Speed { get; set; }
+    Double Speed { get; set; }
 
     public int Scale { get; }
-
 
     public Color Color { get; }
 }

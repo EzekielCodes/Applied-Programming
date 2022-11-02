@@ -64,8 +64,6 @@ public class MainViewModel : ObservableObject
 
     public IRelayCommand ChangeviewCommand { get; }
 
-    // public IRelayCommand UpdateCommand { get; }
-
     public int AantalSpelers
     {
         get => _world?.AantalSpelers ?? 0;
@@ -166,39 +164,32 @@ public class MainViewModel : ObservableObject
 
     private async void StartGame()
     {
-          /*  _tokenSource?.Dispose();
-            _tokenSource = new CancellationTokenSource();
-            token = _tokenSource.Token;
-            Task.Run(() => Animate(), token);*/
-            _playing = true;
-            AantalSpelersisEnabled = false;
-            UpdateUiCommandsState();
-            _gametimer = new(TimeSpan.FromMilliseconds(1));
-            if (_pauzetime.Seconds == 0)
-            {
+        _playing = true;
+        AantalSpelersisEnabled = false;
+        UpdateUiCommandsState();
+        _gametimer = new(TimeSpan.FromMilliseconds(1));
+        if (_pauzetime.Seconds == 0)
+        {
 
-                _startTime = DateTime.Now;
-                _endTime = _startTime.Add(_matchTime);
-                OnPropertyChanged(nameof(AantalSpelersisEnabled));
-                _world.CreateItems();
-                InitItemGeometries();
+            _startTime = DateTime.Now;
+            _endTime = _startTime.Add(_matchTime);
+            OnPropertyChanged(nameof(AantalSpelersisEnabled));
+            _world.CreateItems();
+            InitItemGeometries();
 
-            }
-            else
-            {
-                _endTime = DateTime.Now.Add(_pauzetime);
-            }
+        }
+        else
+        {
+            _endTime = DateTime.Now.Add(_pauzetime);
+        }
 
-            while (_playing && await _gametimer.WaitForNextTickAsync())
-            {
+        while (_playing && await _gametimer.WaitForNextTickAsync())
+        {
 
-                _world?.StartMove();
-                if ((_world != null) && (_currentTime <= 0)) PauseGame();
+            _world?.StartMove();
+            if ((_world != null) && (_currentTime <= 0)) PauseGame();
 
-            }
-
-        
-        
+        }   
     }
 
     private void PauseGame()
@@ -354,12 +345,9 @@ public class MainViewModel : ObservableObject
 
     private void InitItemGeometries()
     {
-    
-         
-
         foreach (var item in _world.TeamBlue)
         {
-            var x = _shapesFactory.CreateCylinder(item.Radius, item.Axis, GetMaterial(Colors.Blue));
+            var x = _shapesFactory.CreateCylinder(item.Radius, item.Direction, GetMaterial(Colors.Blue));
             _teamBlue.Add(x);
             _teamBlueitems.Children.Add(x);
             _model3dGroup.Children.Add(_teamBlueitems);
@@ -368,15 +356,11 @@ public class MainViewModel : ObservableObject
         foreach (var item in _world.TeamRed)
         {
 
-            var x = _shapesFactory.CreateCylinder(item.Radius, item.Axis, GetMaterial(Colors.Red));
+            var x = _shapesFactory.CreateCylinder(item.Radius, item.Direction, GetMaterial(Colors.Red));
             _teamRed.Add(x);
             _teamReditems.Children.Add(x);
             _model3dGroup.Children.Add(_teamReditems);
         }
-
-        //InitPlayers();
-        
-       
     }
 
 
