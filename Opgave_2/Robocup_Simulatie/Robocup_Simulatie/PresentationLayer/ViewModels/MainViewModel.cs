@@ -25,11 +25,13 @@ public class MainViewModel : ObservableObject
     public ProjectionCamera Camera { get; private set; }
     private ProjectionCamera _projectitonCamera;
     private PerspectiveCamera _perspectiveCamera;
+    TimeSpan interval = TimeSpan.FromMilliseconds(1);
 
     private int _checker = 0;
     private readonly PeriodicTimer _timer = new(TimeSpan.FromMilliseconds(10));
-    private int teller = 0;
-    
+
+    private CancellationTokenSource _tokenSource = null;
+    private CancellationToken token;
 
     private string _title = "WpfApp (MVVM)";
 
@@ -37,7 +39,7 @@ public class MainViewModel : ObservableObject
     private int _currentTime = 120;
     private DateTime _startTime;
     private DateTime _endTime;
-    private TimeSpan _matchTime = new TimeSpan(0,2,0);
+    private TimeSpan _matchTime = new TimeSpan(0,0,30);
     private PeriodicTimer? _gametimer;
 
     public string Title
@@ -47,7 +49,6 @@ public class MainViewModel : ObservableObject
     }
 
     private readonly Model3DGroup _model3dGroup = new();
-    private readonly Model3DGroup _itemsGroup = new();
     private readonly Model3DGroup _axesGroup = new();
 
     private readonly List<GeometryModel3D> _teamBlue = new();
@@ -61,7 +62,6 @@ public class MainViewModel : ObservableObject
 
     public String CurrentTime { get; set; }
     public string Time => DateTime.Now.ToLongTimeString();
-    private DateTime _elaspedTime;
     private TimeSpan _pauzetime;
     public IRelayCommand<MouseWheelEventArgs> ZoomCommand { get; private set; }
     public IRelayCommand<Vector> ControlByMouseCommand { get; private set; }
@@ -108,11 +108,11 @@ public class MainViewModel : ObservableObject
 
     public bool AantalSpelersisEnabled { get; set; }
 
-public MainViewModel(IWorld logic, ISphericalCameraController cameraController, IShapesFactory shapesFactory)
+    public MainViewModel(IWorld logic, ISphericalCameraController cameraController, IShapesFactory shapesFactory)
     {
-        CurrentTime = String.Format("0{0}:{1}", 120 / 60, 120 % 60);
-        AantalSpelersisEnabled = true;
-        _world = logic;
+        
+        BeginFilters();
+         _world = logic;
         _cameraController = cameraController;
         _shapesFactory = shapesFactory;
 
@@ -120,12 +120,15 @@ public MainViewModel(IWorld logic, ISphericalCameraController cameraController, 
         Camerachoice();
         Init3DPresentation();
         InitPresentation();
-        
+        _ = Animate();
+
 
 
         ZoomCommand = new RelayCommand<MouseWheelEventArgs>(ZoomByMouse);
         ControlByMouseCommand = new RelayCommand<Vector>(ControlByMouse);
-        _ = Animate();
+        //CancellationToken token = _tokenSource.Token;
+
+       
 
         PlayCommand = new RelayCommand(StartGame, () => !_playing);
         PauseCommand = new RelayCommand(PauseGame, () => _playing);
@@ -134,64 +137,103 @@ public MainViewModel(IWorld logic, ISphericalCameraController cameraController, 
 
     }
 
+    private void BeginFilters()
+    {
+        CurrentTime = String.Format("0{0}:{1}", 120 / 60, 120 % 60);
+        AantalSpelersisEnabled = true;
+        ScoreTeamOne = 0;
+        ScoreTeamTwo = 0;
+
+    }
+
     public async Task Animate()
     {
-        while (true)
-        {
-            UpdateWorldDisplay();
-            if (_playing)
+       /* while (!_tokenSource.IsCancellationRequested)
+        {*/
+            while (true)
             {
-                if(DateTime.Now >=_endTime)
+                UpdateWorldDisplay();
+                if (_playing)
                 {
-                    _currentTime = 0;
-                    _playing = false;
+                    if (DateTime.Now >= _endTime)
+                    {
+                        _currentTime = 0;
+                        _playing = false;
+                    }
+                    CurrentTime = String.Format("{0:mm}:{0:ss}", _endTime - DateTime.Now);
+                    OnPropertyChanged(nameof(CurrentTime));
                 }
-                CurrentTime = String.Format("{0:mm}:{0:ss}", _endTime - DateTime.Now);
-                OnPropertyChanged(nameof(CurrentTime));
+
+                await _timer.WaitForNextTickAsync();
             }
-            
-            await _timer.WaitForNextTickAsync();
-        }
+       // }
     }
+    
 
     private async void StartGame()
     {
-       // _world.Start();
-        _playing = true;
-        AantalSpelersisEnabled = false;
-        UpdateUiCommandsState();
-        _gametimer = new(TimeSpan.FromMilliseconds(1));
-        if (_pauzetime.Seconds == 0)
-        {
-            
-            _startTime = DateTime.Now;
-            _endTime = _startTime.Add(_matchTime);
-            OnPropertyChanged(nameof(AantalSpelersisEnabled));
-            _world.CreateItems();
-            InitItemGeometries();
-            
-        }
-        else
-        {
-            _endTime = DateTime.Now.Add(_pauzetime);
-        }
-       
-        while (_playing && await _gametimer.WaitForNextTickAsync())
-        {
-            _world?.MovePlayers();
-            //Debug.WriteLine(_world.TeamBlue[0].Position - _world.Ball.Position);
-            if ((_world != null) && (_currentTime <= 0)) PauseGame();
+          /*  _tokenSource?.Dispose();
+            _tokenSource = new CancellationTokenSource();
+            token = _tokenSource.Token;
+            Task.Run(() => Animate(), token);*/
+            _playing = true;
+            AantalSpelersisEnabled = false;
+            UpdateUiCommandsState();
+            _gametimer = new(TimeSpan.FromMilliseconds(1));
+            if (_pauzetime.Seconds == 0)
+            {
 
-        }
+                _startTime = DateTime.Now;
+                _endTime = _startTime.Add(_matchTime);
+                OnPropertyChanged(nameof(AantalSpelersisEnabled));
+                _world.CreateItems();
+                InitItemGeometries();
+
+            }
+            else
+            {
+                _endTime = DateTime.Now.Add(_pauzetime);
+            }
+
+            while (_playing && await _gametimer.WaitForNextTickAsync())
+            {
+            /* var previousTime = DateTime.Now;
+             var ellapsedTime = (DateTime.Now - previousTime);
+             interval.Add(TimeSpan.FromMilliseconds(1));
+             _world?.MovePlayers(ellapsedTime);*/
+
+            _world?.StartMove();
+                if ((_world != null) && (_currentTime <= 0)) PauseGame();
+
+            }
+
+        
+        
     }
 
     private void PauseGame()
     {
-        _pauzetime = _endTime.Subtract(DateTime.Now);
-        Debug.WriteLine("remain "+ _pauzetime);
+        if(_currentTime > 0)
+        {
+            _pauzetime = _endTime.Subtract(DateTime.Now);
+        }
+        else
+        {
+            _pauzetime = new TimeSpan(0);
+            Debug.WriteLine(_pauzetime);
+            _currentTime = 120;
+            _world.TeamBlue.Clear();
+            _world.TeamRed.Clear();
+            BeginFilters();
+            OnPropertyChanged(nameof(AantalSpelersisEnabled));
+            OnPropertyChanged(nameof(CurrentTime));
+          
+        }
+        
+        _tokenSource?.Cancel();
         _gametimer?.Dispose();
         _world?.Stop();
-        AantalSpelersisEnabled = true;
+       // AantalSpelersisEnabled = true;
         _playing = false;
         UpdateUiCommandsState();
     }

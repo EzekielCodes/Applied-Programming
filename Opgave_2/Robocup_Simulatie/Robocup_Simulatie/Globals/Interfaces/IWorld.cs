@@ -23,9 +23,11 @@ public interface IWorld
 
     void Stop();
 
-    void MovePlayers();
+    
 
     void CreateItems();
 
     void CreateBall();
+
+    void StartMove();
 }

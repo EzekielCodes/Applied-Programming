@@ -16,5 +16,7 @@ public interface IItem3D
 
 
         public Color Color { get; }
-        Vector3D Speed { get; set; }
+        double Speed { get; set; }
+
+    void Updatepostion(Point3D ball, TimeSpan interval);
 }

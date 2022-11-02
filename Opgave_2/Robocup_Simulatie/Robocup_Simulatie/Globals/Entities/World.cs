@@ -32,6 +32,10 @@ public class World : IWorld
     public int GoalWidth => 150;
     private readonly int _playerRadius = 20;
 
+    private Point3D _ballPosition;
+
+    private CancellationTokenSource? _tokenSource;
+
 
     public int AantalSpelers
     {
@@ -68,14 +72,16 @@ public class World : IWorld
     private void CreatePlayers(int aantal)
     {
         _arrayCheckPoint = new Point3D[aantal];
+        double speed = 0;
+        double versnelling = 3;
         for (int i = 0; i < aantal; i++)
         {
-            TeamRed.Add(new Players(GenerateRandomPoint(i,true), _playerRadius, axis: new(0, 20, 0), Colors.Red));
+            TeamRed.Add(new Players(GenerateRandomPoint(i,true), _playerRadius, speed, versnelling, axis: new(0, 20, 0), Colors.Red));
             
         }
         for (int i = 0; i < aantal; i++)
         {
-            TeamBlue.Add(new Players(GenerateRandomPoint(i, false), _playerRadius, axis: new(0, 20, 0), Colors.Blue));
+            TeamBlue.Add(new Players(GenerateRandomPoint(i, false), _playerRadius, speed, versnelling, axis: new(0, 20, 0), Colors.Blue));
         }
     }
 
@@ -107,17 +113,34 @@ public class World : IWorld
         return point;
     }
 
-    public void MovePlayers()
+
+    public void StartMove()
     {
-        for (int i = 0; i < TeamBlue.Count; i++)
+        _tokenSource?.Dispose();
+        _tokenSource = new CancellationTokenSource();
+        var token = _tokenSource.Token;
+        Task.Run(() => ExecSimulatieLoop(token), token);
+
+    }
+
+    public void ExecSimulatieLoop(CancellationToken token)
+    {
+        DateTime previousTime = DateTime.Now;
+        while (!token.IsCancellationRequested)
         {
-            TeamRed[i].Position = new Point3D(TeamRed[i].Position.X - 0.5, 0, TeamRed[i].Position.Z - 0.5);
-            TeamBlue[i].Position = new Point3D(TeamBlue[i].Position.X + 0.5, 0, TeamBlue[i].Position.Z + 0.5);
-
-
-
-
+            var ellapsedTime = DateTime.Now - previousTime;
+            _ballPosition = Ball.Position;
+            for (int i = 0; i < TeamBlue.Count; i++)
+            {
+                TeamBlue[i].Updatepostion(_ballPosition, ellapsedTime);
+                TeamRed[i].Updatepostion(_ballPosition, ellapsedTime);
+            }
         }
+    }
+
+    public void StopMove()
+    {
+        _tokenSource?.Cancel();
     }
 
     public void Stop()
