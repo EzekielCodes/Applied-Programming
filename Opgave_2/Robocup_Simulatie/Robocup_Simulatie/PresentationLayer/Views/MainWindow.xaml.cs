@@ -1,6 +1,8 @@
 ﻿using PresentationLayer.ViewModels;
+using System;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace PresentationLayer.Views;
 public partial class MainWindow : Window
@@ -12,8 +14,14 @@ public partial class MainWindow : Window
     public MainWindow(MainViewModel viewModel)
     {
         _viewModel = viewModel;
-        DataContext = _viewModel;
+        DataContext = _viewModel;   
         InitializeComponent();
+        CompositionTarget.Rendering += UpdateContent;
+    }
+
+    private void UpdateContent(object? sender, EventArgs e)
+    {
+        _viewModel.UpdateWorldDisplay();
     }
 
     private void ViewPortMouseDown(object sender, MouseButtonEventArgs e)

@@ -45,15 +45,11 @@ public record class Players : IItem3D
     {
         Vector3D direction = this.Position - ball;
         direction.Normalize();
-        this.Position -= (direction * 1 * interval.TotalSeconds);
-        Speed = this.Versnelling + interval.TotalSeconds;
-        if (Speed < 1) Speed = 1;
-        this.Speed = Speed;
-       /* Position += Speed * interval.TotalSeconds;
-        Speed += Versnelling * interval.TotalSeconds;
-        
-        Versnelling = Speed / interval.TotalSeconds;*/
-        
+        this.Position -= (direction * (Speed / 1000)* interval.TotalSeconds);
+        Speed = (this.Versnelling / 1000) + interval.TotalSeconds;
+        //this.Versnelling = this.Speed / interval.TotalSeconds;
+        if (Speed > 3) Speed = 0.01;
+        this.Speed = Speed;        
         
     }
 }

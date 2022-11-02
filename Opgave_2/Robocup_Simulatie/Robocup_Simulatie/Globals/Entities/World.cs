@@ -35,6 +35,7 @@ public class World : IWorld
     private Point3D _ballPosition;
 
     private CancellationTokenSource? _tokenSource;
+    private CancellationToken token;
 
 
     public int AantalSpelers
@@ -73,7 +74,7 @@ public class World : IWorld
     {
         _arrayCheckPoint = new Point3D[aantal];
         double speed = 0;
-        double versnelling = 3;
+        double versnelling = 0.3;
         for (int i = 0; i < aantal; i++)
         {
             TeamRed.Add(new Players(GenerateRandomPoint(i,true), _playerRadius, speed, versnelling, axis: new(0, 20, 0), Colors.Red));
@@ -118,12 +119,12 @@ public class World : IWorld
     {
         _tokenSource?.Dispose();
         _tokenSource = new CancellationTokenSource();
-        var token = _tokenSource.Token;
-        Task.Run(() => ExecSimulatieLoop(token), token);
+        token = _tokenSource.Token;
+        Task.Run(() => ExecSimulatieLoop(), token);
 
     }
 
-    public void ExecSimulatieLoop(CancellationToken token)
+    public void ExecSimulatieLoop()
     {
         DateTime previousTime = DateTime.Now;
         while (!token.IsCancellationRequested)

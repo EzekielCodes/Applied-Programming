@@ -25,13 +25,9 @@ public class MainViewModel : ObservableObject
     public ProjectionCamera Camera { get; private set; }
     private ProjectionCamera _projectitonCamera;
     private PerspectiveCamera _perspectiveCamera;
-    TimeSpan interval = TimeSpan.FromMilliseconds(1);
 
     private int _checker = 0;
     private readonly PeriodicTimer _timer = new(TimeSpan.FromMilliseconds(10));
-
-    private CancellationTokenSource _tokenSource = null;
-    private CancellationToken token;
 
     private string _title = "WpfApp (MVVM)";
 
@@ -39,7 +35,7 @@ public class MainViewModel : ObservableObject
     private int _currentTime = 120;
     private DateTime _startTime;
     private DateTime _endTime;
-    private TimeSpan _matchTime = new TimeSpan(0,0,30);
+    private TimeSpan _matchTime = new TimeSpan(0,2,0);
     private PeriodicTimer? _gametimer;
 
     public string Title
@@ -120,14 +116,12 @@ public class MainViewModel : ObservableObject
         Camerachoice();
         Init3DPresentation();
         InitPresentation();
-        _ = Animate();
+        //_ = Animate();
 
 
 
         ZoomCommand = new RelayCommand<MouseWheelEventArgs>(ZoomByMouse);
         ControlByMouseCommand = new RelayCommand<Vector>(ControlByMouse);
-        //CancellationToken token = _tokenSource.Token;
-
        
 
         PlayCommand = new RelayCommand(StartGame, () => !_playing);
@@ -197,12 +191,8 @@ public class MainViewModel : ObservableObject
 
             while (_playing && await _gametimer.WaitForNextTickAsync())
             {
-            /* var previousTime = DateTime.Now;
-             var ellapsedTime = (DateTime.Now - previousTime);
-             interval.Add(TimeSpan.FromMilliseconds(1));
-             _world?.MovePlayers(ellapsedTime);*/
 
-            _world?.StartMove();
+                _world?.StartMove();
                 if ((_world != null) && (_currentTime <= 0)) PauseGame();
 
             }
@@ -230,7 +220,6 @@ public class MainViewModel : ObservableObject
           
         }
         
-        _tokenSource?.Cancel();
         _gametimer?.Dispose();
         _world?.Stop();
        // AantalSpelersisEnabled = true;
@@ -246,9 +235,18 @@ public class MainViewModel : ObservableObject
 
     }
 
-    private void UpdateWorldDisplay()
+    public void UpdateWorldDisplay()
     {
-        
+        if (_playing)
+        {
+            if (DateTime.Now >= _endTime)
+            {
+                _currentTime = 0;
+                _playing = false;
+            }
+            CurrentTime = String.Format("{0:mm}:{0:ss}", _endTime - DateTime.Now);
+            OnPropertyChanged(nameof(CurrentTime));
+        }
         var itemTransformBall = new Transform3DGroup();
         itemTransformBall.Children.Add(new ScaleTransform3D(_world.Ball.Scale, _world.Ball.Scale, _world.Ball.Scale));
         itemTransformBall.Children.Add(new TranslateTransform3D(_world.Ball.Position - _world.Origin));
