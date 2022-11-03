@@ -19,7 +19,7 @@ using Wpf3dTools.Interfaces;
 namespace PresentationLayer.ViewModels;
 public class MainViewModel : ObservableObject
 {
-    private readonly IWorld _world;
+    private readonly ILogic _logic;
     private readonly ISphericalCameraController _cameraController;
     private readonly IShapesFactory _shapesFactory;
     public ProjectionCamera Camera { get; private set; }
@@ -66,15 +66,29 @@ public class MainViewModel : ObservableObject
 
     public int AantalSpelers
     {
-        get => _world?.AantalSpelers ?? 0;
+        get => _logic?.AantalSpelers ?? 0;
         set
         {
-            if (_world != null) _world.AantalSpelers = value;
+            if (_logic != null) _logic.AantalSpelers = value;
         }
     }
 
-    public int ScoreTeamTwo { get; set; }
-    public int ScoreTeamOne { get; set; }
+    public int ScoreTeamTwo 
+    {
+        get => _logic.ScoreTeamTwo;
+        set
+        {
+            if(_logic != null) _logic.ScoreTeamTwo = value;
+        }
+    }
+    public int ScoreTeamOne
+    {
+        get => _logic.ScoreTeamOne;
+        set
+        {
+            if (_logic != null) _logic.ScoreTeamOne= value;
+        }
+    }
 
     public bool? ShowAxes
     {
@@ -102,11 +116,11 @@ public class MainViewModel : ObservableObject
 
     public bool AantalSpelersisEnabled { get; set; }
 
-    public MainViewModel(IWorld logic, ISphericalCameraController cameraController, IShapesFactory shapesFactory)
+    public MainViewModel(ILogic logic, ISphericalCameraController cameraController, IShapesFactory shapesFactory)
     {
         
         BeginFilters();
-         _world = logic;
+         _logic = logic;
         _cameraController = cameraController;
         _shapesFactory = shapesFactory;
 
@@ -174,7 +188,7 @@ public class MainViewModel : ObservableObject
             _startTime = DateTime.Now;
             _endTime = _startTime.Add(_matchTime);
             OnPropertyChanged(nameof(AantalSpelersisEnabled));
-            _world.CreateItems();
+            _logic.CreateItems();
             InitItemGeometries();
 
         }
@@ -186,8 +200,8 @@ public class MainViewModel : ObservableObject
         while (_playing && await _gametimer.WaitForNextTickAsync())
         {
 
-            _world?.StartMove();
-            if ((_world != null) && (_currentTime <= 0)) PauseGame();
+            _logic?.StartMoveAsync();
+            if ((_logic != null) && (_currentTime <= 0)) PauseGame();
 
         }   
     }
@@ -203,8 +217,8 @@ public class MainViewModel : ObservableObject
             _pauzetime = new TimeSpan(0);
             Debug.WriteLine(_pauzetime);
             _currentTime = 120;
-            _world.TeamBlue.Clear();
-            _world.TeamRed.Clear();
+            _logic.TeamBlue.Clear();
+            _logic.TeamRed.Clear();
             BeginFilters();
             OnPropertyChanged(nameof(AantalSpelersisEnabled));
             OnPropertyChanged(nameof(CurrentTime));
@@ -212,7 +226,7 @@ public class MainViewModel : ObservableObject
         }
         
         _gametimer?.Dispose();
-        _world?.Stop();
+        _logic?.StopMove();
        // AantalSpelersisEnabled = true;
         _playing = false;
         UpdateUiCommandsState();
@@ -236,27 +250,29 @@ public class MainViewModel : ObservableObject
                 _playing = false;
             }
             CurrentTime = String.Format("{0:mm}:{0:ss}", _endTime - DateTime.Now);
+            OnPropertyChanged(nameof(ScoreTeamTwo));
+            OnPropertyChanged(nameof(ScoreTeamOne));
             OnPropertyChanged(nameof(CurrentTime));
         }
         var itemTransformBall = new Transform3DGroup();
-        itemTransformBall.Children.Add(new ScaleTransform3D(_world.Ball.Scale, _world.Ball.Scale, _world.Ball.Scale));
-        itemTransformBall.Children.Add(new TranslateTransform3D(_world.Ball.Position - _world.Origin));
+        itemTransformBall.Children.Add(new ScaleTransform3D(_logic.Ball.Scale, _logic.Ball.Scale, _logic.Ball.Scale));
+        itemTransformBall.Children.Add(new TranslateTransform3D(_logic.Ball.Position - _logic.Origin));
         _ball.Transform = itemTransformBall;
       
 
         for (int i = 0; i < _teamBlue.Count; i++)
         {
             var itemTransform = new Transform3DGroup();
-            itemTransform.Children.Add(new ScaleTransform3D(_world.TeamBlue[i].Scale, _world.TeamBlue[i].Scale, _world.TeamBlue[i].Scale));
-            itemTransform.Children.Add(new TranslateTransform3D(_world.TeamBlue[i].Position - _world.Origin));
+            itemTransform.Children.Add(new ScaleTransform3D(_logic.TeamBlue[i].Scale, _logic.TeamBlue[i].Scale, _logic.TeamBlue[i].Scale));
+            itemTransform.Children.Add(new TranslateTransform3D(_logic.TeamBlue[i].Position - _logic.Origin));
             _teamBlue[i].Transform = itemTransform;
         };
 
         for (int i = 0; i < _teamRed.Count; i++)
         {
             var itemTransform = new Transform3DGroup();
-            itemTransform.Children.Add(new ScaleTransform3D(_world.TeamRed[i].Scale, _world.TeamRed[i].Scale, _world.TeamRed[i].Scale));
-            itemTransform.Children.Add(new TranslateTransform3D(_world.TeamRed[i].Position - _world.Origin));
+            itemTransform.Children.Add(new ScaleTransform3D(_logic.TeamRed[i].Scale, _logic.TeamRed[i].Scale, _logic.TeamRed[i].Scale));
+            itemTransform.Children.Add(new TranslateTransform3D(_logic.TeamRed[i].Position - _logic.Origin));
             _teamRed[i].Transform = itemTransform;
         };
 
@@ -287,7 +303,7 @@ public class MainViewModel : ObservableObject
     private void Cameraaanmaken()
     {
         _projectitonCamera = _cameraController.Camera;
-        _perspectiveCamera = new PerspectiveCamera(new Point3D(_world.Origin.X, 500, _world.Origin.Z), new Vector3D(0, -90, -1), new Vector3D(0, 1, 0), 100);
+        _perspectiveCamera = new PerspectiveCamera(new Point3D(_logic.Origin.X, 500, _logic.Origin.Z), new Vector3D(0, -90, -1), new Vector3D(0, 1, 0), 100);
     }
 
     private void Camerachoice()
@@ -309,8 +325,8 @@ public class MainViewModel : ObservableObject
 
     private void SetupCamera()
     {
-        double l1 = (_world.Bounds.p1 - _world.Origin).Length;
-        double l2 = (_world.Bounds.p2 - _world.Origin).Length;
+        double l1 = (_logic.Bounds.p1 - _logic.Origin).Length;
+        double l2 = (_logic.Bounds.p2 - _logic.Origin).Length;
         double radius = 2.3 * Math.Max(l1, l2);
         _cameraController.PositionCamera(radius, Math.PI / 10, 2.0 * Math.PI / 5);
     }
@@ -345,7 +361,7 @@ public class MainViewModel : ObservableObject
 
     private void InitItemGeometries()
     {
-        foreach (var item in _world.TeamBlue)
+        foreach (var item in _logic.TeamBlue)
         {
             var x = _shapesFactory.CreateCylinder(item.Radius, item.Direction, GetMaterial(Colors.Blue));
             _teamBlue.Add(x);
@@ -353,7 +369,7 @@ public class MainViewModel : ObservableObject
             _model3dGroup.Children.Add(_teamBlueitems);
         }
 
-        foreach (var item in _world.TeamRed)
+        foreach (var item in _logic.TeamRed)
         {
 
             var x = _shapesFactory.CreateCylinder(item.Radius, item.Direction, GetMaterial(Colors.Red));
@@ -366,35 +382,35 @@ public class MainViewModel : ObservableObject
 
     private void InitPresentation()
     {
-        _world.CreateBall();
+        _logic.CreateBall();
         //terrain aanmaken
         var terrain = _shapesFactory.CreateParallelogram
             (
-                side1: new Vector3D(0, 0, _world.FieldWidth),
-                side2: new Vector3D(_world.FieldLength, 0, 0),
+                side1: new Vector3D(0, 0, _logic.FieldWidth),
+                side2: new Vector3D(_logic.FieldLength, 0, 0),
                 materials: GetMaterial(Colors.LightGreen),
                 backMaterials: GetMaterial(Colors.Green)
 
             );
 
-        terrain.Transform = new TranslateTransform3D(new Point3D(- _world.FieldLength / 2, 0, -_world.FieldWidth/2) -new Point3D());
+        terrain.Transform = new TranslateTransform3D(new Point3D(- _logic.FieldLength / 2, 0, -_logic.FieldWidth/2) -new Point3D());
         Visual3dContent.Children.Add(terrain);
 
         //create goals
-        var goalBlue = _shapesFactory.CreateBeam(-20, 100, _world.GoalWidth, GetMaterial(Colors.Brown));
-        goalBlue.Transform = new TranslateTransform3D(new Point3D((-_world.FieldLength / 2) , 0, _world.GoalWidth/2) - new Point3D());
+        var goalBlue = _shapesFactory.CreateBeam(-20, 100, _logic.GoalWidth, GetMaterial(Colors.Brown));
+        goalBlue.Transform = new TranslateTransform3D(new Point3D((-_logic.FieldLength / 2) , 0, _logic.GoalWidth/2) - new Point3D());
         Visual3dContent.Children.Add(goalBlue);
 
-        var goalRed = _shapesFactory.CreateBeam(20, 100, _world.GoalWidth, GetMaterial(Colors.Blue));
-        goalRed.Transform = new TranslateTransform3D(new Point3D((_world.FieldLength / 2) , 0, _world.GoalWidth/2) - new Point3D());
+        var goalRed = _shapesFactory.CreateBeam(20, 100, _logic.GoalWidth, GetMaterial(Colors.Blue));
+        goalRed.Transform = new TranslateTransform3D(new Point3D((_logic.FieldLength / 2) , 0, _logic.GoalWidth/2) - new Point3D());
         Visual3dContent.Children.Add(goalRed);
 
         //create walls
         var wallMesh = new MeshGeometry3D();
-        _shapesFactory.AddParalellogramToMesh(wallMesh, new Point3D(- _world.FieldLength / 2, 0, -_world.FieldWidth/ 2), new Vector3D(0, 20, 0), new Vector3D(_world.FieldLength, 0, 0));
-        _shapesFactory.AddParalellogramToMesh(wallMesh, new Point3D(- _world.FieldLength / 2, 0, _world.FieldWidth / 2), new Vector3D(0, 20, 0), new Vector3D(0, 0, - _world.FieldWidth));
-        _shapesFactory.AddParalellogramToMesh(wallMesh, new Point3D(-_world.FieldLength / 2, 0, _world.FieldWidth / 2), new Vector3D(0, 20, 0), new Vector3D(_world.FieldLength, 0, 0));
-        _shapesFactory.AddParalellogramToMesh(wallMesh, new Point3D(_world.FieldLength / 2, 0, - _world.FieldWidth / 2), new Vector3D(0, 20, 0), new Vector3D(0, 0,  _world.FieldWidth));
+        _shapesFactory.AddParalellogramToMesh(wallMesh, new Point3D(- _logic.FieldLength / 2, 0, -_logic.FieldWidth/ 2), new Vector3D(0, 20, 0), new Vector3D(_logic.FieldLength, 0, 0));
+        _shapesFactory.AddParalellogramToMesh(wallMesh, new Point3D(- _logic.FieldLength / 2, 0, _logic.FieldWidth / 2), new Vector3D(0, 20, 0), new Vector3D(0, 0, - _logic.FieldWidth));
+        _shapesFactory.AddParalellogramToMesh(wallMesh, new Point3D(-_logic.FieldLength / 2, 0, _logic.FieldWidth / 2), new Vector3D(0, 20, 0), new Vector3D(_logic.FieldLength, 0, 0));
+        _shapesFactory.AddParalellogramToMesh(wallMesh, new Point3D(_logic.FieldLength / 2, 0, - _logic.FieldWidth / 2), new Vector3D(0, 20, 0), new Vector3D(0, 0,  _logic.FieldWidth));
 
         var walls = new GeometryModel3D(wallMesh, GetMaterial(Colors.Gold));
         walls.BackMaterial = GetMaterial(Colors.Gold);
@@ -416,10 +432,10 @@ public class MainViewModel : ObservableObject
 
     private void CreateAxesGroup()
     {
-        double xLength = Math.Abs(_world.Bounds.p2.X - _world.Bounds.p1.X) / 2;
-        double yLength = Math.Abs(_world.Bounds.p2.Y - _world.Bounds.p1.Y) / 2;
-        double zLength = Math.Abs(_world.Bounds.p2.Z - _world.Bounds.p1.Z) / 2;
-        double thickness = (_world.Bounds.p2 - _world.Bounds.p1).Length / 500;
+        double xLength = Math.Abs(_logic.Bounds.p2.X - _logic.Bounds.p1.X) / 2;
+        double yLength = Math.Abs(_logic.Bounds.p2.Y - _logic.Bounds.p1.Y) / 2;
+        double zLength = Math.Abs(_logic.Bounds.p2.Z - _logic.Bounds.p1.Z) / 2;
+        double thickness = (_logic.Bounds.p2 - _logic.Bounds.p1).Length / 500;
         _axesGroup.Children.Add(_shapesFactory.CreateLine(new Point3D(xLength, 0, 0), new Point3D(0, 0, 0), thickness, Brushes.Red));
         _axesGroup.Children.Add(_shapesFactory.CreateLine(new Point3D(0, yLength, 0), new Point3D(0, 0, 0), thickness, Brushes.Green));
         _axesGroup.Children.Add(_shapesFactory.CreateLine(new Point3D(0, 0, zLength), new Point3D(0, 0, 0), thickness, Brushes.Blue));

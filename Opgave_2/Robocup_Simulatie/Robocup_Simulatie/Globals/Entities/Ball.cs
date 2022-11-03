@@ -17,7 +17,7 @@ public record class Ball : IBall
 
     public Point3D Position { get; set; }
 
-    public static double Radius = 0.1;
+    public static double Radius = 10;
 
     public double RollingResistanceCoeffienct
     {

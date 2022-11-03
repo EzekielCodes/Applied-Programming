@@ -2,7 +2,7 @@
 using System.Windows.Media.Media3D;
 
 namespace Globals.Interfaces;
-public interface IWorld
+public interface ILogic
 {
     (Point3D p1, Point3D p2) Bounds { get; }
     Point3D Origin { get; }
@@ -15,6 +15,9 @@ public interface IWorld
 
     int AantalSpelers { get; set; }
 
+    int ScoreTeamOne { get; set; }
+    int ScoreTeamTwo { get; set; }
+
     List<Players> TeamRed { get; }
     List<Players> TeamBlue { get; }
 
@@ -23,11 +26,11 @@ public interface IWorld
 
     void Stop();
 
-    
+    void StopMove();
 
     void CreateItems();
 
     void CreateBall();
 
-    void StartMove();
+    void StartMoveAsync();
 }

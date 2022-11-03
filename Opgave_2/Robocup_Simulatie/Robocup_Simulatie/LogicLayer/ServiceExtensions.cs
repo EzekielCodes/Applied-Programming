@@ -11,7 +11,7 @@ public static class ServiceExtensions
         // Register the classes that need to be injected as singleton or transient (or scoped).
 
         
-        services.AddSingleton<IWorld, World>();
+        services.AddSingleton<ILogic, GameLogic>();
 
     }
 }

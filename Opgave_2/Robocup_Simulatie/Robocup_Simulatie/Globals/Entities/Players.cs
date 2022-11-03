@@ -49,7 +49,7 @@ public record class Players : IItem3D
         this.Direction = direction;
         direction.Normalize();
 
-        this.Position -= (direction * this.Speed/1000 * interval.TotalMilliseconds);
+        this.Position -= (direction * this.Speed/100 * interval.TotalMilliseconds);
         double x = this.Position.X;
         double z = this.Position.Z;
         this.Speed += this.Versnelling *  interval.TotalMilliseconds;
