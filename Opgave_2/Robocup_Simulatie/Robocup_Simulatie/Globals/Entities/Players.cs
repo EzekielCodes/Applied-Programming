@@ -48,22 +48,14 @@ public record class Players : IItem3D
         direction.Y = 0;
         this.Direction = direction;
         direction.Normalize();
-
-        this.Position -= (direction * this.Speed/100 * interval.TotalMilliseconds);
-        double x = this.Position.X;
-        double z = this.Position.Z;
-        this.Speed += this.Versnelling *  interval.TotalMilliseconds;
-        if (this.Speed > 1) this.Speed = 0.01;
-        Debug.WriteLine(this.Position);
+        this.Position -= (direction * this.Speed/1000 * interval.TotalMilliseconds);
+        this.Speed += this.Versnelling  * interval.TotalMilliseconds;
+        if (this.Speed > 10) this.Speed = 0.1;
         this.Speed = Speed;        
         
     }
 
-    public void MoveObject(Ball ball , TimeSpan interval)
-    {
-        Point3D pos = ball.Position;
-        //Vector3D direction = ball.
-    }
+
 
     
 }

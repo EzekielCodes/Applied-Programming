@@ -43,6 +43,7 @@ public record class Ball : IBall
         Position = position;
         Radius = radius;
         Color = colour;
+        //_rollingDeceleration = 0.1;
     }
 
 }
