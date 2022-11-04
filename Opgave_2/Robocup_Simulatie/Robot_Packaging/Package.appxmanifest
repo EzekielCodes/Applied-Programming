@@ -9,7 +9,7 @@
   <Identity
     Name="6725b553-5c9a-4ecd-a4eb-411d68cc2c2a"
     Publisher="CN=Akindele Ezekiel"
-    Version="1.0.1.0" />
+    Version="1.0.3.0" />
 
   <Properties>
     <DisplayName>Robot_Packaging</DisplayName>

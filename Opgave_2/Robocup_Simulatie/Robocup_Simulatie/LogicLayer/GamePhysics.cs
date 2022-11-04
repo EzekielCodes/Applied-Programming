@@ -58,7 +58,7 @@ public class GamePhysics : IGamePhysics
         double speed = playerOne.Velocity.Length - playerTwo.Velocity.Length;
         var temp = playerOne.Velocity;
         var tempTwo = playerTwo.Velocity;
-        playerOne.Velocity = new Vector3D(-playerOne.Velocity.X,0,playerOne.Velocity.Z) ;
+        playerOne.Velocity = new Vector3D(-playerOne.Velocity.X,0,playerOne.Velocity.Z);
         playerTwo.Velocity = new Vector3D(-playerTwo.Velocity.X, 0, playerTwo.Velocity.Z);
 
     }
