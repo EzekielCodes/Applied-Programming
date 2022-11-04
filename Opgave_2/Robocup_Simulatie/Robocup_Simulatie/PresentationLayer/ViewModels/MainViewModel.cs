@@ -110,7 +110,7 @@ public class MainViewModel : ObservableObject
 
     public IRelayCommand PlayCommand { get; }
     public IRelayCommand PauseCommand { get; }
-    public IRelayCommand RestartCommand { get; }
+    public IRelayCommand ResetCommand { get; }
 
     private bool _playing = false;
 
@@ -138,7 +138,7 @@ public class MainViewModel : ObservableObject
 
         PlayCommand = new RelayCommand(StartGame, () => !_playing);
         PauseCommand = new RelayCommand(PauseGame, () => _playing);
-        RestartCommand = new RelayCommand(RestartGame);
+        ResetCommand = new RelayCommand(ResetGame);
         ChangeviewCommand = new RelayCommand(Camerachoice);
 
     }
@@ -152,33 +152,9 @@ public class MainViewModel : ObservableObject
 
     }
 
-    public async Task Animate()
-    {
-       /* while (!_tokenSource.IsCancellationRequested)
-        {*/
-            while (true)
-            {
-                UpdateWorldDisplay();
-                if (_playing)
-                {
-                    if (DateTime.Now >= _endTime)
-                    {
-                        _currentTime = 0;
-                        _playing = false;
-                    }
-                    CurrentTime = String.Format("{0:mm}:{0:ss}", _endTime - DateTime.Now);
-                    OnPropertyChanged(nameof(CurrentTime));
-                }
-
-                await _timer.WaitForNextTickAsync();
-            }
-       // }
-    }
-    
-
     private async void StartGame()
     {
-        _playing = true;
+        _logic.Playing = true;
         AantalSpelersisEnabled = false;
         UpdateUiCommandsState();
         _gametimer = new(TimeSpan.FromMilliseconds(1));
@@ -196,14 +172,13 @@ public class MainViewModel : ObservableObject
         {
             _endTime = DateTime.Now.Add(_pauzetime);
         }
+        _logic?.StartMoveAsync();
 
-        while (_playing && await _gametimer.WaitForNextTickAsync())
+        while (_logic.Playing && await _gametimer.WaitForNextTickAsync())
         {
-
-            _logic?.StartMoveAsync();
             if ((_logic != null) && (_currentTime <= 0)) PauseGame();
 
-        }   
+        }
     }
 
     private void PauseGame()
@@ -227,16 +202,13 @@ public class MainViewModel : ObservableObject
         
         _gametimer?.Dispose();
         _logic?.StopMove();
-       // AantalSpelersisEnabled = true;
-        _playing = false;
+        _logic.Playing = false;
         UpdateUiCommandsState();
     }
 
-    private void RestartGame()
+    private void ResetGame()
     {
-        var currentExecutablePath = Process.GetCurrentProcess().MainModule.FileName;
-        Process.Start(currentExecutablePath);
-        Application.Current.Shutdown();
+        _logic.ResetPlayers();
 
     }
 

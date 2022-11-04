@@ -52,8 +52,8 @@
 
         <Button
             Grid.Row="5" Grid.Column="2"
-            Content="restart"
-            Command="{Binding RestartCommand}" Margin="20,5,20,5" Grid.ColumnSpan="2"
+            Content="reset"
+            Command="{Binding ResetCommand}" Margin="20,5,20,5" Grid.ColumnSpan="2"
          />
 
         <Button

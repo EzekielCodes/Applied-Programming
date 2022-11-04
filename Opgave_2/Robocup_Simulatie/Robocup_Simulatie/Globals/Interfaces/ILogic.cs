@@ -7,7 +7,7 @@ public interface ILogic
     (Point3D p1, Point3D p2) Bounds { get; }
     Point3D Origin { get; }
     
-
+    bool Playing { get; set; }
     int FieldLength { get; }
 
     int FieldWidth { get; }
@@ -22,9 +22,6 @@ public interface ILogic
     List<Players> TeamBlue { get; }
 
     public Ball Ball { get; set; }
-    void Start();
-
-    void Stop();
 
     void StopMove();
 
@@ -33,4 +30,6 @@ public interface ILogic
     void CreateBall();
 
     void StartMoveAsync();
+
+    void  ResetPlayers();
 }

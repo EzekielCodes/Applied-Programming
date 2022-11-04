@@ -31,8 +31,11 @@
     ``` ExecSimulatieLoop()```
     -   Dit is de functie voor de game simulation Loop hier wordt alles gecheckt zoals collision, movement en doelpunten gemaakt.
 
-         - In deze functie wordt de ```async Task CollisionWithBall(TImespan interval)``` word er constant gechekt als de spelers het ball hebben geraakt door de afstand tussen de 2 objecten te     berekenen(player.position - ball.position).
-
+         - In SimulatieLoop wordt een ```async Task UpdatePosition(Ball,TimeSpan)``` die de positie van de spelers constant update.
+         - In simulatieLoop wordt een ``` async Task MoveObject(ball)``` die constant de positie van de ball update.
+         - In deze functie wordt de ```async Task CollisionWithBall(TImespan)``` word er constant gecheckt als de spelers het ball hebben geraakt door de afstand tussen de 2 objecten te     berekenen(player.position - ball.position).
+         - Er is ook een functie ```collisionWithWall`` word hier constant gechecktals een ball of speler het rand heeft geraakt.
+         - ```ColiisionWithPlayers``` checkt avoor botsing tussen de spelers door de afstand tussen de radius van 2 spelers te controleren
          - In de simulatieLoop wordt er ook constant gekeken als de ball en spelers de rand hebben geraakt. Hiervoor heb ik een functie ``` async Task CollisionWithWall``` gebruikt
          Hier wordt constant gekeken als de ball.X en ball.Z position in de range van de veld nog leggen anders zitten ze tegen de rand.
 
