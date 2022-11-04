@@ -46,7 +46,7 @@ public class GamePhysics : IGamePhysics
         newBallVelocity.Normalize();
         ball.Velocity = newBallVelocity * 3;
         
-        _ = MoveObject(ball, player, interval);
+        //_ = MoveObject(ball, player, interval);
     }
 
     public void CollisionPlayerandPlayer(Players playerOne, Players playerTwo, TimeSpan interval)

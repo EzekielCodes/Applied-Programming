@@ -140,6 +140,7 @@ public class GameLogic : ILogic
             var ellapsedTime = DateTime.Now - previousTime;
             previousTime = DateTime.Now;
             _ballPosition = Ball.Position;
+            _gamePhysics.MoveObject(Ball, null,ellapsedTime);
             for (int i = 0; i < TeamBlue.Count; i++)
             {
                 _ = GoalScored(Ball);
