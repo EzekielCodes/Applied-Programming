@@ -100,14 +100,14 @@ public class GameLogic : ILogic
         var point = new Point3D();
         if (inverse)
         {
-            point.X = _random.Next(-_playerRadius, ((FieldLength / 2)- _playerRadius));
+            point.X = _random.Next(-_playerRadius, (FieldLength / 2)- _playerRadius);
         }
         else
         {
-            point.X = _random.Next(((-FieldLength / 2) + _playerRadius), _playerRadius);
+            point.X = _random.Next((-FieldLength / 2) + _playerRadius, _playerRadius);
         }
         
-        point.Z = _random.Next(((-FieldWidth/2)+ _playerRadius), ((FieldWidth/2)- _playerRadius));
+        point.Z = _random.Next((-FieldWidth/2)+ _playerRadius, (FieldWidth/2)- _playerRadius);
        
         
         if (!_arrayCheckPoint.Contains(point))
@@ -151,11 +151,10 @@ public class GameLogic : ILogic
                 _ = _gamePhysics.MoveObject(Ball, ellapsedTime);
                 for (int i = 0; i < TeamBlue.Count; i++)
                 {
-                    //_gamePhysics.MoveObject(Ball, ellapsedTime);
-                    //+= _gamePhysics.MoveObject(Ball, ellapsedTime);
                     _ = GoalScored(Ball);
                     _ = CollisionWithBall(ellapsedTime);
-                    _ = CollisionWithWall();
+                    _ = CollisionWithWallBall();
+                    _ = CollisonWithWallPlayer();
                     _ = CollisionWithPlayers(ellapsedTime);
                     _ = TeamBlue[i].Updatepostion(_ballPosition, ellapsedTime);
                     _ = TeamRed[i].Updatepostion(_ballPosition, ellapsedTime);
@@ -209,7 +208,7 @@ public class GameLogic : ILogic
             }
         }
     }
-    public async Task CollisionWithWall()
+    public async Task CollisionWithWallBall()
     {
 
         if (Ball.Position.X > 435 && Ball.Velocity.X > 0)
@@ -219,18 +218,22 @@ public class GameLogic : ILogic
         }
         else if (Ball.Position.X < -435 && Ball.Velocity.X < 0 )
         {
-            _gamePhysics.HandleBallCollisionNegatiefX(Ball);
+            _gamePhysics.HandleBallCollisionX(Ball);
         }
         else if (Ball.Position.Z < -285 && Ball.Velocity.Z < 0 )
         {
-            _gamePhysics.HandleBallCollisionNegatiefZ(Ball);
+            _gamePhysics.HandleBallCollisionZ(Ball);
         }
 
         else if (Ball.Position.Z > 285 && Ball.Velocity.Z > 0)
         {
             _gamePhysics.HandleBallCollisionZ(Ball);
         }
+       
+    }
 
+    public async Task CollisonWithWallPlayer()
+    {
         for (int x = 0; x < TeamBlue.Count; x++)
         {
             if (TeamBlue[x].Position.X > 420 && TeamBlue[x].Velocity.X > 0)
