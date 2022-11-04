@@ -111,9 +111,6 @@ public class MainViewModel : ObservableObject
     public IRelayCommand PlayCommand { get; }
     public IRelayCommand PauseCommand { get; }
     public IRelayCommand ResetCommand { get; }
-
-    private bool _playing = false;
-
     public bool AantalSpelersisEnabled { get; set; }
 
     public MainViewModel(ILogic logic, ISphericalCameraController cameraController, IShapesFactory shapesFactory)
@@ -136,8 +133,8 @@ public class MainViewModel : ObservableObject
         ControlByMouseCommand = new RelayCommand<Vector>(ControlByMouse);
        
 
-        PlayCommand = new RelayCommand(StartGame, () => !_playing);
-        PauseCommand = new RelayCommand(PauseGame, () => _playing);
+        PlayCommand = new RelayCommand(StartGame, () => !_logic.Playing);
+        PauseCommand = new RelayCommand(PauseGame, () => _logic.Playing);
         ResetCommand = new RelayCommand(ResetGame);
         ChangeviewCommand = new RelayCommand(Camerachoice);
 
@@ -176,7 +173,7 @@ public class MainViewModel : ObservableObject
 
         while (_logic.Playing && await _gametimer.WaitForNextTickAsync())
         {
-            if ((_logic != null) && (_currentTime <= 0)) PauseGame();
+            if ((_logic != null) && (_currentTime <= 0)) StopGame();
 
         }
     }
@@ -194,6 +191,8 @@ public class MainViewModel : ObservableObject
             _currentTime = 120;
             _logic.TeamBlue.Clear();
             _logic.TeamRed.Clear();
+            _teamBlue.Clear();
+            _teamRed.Clear();
             BeginFilters();
             OnPropertyChanged(nameof(AantalSpelersisEnabled));
             OnPropertyChanged(nameof(CurrentTime));
@@ -202,7 +201,27 @@ public class MainViewModel : ObservableObject
         
         _gametimer?.Dispose();
         _logic?.StopMove();
-        _logic.Playing = false;
+        UpdateUiCommandsState();
+    }
+
+    private void StopGame()
+    {
+        _pauzetime = new TimeSpan(0);
+        _currentTime = 120;
+        _logic.TeamBlue.Clear();
+        _logic.TeamRed.Clear();
+        _teamBlue.Clear();
+        _teamRed.Clear();
+        BeginFilters();
+        OnPropertyChanged(nameof(AantalSpelersisEnabled));
+        OnPropertyChanged(nameof(CurrentTime));
+        _gametimer?.Dispose();
+        _logic?.StopMove();
+        _model3dGroup.Children.Remove(_teamBlueitems);
+        _model3dGroup.Children.Remove(_teamReditems);
+        _teamBlueitems.Children.Clear();
+        _teamBlueitems.Children.Clear();
+        InitItemGeometries();
         UpdateUiCommandsState();
     }
 
@@ -214,46 +233,44 @@ public class MainViewModel : ObservableObject
 
     public void UpdateWorldDisplay()
     {
-        if (_playing)
+        if (_logic.Playing)
         {
+            UpdateUiCommandsState();
             if (DateTime.Now >= _endTime)
             {
                 _currentTime = 0;
-                _playing = false;
+                _logic.StopMove();
+                
             }
             CurrentTime = String.Format("{0:mm}:{0:ss}", _endTime - DateTime.Now);
             OnPropertyChanged(nameof(ScoreTeamTwo));
             OnPropertyChanged(nameof(ScoreTeamOne));
             OnPropertyChanged(nameof(CurrentTime));
+            var itemTransformBall = new Transform3DGroup();
+            itemTransformBall.Children.Add(new ScaleTransform3D(_logic.Ball.Scale, _logic.Ball.Scale, _logic.Ball.Scale));
+            itemTransformBall.Children.Add(new TranslateTransform3D(_logic.Ball.Position - _logic.Origin));
+            _ball.Transform = itemTransformBall;
+
+
+            for (int i = 0; i < _teamBlue.Count; i++)
+            {
+                var itemTransform = new Transform3DGroup();
+                itemTransform.Children.Add(new ScaleTransform3D(_logic.TeamBlue[i].Scale, _logic.TeamBlue[i].Scale, _logic.TeamBlue[i].Scale));
+                itemTransform.Children.Add(new TranslateTransform3D(_logic.TeamBlue[i].Position - _logic.Origin));
+                _teamBlue[i].Transform = itemTransform;
+            };
+
+            for (int i = 0; i < _teamRed.Count; i++)
+            {
+                var itemTransform = new Transform3DGroup();
+                itemTransform.Children.Add(new ScaleTransform3D(_logic.TeamRed[i].Scale, _logic.TeamRed[i].Scale, _logic.TeamRed[i].Scale));
+                itemTransform.Children.Add(new TranslateTransform3D(_logic.TeamRed[i].Position - _logic.Origin));
+                _teamRed[i].Transform = itemTransform;
+            };
+
         }
-        var itemTransformBall = new Transform3DGroup();
-        itemTransformBall.Children.Add(new ScaleTransform3D(_logic.Ball.Scale, _logic.Ball.Scale, _logic.Ball.Scale));
-        itemTransformBall.Children.Add(new TranslateTransform3D(_logic.Ball.Position - _logic.Origin));
-        _ball.Transform = itemTransformBall;
-      
 
-        for (int i = 0; i < _teamBlue.Count; i++)
-        {
-            var itemTransform = new Transform3DGroup();
-            itemTransform.Children.Add(new ScaleTransform3D(_logic.TeamBlue[i].Scale, _logic.TeamBlue[i].Scale, _logic.TeamBlue[i].Scale));
-            itemTransform.Children.Add(new TranslateTransform3D(_logic.TeamBlue[i].Position - _logic.Origin));
-            _teamBlue[i].Transform = itemTransform;
-        };
 
-        for (int i = 0; i < _teamRed.Count; i++)
-        {
-            var itemTransform = new Transform3DGroup();
-            itemTransform.Children.Add(new ScaleTransform3D(_logic.TeamRed[i].Scale, _logic.TeamRed[i].Scale, _logic.TeamRed[i].Scale));
-            itemTransform.Children.Add(new TranslateTransform3D(_logic.TeamRed[i].Position - _logic.Origin));
-            _teamRed[i].Transform = itemTransform;
-        };
-
-       
-    }
-
-    private void NotifyTimeChanged()
-    {
-        OnPropertyChanged(nameof(Time));
     }
 
     private void UpdateUiCommandsState()
@@ -278,6 +295,9 @@ public class MainViewModel : ObservableObject
         _perspectiveCamera = new PerspectiveCamera(new Point3D(_logic.Origin.X, 500, _logic.Origin.Z), new Vector3D(0, -90, -1), new Vector3D(0, 1, 0), 100);
     }
 
+    /// <summary>
+    /// wordt gebruik om een keuze te maken tussen beide cameras
+    /// </summary>
     private void Camerachoice()
     {
         if (_checker == 0)

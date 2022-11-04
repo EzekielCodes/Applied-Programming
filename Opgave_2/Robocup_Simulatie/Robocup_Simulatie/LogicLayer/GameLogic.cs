@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using Globals.Interfaces;
 using LogicLayer;
@@ -9,7 +8,6 @@ public class GameLogic : ILogic
 {
     private readonly IGamePhysics _gamePhysics;
     private const int _worldSize = 1000;
-    private ILogic? _game;
 
     public Ball Ball { get; set; }
     private bool _playing = false;
@@ -34,7 +32,6 @@ public class GameLogic : ILogic
 
     private CancellationTokenSource? _tokenSource;
     private CancellationToken token;
-
 
     public int AantalSpelers
     {
@@ -100,7 +97,7 @@ public class GameLogic : ILogic
 
     private Point3D GenerateRandomPoint(int i, bool inverse)
     {
-        Point3D point = new Point3D();
+        var point = new Point3D();
         if (inverse)
         {
             point.X = _random.Next(-_playerRadius, ((FieldLength / 2)- _playerRadius));
@@ -121,12 +118,8 @@ public class GameLogic : ILogic
         {
             GenerateRandomPoint(i,inverse);
         }
-
-
         return point;
     }
-
-
     public void StartMoveAsync()
     {
         _tokenSource?.Dispose();
@@ -149,36 +142,36 @@ public class GameLogic : ILogic
 
     public  void ExecSimulatieLoop()
     {
-        DateTime previousTime = DateTime.Now;
-        while (!token.IsCancellationRequested)
-        {
-            var ellapsedTime = DateTime.Now - previousTime;
-            previousTime = DateTime.Now;
-            _ballPosition = Ball.Position;
-            _ = _gamePhysics.MoveObject(Ball, ellapsedTime);
-            for (int i = 0; i < TeamBlue.Count; i++)
+        var previousTime = DateTime.Now;
+            while (!token.IsCancellationRequested)
             {
-                //_gamePhysics.MoveObject(Ball, ellapsedTime);
-                //+= _gamePhysics.MoveObject(Ball, ellapsedTime);
-                _ = GoalScored(Ball);
-                _ = CollisionWithBall(ellapsedTime);
-                _ = CollisionWithWall();    
-                _ = CollisionWithPlayers(ellapsedTime);
-                _ = TeamBlue[i].Updatepostion(_ballPosition, ellapsedTime);
-                _ = TeamRed[i].Updatepostion(_ballPosition, ellapsedTime);
+                var ellapsedTime = DateTime.Now - previousTime;
+                previousTime = DateTime.Now;
+                _ballPosition = Ball.Position;
+                _ = _gamePhysics.MoveObject(Ball, ellapsedTime);
+                for (int i = 0; i < TeamBlue.Count; i++)
+                {
+                    //_gamePhysics.MoveObject(Ball, ellapsedTime);
+                    //+= _gamePhysics.MoveObject(Ball, ellapsedTime);
+                    _ = GoalScored(Ball);
+                    _ = CollisionWithBall(ellapsedTime);
+                    _ = CollisionWithWall();
+                    _ = CollisionWithPlayers(ellapsedTime);
+                    _ = TeamBlue[i].Updatepostion(_ballPosition, ellapsedTime);
+                    _ = TeamRed[i].Updatepostion(_ballPosition, ellapsedTime);
+                }
             }
-
-           
-        }
+       
+        
     }
 
     private async Task CollisionWithBall(TimeSpan interval)
     {
         for (int i = 0; i < TeamBlue.Count; i++)
         {
-            Point3D ballPosition = Ball.Position;
-            Vector3D afstandTeamA = TeamBlue[i].Position - ballPosition;
-            Vector3D afstandTeamB = TeamRed[i].Position - ballPosition;
+            var ballPosition = Ball.Position;
+            var afstandTeamA = TeamBlue[i].Position - ballPosition;
+            var afstandTeamB = TeamRed[i].Position - ballPosition;
             if (afstandTeamA.Length <= (TeamBlue[0].Radius + Ball.Radius))
             {
                  _gamePhysics.CollisionBallandPlayer(TeamBlue[i], Ball, interval);
@@ -219,59 +212,59 @@ public class GameLogic : ILogic
     public async Task CollisionWithWall()
     {
 
-        if (Ball.Position.X > 435)
+        if (Ball.Position.X > 435 && Ball.Velocity.X > 0)
         {
             _gamePhysics.HandleBallCollisionX(Ball);
 
         }
-        else if (Ball.Position.X < -435)
+        else if (Ball.Position.X < -435 && Ball.Velocity.X < 0 )
         {
             _gamePhysics.HandleBallCollisionNegatiefX(Ball);
         }
-        else if (Ball.Position.Z < -285)
+        else if (Ball.Position.Z < -285 && Ball.Velocity.Z < 0 )
         {
             _gamePhysics.HandleBallCollisionNegatiefZ(Ball);
         }
 
-        else if (Ball.Position.Z > 285)
+        else if (Ball.Position.Z > 285 && Ball.Velocity.Z > 0)
         {
             _gamePhysics.HandleBallCollisionZ(Ball);
         }
 
         for (int x = 0; x < TeamBlue.Count; x++)
         {
-            if (TeamBlue[x].Position.X > 430)
+            if (TeamBlue[x].Position.X > 420 && TeamBlue[x].Velocity.X > 0)
             {
                 _gamePhysics.HandlePlayerCollisionX(TeamBlue[x]);
             }
-            else if (TeamBlue[x].Position.Z > 260)
+            else if (TeamBlue[x].Position.Z > 260 && TeamBlue[x].Velocity.Z > 0)
             {
                 _gamePhysics.HandlePlayerCollisionZ(TeamBlue[x]);
             }
-            else if (TeamBlue[x].Position.X < -430)
+            else if (TeamBlue[x].Position.X < -420 && TeamBlue[x].Velocity.X < 0)
             {
                 _gamePhysics.HandlePlayerCollisionX(TeamBlue[x]);
             }
-            else if (TeamBlue[x].Position.Z < -290)
+            else if (TeamBlue[x].Position.Z < -260 && TeamBlue[x].Velocity.X < 0)
             {
                 _gamePhysics.HandlePlayerCollisionZ(TeamBlue[x]);
             }
         }
         for (int x = 0; x < TeamBlue.Count; x++)
         {
-            if (TeamRed[x].Position.X > 430)
+            if (TeamRed[x].Position.X > 430 && TeamRed[x].Velocity.X > 0)
             {
                 _gamePhysics.HandlePlayerCollisionX(TeamRed[x]);
             }
-            else if (TeamRed[x].Position.Z > 290)
+            else if (TeamRed[x].Position.Z > 290 && TeamRed[x].Velocity.Z > 0)
             {
                 _gamePhysics.HandlePlayerCollisionZ(TeamRed[x]);
             }
-            else if (TeamRed[x].Position.X < -430)
+            else if (TeamRed[x].Position.X < -430 && TeamRed[x].Velocity.X < 0)
             {
                 _gamePhysics.HandlePlayerCollisionX(TeamRed[x]);
             }
-            else if (TeamRed[x].Position.Z < -290)
+            else if (TeamRed[x].Position.Z < -290 && TeamRed[x].Velocity.Z < 0)
             {
                 _gamePhysics.HandlePlayerCollisionZ(TeamRed[x]);
             }
@@ -317,6 +310,4 @@ public class GameLogic : ILogic
         _tokenSource?.Cancel();
         _playing = false;
     }
-
- 
 }

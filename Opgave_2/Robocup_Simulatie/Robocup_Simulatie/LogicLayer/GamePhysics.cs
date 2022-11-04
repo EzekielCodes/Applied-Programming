@@ -20,21 +20,18 @@ public class GamePhysics : IGamePhysics
     public async Task  MoveObject(Ball ball, TimeSpan interval)
     {
         ball.Position += ball.Velocity * interval.TotalSeconds;
-        Vector3D decelaration = -ball.Velocity;
+        var decelaration = -ball.Velocity;
         decelaration.Normalize();
-        decelaration *= 0.1 * 9.81;
+        decelaration *= 0.1 * 981;
         
-        if(ball.Velocity.Length < 0.981)
+        if(ball.Velocity.Length < 98.1)
         {
             ball.Velocity = new Vector3D(0,0,0);
         }
         else
         {
-            Debug.WriteLine(ball.Velocity.Length);
             ball.Velocity += decelaration * interval.TotalSeconds;
-        }
-
-    }
+        }}
 
     /// <summary>
     /// Deze methode wordt opgeroepen als een collision is tussen de ball en speler
@@ -44,9 +41,9 @@ public class GamePhysics : IGamePhysics
     /// <param name="interval"></param>
     public void CollisionBallandPlayer(Players player, Ball ball, TimeSpan interval)
     {
-        Vector3D newBallVelocity = player.Velocity;
+        var newBallVelocity = player.Velocity;
         newBallVelocity.Normalize();
-        ball.Velocity = newBallVelocity * 40;
+        ball.Velocity = newBallVelocity * 400;
         player.Velocity = newBallVelocity * 0;
     }
 
@@ -59,10 +56,10 @@ public class GamePhysics : IGamePhysics
     public void CollisionPlayerandPlayer(Players playerOne, Players playerTwo, TimeSpan interval)
     {
         double speed = playerOne.Velocity.Length - playerTwo.Velocity.Length;
-        Vector3D temp = playerOne.Velocity;
-        Vector3D tempTwo = playerTwo.Velocity;
-        playerOne.Velocity = new Vector3D(-temp.X,0,temp.Z) ;
-        playerTwo.Velocity = new Vector3D(-tempTwo.X, 0, tempTwo.Z);
+        var temp = playerOne.Velocity;
+        var tempTwo = playerTwo.Velocity;
+        playerOne.Velocity = new Vector3D(-playerOne.Velocity.X,0,playerOne.Velocity.Z) ;
+        playerTwo.Velocity = new Vector3D(-playerTwo.Velocity.X, 0, playerTwo.Velocity.Z);
 
     }
 
@@ -72,7 +69,7 @@ public class GamePhysics : IGamePhysics
     /// <param name="player"></param>
     public void HandlePlayerCollisionX(Players player)
     {
-        Players temp = player;
+        var temp = player;
         player.Velocity = new Vector3D(temp.Velocity.X, 0, -temp.Velocity.Z);
     }
 
@@ -82,7 +79,7 @@ public class GamePhysics : IGamePhysics
     /// <param name="player"></param>
     public void HandlePlayerCollisionZ(Players player)
     {
-        Players temp = player;
+        var temp = player;
         player.Velocity = new Vector3D(-temp.Velocity.X, 0, temp.Velocity.Z);
     }
 
@@ -92,8 +89,8 @@ public class GamePhysics : IGamePhysics
     /// <param name="player"></param>
     public void HandleBallCollisionNegatiefZ(Ball ball)
     {
-        Vector3D change = ball.Velocity;
-        ball.Velocity = new Vector3D(-change.X, 0, change.Z);
+        var change = ball.Velocity;
+        ball.Velocity = new Vector3D(change.X, 0, -change.Z);
     }
     /// <summary>
     /// Deze methode handelt een collision tussen de spelers en Wall
@@ -101,8 +98,8 @@ public class GamePhysics : IGamePhysics
     /// <param name="player"></param>
     public void HandleBallCollisionZ(Ball ball)
     {
-        Vector3D change = ball.Velocity;
-        ball.Velocity = new Vector3D(-change.X, 0, change.Z);
+        var change = ball.Velocity;
+        ball.Velocity = new Vector3D(change.X, 0, -change.Z);
     }
 
     /// <summary>
@@ -111,8 +108,8 @@ public class GamePhysics : IGamePhysics
     /// <param name="player"></param>
     public void HandleBallCollisionNegatiefX(Ball ball)
     {
-        Vector3D change = ball.Velocity;
-        ball.Velocity = new Vector3D(change.X, 0, -change.Z);
+        var change = ball.Velocity;
+        ball.Velocity = new Vector3D(-change.X, 0, change.Z);
     }
 
     /// <summary>
@@ -121,8 +118,6 @@ public class GamePhysics : IGamePhysics
     /// <param name="player"></param
     public void HandleBallCollisionX(Ball ball)
     {
-        Vector3D change = ball.Velocity;
-        ball.Velocity = new Vector3D(change.X, 0, -change.Z);
-    }
-
-}
+        var change = ball.Velocity;
+        ball.Velocity = new Vector3D(-change.X, 0, change.Z);
+    }}

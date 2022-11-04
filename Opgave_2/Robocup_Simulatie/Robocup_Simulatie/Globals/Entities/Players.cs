@@ -59,13 +59,18 @@ public record class Players : IItem3D
     {
         this.Position += this.Velocity * interval.TotalSeconds;
         Velocity += this.Acceleration * interval.TotalSeconds;
-        if(Velocity.Length > 100) Velocity.Normalize();
+        if(Velocity.Length > 100)
+        {
+            _velocity.Normalize();
+            _velocity *= 100;
+        }
+           
 
         //acceleration
         Vector3D direction = ball - this.Position;
         direction.Y = 0;
         direction.Normalize();
-        Acceleration = direction * 40;
+        Acceleration = direction * 300;
         
     }
     

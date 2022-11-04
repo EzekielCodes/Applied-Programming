@@ -1,6 +1,7 @@
-﻿using Globals.Entities;
+﻿
 using Globals.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
+using Globals.Entities;
 
 namespace LogicLayer;
 public static class ServiceExtensions
@@ -12,6 +13,7 @@ public static class ServiceExtensions
 
         
         services.AddSingleton<ILogic, GameLogic>();
+        services.AddSingleton<IGamePhysics, GamePhysics>();
 
     }
 }
