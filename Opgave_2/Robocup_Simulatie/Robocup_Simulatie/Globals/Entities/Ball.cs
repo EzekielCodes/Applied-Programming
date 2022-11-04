@@ -36,13 +36,31 @@ public record class Ball : IBall
     public Color Color { get; }
 
     public int Scale => 10;
+    private Vector3D _accelaration;
 
-    public double MaxSpeed = 0.4;
+    private Vector3D _velocity;
+
+    public Vector3D Velocity
+    {
+        get => _velocity;
+        set => _velocity = value;
+    }
+
+    public Vector3D Acceleration
+    {
+        get => _accelaration;
+        set => _accelaration = value;
+    }
+
+    //double IBall.MaxSpeed => throw new NotImplementedException();
+
+    public double MaxSpeed { get; set; }
     public Ball(Point3D position, double radius, Color colour)
     {
         Position = position;
         Radius = radius;
         Color = colour;
+        MaxSpeed = 0.4;
         //_rollingDeceleration = 0.1;
     }
 

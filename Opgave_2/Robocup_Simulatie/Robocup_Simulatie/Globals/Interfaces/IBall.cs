@@ -10,8 +10,12 @@ public interface IBall
     double RollingResistanceCoeffienct { get; set; }
 
     Double Speed { get; set; }
+    public Vector3D Velocity { get; set; }
+
+    public Vector3D Acceleration { get; set; }
 
     public int Scale { get; }
 
     public Color Color { get; }
+    double MaxSpeed { get; }
 }

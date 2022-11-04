@@ -12,11 +12,15 @@ public interface IItem3D
 {
     public Point3D Position { get; }
 
+    public Vector3D Velocity { get; set; }
+
+    public Vector3D Acceleration { get; set; }
+
     public double Scale { get; }
 
 
     public Color Color { get; }
     double Speed { get; set; }
 
-    void Updatepostion(Point3D ball, TimeSpan interval);
+    Task Updatepostion(Point3D ball, TimeSpan interval);
 }

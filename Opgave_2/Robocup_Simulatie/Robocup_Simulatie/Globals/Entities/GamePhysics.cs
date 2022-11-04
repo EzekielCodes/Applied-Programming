@@ -12,38 +12,54 @@ public class GamePhysics : IGamePhysics
 {
 
 
-    public Point3D MoveObject(Ball ball, Players player, TimeSpan interval)
+    public async Task  MoveObject(Ball ball, Players player, TimeSpan interval)
     {
-        Point3D position = ball.Position;
-        Vector3D direction = player.Direction;
-        direction.Normalize();
-        ball.Position -= direction * ball.Speed   * interval.TotalMilliseconds;
-        ball.Speed -= 0.1/9.81 * interval.TotalMilliseconds;
-        if (ball.Speed < 0) ball.Speed = 0;
-        return position;
+        /* Point3D position = ball.Position;
+         Vector3D direction = player.Direction;
+         direction.Normalize();
+         ball.Position += direction * ball.Speed   * interval.TotalMilliseconds;
+         ball.Speed = 0.1/9.81 * interval.TotalMilliseconds;
+         //if (ball.Speed < 0.4) ball.Speed = 0.4;
+         if (ball.Speed < 0) ball.Speed = 0;
+         //return position;*/
+
+        ball.Position += ball.Velocity * interval.TotalSeconds;
+        Vector3D decelaration = -ball.Velocity;
+        decelaration.Normalize();
+        decelaration *= 0.1 * 9.81;
+        if(ball.Velocity.Length < 0.981)
+        {
+            ball.Velocity = new Vector3D(0,0,0);
+        }
+        else
+        {
+            ball.Velocity += decelaration * interval.TotalSeconds;
+        }
 
     }
 
 
-    public void CollisionBallandPlayer(Players player, Ball ball, TimeSpan interval)
+    public async Task CollisionBallandPlayer(Players player, Ball ball, TimeSpan interval)
     {
         //player.Speed = 0;
-        ball.Direction = player.Direction;
-        ball.Speed = ball.MaxSpeed;
-        ball.Position = MoveObject(ball, player, interval);
+        Vector3D newBallVelocity = player.Velocity;
+        newBallVelocity.Normalize();
+        ball.Velocity = newBallVelocity * 3;
+        
+        _ = MoveObject(ball, player, interval);
     }
 
     public void CollisionPlayerandPlayer(Players playerOne, Players playerTwo, TimeSpan interval)
     {
         
-        double Speed = playerOne.Speed - playerTwo.Speed;
+       /* double Speed = playerOne.Speed - playerTwo.Speed;
         
         Vector3D tempDirection = playerOne.Position - playerTwo.Position;
         tempDirection.Y = 0;
         playerOne.Direction = tempDirection;
         playerOne.Speed -= Speed;
         playerTwo.Direction = -tempDirection;
-        playerTwo.Speed += Speed;
+        playerTwo.Speed += Speed;*/
         //Debug.WriteLine(playerOne.Direction + " 2 " + playerTwo.Direction);
         //MovePlayers(playerOne, playerTwo, tempDirection, interval);
     }
@@ -82,43 +98,92 @@ public class GamePhysics : IGamePhysics
         player.Direction = direction;
     }
 
-    public void HandleBallCollisionNegatiefZ(Ball ball, int x)
-    {   
-        Vector3D normal = (Vector3D)new Point3D(-x, 10, ball.Position.Z);
+    public async Task HandleBallCollisionNegatiefZ(Ball ball, int x)
+    {
+        Debug.WriteLine("ball speed before" + ball.Speed);
+        Vector3D sleep = ball.Direction;
+        sleep.Z = ball.Direction.Z;
+        sleep.Y = 0;
+        sleep.X = -ball.Direction.X;
+        Debug.WriteLine("sleeep" + sleep);
+
+        ball.Direction = sleep;
+        /*Vector3D sleep = ball.Direction;
+        Debug.WriteLine("sleeep" + sleep);
+        Vector3D normal = (Vector3D)new Point3D(ball.Position.Z, 10, x);
         normal.Normalize();
-        ball.Direction += normal;
-        //ball.Direction += normal;
-        Debug.WriteLine("ball-Z " +ball.Position);
+        Debug.WriteLine("ball -Z normal " + normal);
+        Debug.WriteLine("ball -Z direction " + ball.Direction);
+        //ball.Direction = new Vector3D(normal.X, normal.Y, normal.Z);
+        ball.Direction += normal;*/
+        Debug.WriteLine("ball speed after" + ball.Speed);
+        Debug.WriteLine("ball-Z " + ball.Direction);
         Debug.WriteLine("ballX " + ball.Position);
     }
 
-    public void HandleBallCollisionZ(Ball ball, int x)
+    public async Task HandleBallCollisionZ(Ball ball, int x)
     {
-        Vector3D normal = (Vector3D)new Point3D(-x, 10, ball.Position.Z);
+        Debug.WriteLine("ball speed before" + ball.Speed);
+        Vector3D sleep = ball.Direction;
+        sleep.Z = ball.Direction.Z;
+        sleep.Y = 0;
+        sleep.X = -ball.Direction.X;
+        Debug.WriteLine("sleeep" + sleep);
+
+        ball.Direction = sleep;
+        /*Vector3D sleep = ball.Direction;
+        Debug.WriteLine("sleeep" + sleep);
+        Vector3D normal = (Vector3D)new Point3D(ball.Position.Z, 10, x);
         normal.Normalize();
-        ball.Direction += normal;
-        //ball.Direction +=  normal;
-        Debug.WriteLine("ball Z " + ball.Position);
+        Debug.WriteLine("ball Z normal " + normal);
+        Debug.WriteLine("ball Z direction " + ball.Direction);
+        //ball.Direction = new Vector3D(normal.X, normal.Y, normal.Z);
+        ball.Direction +=  normal;*/
+        Debug.WriteLine("ball speed after" + ball.Speed);
+        Debug.WriteLine("ball Z " + ball.Direction);
         Debug.WriteLine("ballX " + ball.Position);
     }
 
-    public void HandleBallCollisionNegatiefX(Ball ball, int x)
+    public async Task HandleBallCollisionNegatiefX(Ball ball, int x)
     {
-        Vector3D normal = (Vector3D)new Point3D(-x, 10, ball.Position.Z);
-        normal.Normalize();
-        ball.Direction += normal;
-        //ball.Direction += normal;
-        Debug.WriteLine("ball-X " + ball.Position);
-        Debug.WriteLine("ballX " + ball.Position);
+        Debug.WriteLine("ball speed before" + ball.Speed);
+        Vector3D sleep = ball.Direction;
+        sleep.Z = -ball.Direction.Z;
+        sleep.Y = 0;
+        sleep.X = ball.Direction.X;
+        Debug.WriteLine("sleeep" + sleep);
+
+        ball.Direction = sleep;
+        /* Vector3D normal = (Vector3D)new Point3D(ball.Position.Z, 10, x);
+         normal.Normalize();
+         Debug.WriteLine("ball-X normal " + normal);
+         Debug.WriteLine("ball -X direction " + ball.Direction);
+         //ball.Direction = new Vector3D(normal.X, normal.Y, normal.Z);*/
+        Debug.WriteLine("ball speed after" + ball.Speed);
+        Debug.WriteLine("ball-X " + ball.Direction);
+        Debug.WriteLine("ball - X " + ball.Position);
     }
 
-    public void HandleBallCollisionX(Ball ball, int x)
+    public async Task HandleBallCollisionX(Ball ball, int x)
     {
-        Vector3D normal = (Vector3D)new Point3D(-x, 10, ball.Position.Z);
-        normal.Normalize();
-        ball.Direction += normal;
-        //ball.Direction += normal;
-        Debug.WriteLine("ballX " + ball.Position);
+        Debug.WriteLine("ball speed before" + ball.Speed);
+        Vector3D sleep = ball.Direction;
+        sleep.Z = -ball.Direction.Z;
+        sleep.Y = 0;
+        sleep.X = ball.Direction.X;
+        Debug.WriteLine("sleeep" + sleep);
+        
+        ball.Direction = sleep;
+        /* Vector3D sleep = ball.Direction;
+         Debug.WriteLine("sleeep" + sleep);
+         Vector3D normal = (Vector3D)new Point3D(ball.Position.Z, 10, x);
+         normal.Normalize();
+         Debug.WriteLine("ball X nmormal " + normal);
+         Debug.WriteLine("ball X direction " + ball.Direction);
+         //ball.Direction = new Vector3D(normal.X, normal.Y,normal.Z);
+         ball.Direction += normal;*/
+        Debug.WriteLine("ball speed after" + ball.Speed);
+        Debug.WriteLine("ballX " + ball.Direction);
         Debug.WriteLine("ballX " + ball.Position);
     }
 

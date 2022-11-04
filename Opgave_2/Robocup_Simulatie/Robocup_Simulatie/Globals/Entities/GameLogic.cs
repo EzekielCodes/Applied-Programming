@@ -138,6 +138,7 @@ public class GameLogic : ILogic
         while (!token.IsCancellationRequested)
         {
             var ellapsedTime = DateTime.Now - previousTime;
+            previousTime = DateTime.Now;
             _ballPosition = Ball.Position;
             for (int i = 0; i < TeamBlue.Count; i++)
             {
@@ -145,8 +146,8 @@ public class GameLogic : ILogic
                 _ = CollisionWithBall(ellapsedTime);
                 _ = CollisionWithWall();
                 _ = CollisionWithPlayers(ellapsedTime);
-                TeamBlue[i].Updatepostion(_ballPosition, ellapsedTime);
-                TeamRed[i].Updatepostion(_ballPosition, ellapsedTime);
+                _ = TeamBlue[i].Updatepostion(_ballPosition, ellapsedTime);
+                _ = TeamRed[i].Updatepostion(_ballPosition, ellapsedTime);
             }
 
            
@@ -162,12 +163,12 @@ public class GameLogic : ILogic
             Vector3D afstandTeamB = TeamRed[i].Position - ballPosition;
             if (afstandTeamA.Length <= (TeamBlue[0].Radius + Ball.Radius))
             {
-                 _gamePhysics.CollisionBallandPlayer(TeamBlue[i], Ball, interval);
+                _ = _gamePhysics.CollisionBallandPlayer(TeamBlue[i], Ball, interval);
 
             }
             else if (afstandTeamB.Length <= (TeamRed[0].Radius + Ball.Radius))
             {
-                _gamePhysics.CollisionBallandPlayer(TeamRed[i], Ball, interval);
+                _ = _gamePhysics.CollisionBallandPlayer(TeamRed[i], Ball, interval);
             }
         }
     }
@@ -181,18 +182,18 @@ public class GameLogic : ILogic
             {
                 if ((TeamBlue[i].Position - TeamRed[x].Position).Length <= 40)
                 {
-                    _gamePhysics.CollisionPlayerandPlayer(TeamBlue[i], TeamRed[x], interval);
+                    //_gamePhysics.CollisionPlayerandPlayer(TeamBlue[i], TeamRed[x], interval);
                 }
                 else if ((TeamBlue[i].Position - TeamBlue[x].Position).Length <= 40)
                 {
                     if (player == TeamBlue[x]) continue;
-                    _gamePhysics.CollisionPlayerandPlayer(TeamBlue[i], TeamBlue[x], interval);
+                    //_gamePhysics.CollisionPlayerandPlayer(TeamBlue[i], TeamBlue[x], interval);
                 }
 
                 else if ((TeamRed[i].Position - TeamRed[x].Position).Length <= 40)
                 {
                     if (TeamRed[i] == TeamRed[x]) continue;
-                    _gamePhysics.CollisionPlayerandPlayer(TeamRed[i], TeamRed[x], interval);
+                   // _gamePhysics.CollisionPlayerandPlayer(TeamRed[i], TeamRed[x], interval);
                 }
             }
         }
@@ -214,20 +215,20 @@ public class GameLogic : ILogic
         {*/
             if (Ball.Position.X > 435)
             {
-                _gamePhysics.HandleBallCollisionX(Ball, 435);
+               _=  _gamePhysics.HandleBallCollisionX(Ball, 435);
             }
             else if (Ball.Position.X < -435)
             {
-                _gamePhysics.HandleBallCollisionNegatiefX(Ball, 435);
+                _= _gamePhysics.HandleBallCollisionNegatiefX(Ball, 435);
             }
             else if (Ball.Position.Z < -285)
             {
-                _gamePhysics.HandleBallCollisionNegatiefZ(Ball, 285);
+                _ = _gamePhysics.HandleBallCollisionNegatiefZ(Ball, 285);
             }
 
             else if (Ball.Position.Z > 285)
             {
-                _gamePhysics.HandleBallCollisionZ(Ball, 285);
+                _ = _gamePhysics.HandleBallCollisionZ(Ball, 285);
             }
 
         //}
@@ -236,11 +237,11 @@ public class GameLogic : ILogic
             {
                 if (TeamBlue[x].Position.X >= FieldLength / 2 || TeamBlue[x].Position.X <= -FieldLength / 2)
                 {
-                    _gamePhysics.HandlePlayerCollisionX(TeamBlue[x]);
+                    //_gamePhysics.HandlePlayerCollisionX(TeamBlue[x]);
                 }
                 if (TeamRed[x].Position.Z >= FieldWidth / 2 || TeamRed[x].Position.Z <= -FieldWidth / 2)
                 {
-                    _gamePhysics.HandlePlayerCollisionZ(TeamRed[x]);
+                    //_gamePhysics.HandlePlayerCollisionZ(TeamRed[x]);
                 }
             }
         }

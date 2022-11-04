@@ -18,8 +18,9 @@ public record class Players : IItem3D
     private double _speed;
 
     public double Versnelling { get; set; }
-    
+    private  Vector3D _accelaration;
 
+    private Vector3D _velocity;
     public double Radius { get; init; }
 
     public Vector3D Direction { get; set; }
@@ -32,6 +33,18 @@ public record class Players : IItem3D
         set => _speed = value;
     }
 
+    public Vector3D Velocity
+    {
+        get => _velocity;
+        set => _velocity = value;
+    }
+
+    public Vector3D Acceleration
+    {
+        get => _accelaration;
+        set => _accelaration = value;
+    }
+
     public Players(Point3D position, double radius, double speed, double versnelling, Vector3D axis, Color colours)
     {
         Position = position;
@@ -42,19 +55,20 @@ public record class Players : IItem3D
         Color = colours;
     }
 
-    public void Updatepostion(Point3D ball, TimeSpan interval)
+    public async Task Updatepostion(Point3D ball, TimeSpan interval)
     {
-        Vector3D direction = this.Position - ball;
+        this.Position += this.Velocity * interval.TotalSeconds;
+        Velocity += this.Acceleration * interval.TotalSeconds;
+        if(Velocity.Length > 1) Velocity.Normalize();
+
+        //acceleration
+        Vector3D direction = ball - this.Position;
         direction.Y = 0;
-        this.Direction = direction;
         direction.Normalize();
-        this.Position -= (direction * this.Speed/1000 * interval.TotalMilliseconds);
-        this.Speed += this.Versnelling  * interval.TotalMilliseconds;
-        if (this.Speed > 10) this.Speed = 0.1;
-        this.Speed = Speed;        
+        Acceleration = direction * 4;
         
     }
-
+    
 
 
     
