@@ -15,6 +15,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PresentationLayer", "Robocu
 EndProject
 Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "Robot_Packaging", "Robot_Packaging\Robot_Packaging.wapproj", "{3109B90C-92D6-4A3D-B8EC-C80CFCDA6E55}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{00B9539A-02B2-498C-BE7E-3047D1E8FC55}"
+	ProjectSection(SolutionItems) = preProject
+		Feedback - opgave 2.md = Feedback - opgave 2.md
+		technische documentatie.md = technische documentatie.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
