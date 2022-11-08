@@ -208,17 +208,18 @@ public class GameLogic : ILogic
             }
         }
     }
-    public async Task CollisionWithWallBall()
+    private async Task CollisionWithWallBall()
     {
 
         if (Ball.Position.X > 435 && Ball.Velocity.X > 0)
         {
-            _gamePhysics.HandleBallCollisionX(Ball);
+            if(Ball.Position.Z > 75 || Ball.Position.Z < -75) _gamePhysics.HandleBallCollisionX(Ball);
+
 
         }
-        else if (Ball.Position.X < -435 && Ball.Velocity.X < 0 )
+        else if (Ball.Position.X < -435 && Ball.Velocity.X < 0)
         {
-            _gamePhysics.HandleBallCollisionX(Ball);
+            if (Ball.Position.Z > 75 || Ball.Position.Z < -75) _gamePhysics.HandleBallCollisionX(Ball);
         }
         else if (Ball.Position.Z < -285 && Ball.Velocity.Z < 0 )
         {
@@ -232,7 +233,7 @@ public class GameLogic : ILogic
        
     }
 
-    public async Task CollisonWithWallPlayer()
+    private async Task CollisonWithWallPlayer()
     {
         for (int x = 0; x < TeamBlue.Count; x++)
         {
@@ -274,39 +275,44 @@ public class GameLogic : ILogic
         }
     }
 
-    public async Task GoalScored(Ball ball)
+    private async Task GoalScored(Ball ball)
     {
         //goalBrown
-        if(ball.Position == new Point3D((FieldLength / 2), 10, GoalWidth / 2))
+        if(Ball.Position.Z < 75 && Ball.Position.Z > -75 && Ball.Position.X <-435)
         {
             _scoreTeamOne += 1;
             ball.Position = new Point3D(0, 10, 0);
-            _=GoalScored();
+            GoalScored();
         }
         //goal blue
-        else if(ball.Position == new Point3D((FieldLength / 2), 10, GoalWidth / 2))
+        else if(Ball.Position.Z < 75 && Ball.Position.Z > -75 && Ball.Position.X > 435)
         {
             _scoreTeamTwo += 1;
             ball.Position = new Point3D(0, 10, 0);
-            _ = GoalScored();
+            GoalScored();
         }
     }
 
-    public async Task GoalScored()
+    private void  GoalScored()
     {
         _arrayCheckPoint = new Point3D[TeamBlue.Count];
-        double speed = 0;
-        double versnelling = 0.3;
+        Vector3D ballPoint = Ball.Direction;
+        ballPoint.Normalize();
+        Ball.Direction = ballPoint * 0;
         for (int i = 0; i < TeamBlue.Count; i++)
         {
+            Vector3D player = TeamBlue[i].Direction;
+            Vector3D playerTwo = TeamRed[i].Direction;
+            player.Normalize();
+            playerTwo.Normalize();
+            TeamRed[i].Direction = playerTwo * 0;
+            TeamBlue[i].Direction = player * 0;
             TeamRed[i].Position = GenerateRandomPoint(i, true);
             TeamBlue[i].Position = GenerateRandomPoint(i, false);
-            TeamBlue[i].Speed = speed;
-            TeamRed[i].Versnelling = versnelling;
-            TeamBlue[i].Versnelling = versnelling;
-            TeamRed[i].Speed = speed;
+            
 
         }
+        System.Threading.Thread.Sleep(1000);
     }
     public void StopMove()
     {

@@ -171,11 +171,6 @@ public class MainViewModel : ObservableObject
         }
         _logic?.StartMoveAsync();
 
-        while (_logic.Playing && await _gametimer.WaitForNextTickAsync())
-        {
-            if ((_logic != null) && (_currentTime <= 0)) StopGame();
-
-        }
     }
 
     private void PauseGame()
@@ -233,6 +228,8 @@ public class MainViewModel : ObservableObject
 
     public void UpdateWorldDisplay()
     {
+        if ((_logic != null) && (_currentTime <= 0)) StopGame();
+
         if (_logic.Playing)
         {
             UpdateUiCommandsState();
